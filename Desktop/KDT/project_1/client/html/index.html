@@ -182,27 +182,35 @@
               <div class="util-wrap">
                 <button type="button" class="mypage">마이페이지</button>
                 <button type="button" class="logout">로그아웃</button>
+                <!-- 미로그인 시 -->
+                <!-- <a href="./user/login.html" class="login">로그인</a> -->
+                <!-- <a href="./user/register1.html" class="join">회원가입</a> -->
               </div>
             </header>
             <div class="user-info">
-              <div class="name">홍길동님</div>
-              <div class="user-sub">
-                <span>A형</span>
-                <span>29세</span>
+              <!-- 로그인 시 -->
+              <div class="login-on">
+                <div class="name">홍길동님</div>
+                <div class="user-sub">
+                  <span>A형</span>
+                  <span>29세</span>
+                </div>
+                <ul>
+                  <li class="disease"><span>당뇨</span></li>
+                  <li class="allergy"><span>아스피린알러지</span></li>
+                  <li class="disease"><span>당뇨</span></li>
+                  <li class="allergy"><span>아스피린알러지</span></li>
+                  <li class="disease"><span>당뇨</span></li>
+                  <li class="allergy"><span>아스피린알러지</span></li>
+                  <li class="allergy"><span>아스피린알러지</span></li>
+                  <li class="disease"><span>당뇨</span></li>
+                  <li class="allergy"><span>아스피린알러지</span></li>
+                </ul>
               </div>
-              <ul>
-                <li class="disease"><span>당뇨</span></li>
-                <li class="allergy"><span>아스피린알러지</span></li>
-                <li class="disease"><span>당뇨</span></li>
-                <li class="allergy"><span>아스피린알러지</span></li>
-                <li class="disease"><span>당뇨</span></li>
-                <li class="allergy"><span>아스피린알러지</span></li>
-                <li class="allergy"><span>아스피린알러지</span></li>
-                <li class="disease"><span>당뇨</span></li>
-                <li class="allergy"><span>아스피린알러지</span></li>
-                <!-- <li class="add-btn"><button type="button" class="xi-plus" id="userBtn" onclick="addUserInfo(this)"></button></li> -->
-              </ul>
-              
+              <!-- 미로그인 시 -->
+              <!-- <div class="login-no">
+                <div class="name">로그인<br>해주세요</div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -217,7 +225,7 @@
               </a>
             </li>
             <li>
-              <a href="">
+              <a href="./specialEmergency/search.html">
                 <div class="tit">특수응급</div>
                 <p class="sub">특수과목 진료 가능한<br>응급실 검색</p>
                 <div class="icon"><span class="emergency"></span></div>
@@ -228,6 +236,13 @@
                 <div class="tit">약국검색</div>
                 <p class="sub">조건에 맞는 약국 검색</p>
                 <div class="icon"><span class="pharmacy"></span></div>
+              </a>
+            </li>
+            <li>
+              <a href="./firstAid/list.html">
+                <div class="tit">응급처치</div>
+                <p class="sub">상황에 맞는 응급처치 방법</p>
+                <div class="icon"><span class="first-aid"></span></div>
               </a>
             </li>
             <li>

@@ -12,9 +12,11 @@
   }
 
 /* 공통 레이아웃 */
+.inner-header{width: 100%; max-width: 768px; margin: 0 auto;}
 .inner-wrap{width: 100%; max-width: 768px; margin: 0 auto; height: 100%;}
 .emergency{background: url('../img/icon1.png') no-repeat 50%/cover;}
 .pharmacy{background: url('../img/icon2.png') no-repeat 50%/cover;}
+.first-aid{background: url('../img/icon3.png') no-repeat 50%/cover;}
 .login-info{text-align: center; margin: 4.28rem 0; font-size: 1.25rem;}
 .login-info strong{font-size: 1.25rem;}
 
@@ -86,3 +88,19 @@ input[type='checkbox'].type1:checked::after{background-image: url('../img/agree-
         opacity: 0;
     }
 }
+
+
+/* 반응형 */
+@media screen and (max-width:479px) {
+    html, body{font-size: 75%;}
+}
+@media screen and (max-width:360px) {
+    html, body{font-size: 70%;}
+}
+@media screen and (max-width:319px) {
+    html, body{font-size: 60%;}
+}
+@media screen and (max-width:276px) {
+    html, body{font-size: 50%;}
+}
+
