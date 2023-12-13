@@ -3,14 +3,15 @@ const modifyBtn = document.getElementById('modifyBtn')
 const delBtn = document.getElementById('delBtn')
 const textArea = document.querySelector('.layer-pop .inner-text')
 const layerBtnArea = document.querySelector('.layer-pop .btn-wrap')
+var herf = window.location.search
+var id = herf.split('=')[1]
 
 function fn_delete() {
     const deleteButton = document.getElementById('delBtn');
-    // Get the user ID from localStorage or wherever it's stored
     const token = localStorage.getItem('token');
 
     try {
-        fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/delete/${userId}`, {
+        fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/delete/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,7 +60,7 @@ const headers = {
     'Authorization': `Bearer ${token}`,
 };
 
-fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/detail/${userId}`, {
+fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/detail/${id}`, {
     method: 'GET',
     headers: headers,
 })

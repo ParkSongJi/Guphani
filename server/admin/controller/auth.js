@@ -222,7 +222,7 @@ export async function deleteUser(req, res, next) {
     try {
         // Update isUser field to 'N' instead of deleting the user
         const updatedUser = await User.findOneAndUpdate(
-            { id: req.params.id },
+            { req.params.id },
             { $set: { isUser: 'N' } },
             { new: true }
         );
@@ -246,7 +246,7 @@ export async function deleteUser(req, res, next) {
 // 회원 정보 상세 조회
 export async function searchUser(req, res, next) {
     try {
-        const userInfo = await User.findOne({ id: req.params.id });
+        const userInfo = await User.findById(req.params.id);
         
         if (!userInfo) {
             res.json({ result: '실패', message: '해당 회원을 찾을 수 없습니다' });
@@ -262,7 +262,6 @@ export async function searchUser(req, res, next) {
 
 // 회원 전체보기
 export async function searchAll(req, res) {
-    console.log('들어옴');
     const { name, id, gender } = req.query;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
