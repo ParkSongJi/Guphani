@@ -377,10 +377,15 @@ function updateErList(data) {
               : '실시간 정보 없음'
             }
           </span>
-          <a href="${er.dutyTel3}"><span class="call"><i class="xi-call"></i>${er.dutyTel3}</span></a>
+          <button type="button" class="call-button"><i class="xi-call"></i>${tel}</button>
         </div>
       `;
+      const callButton = li.querySelector('.call-button');
 
+      callButton.addEventListener('click', () => {
+        const telLink = `tel:${tel}`;
+        window.location.href = telLink;
+      });
       newLi.addEventListener('click', () => {
         layerOn('specialEmergencyDetail');
         createInfoFunc(er);
