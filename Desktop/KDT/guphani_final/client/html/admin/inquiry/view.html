@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <link rel="stylesheet" href="../../../css/admin/common.css" />
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="../../../js/admin/admin.js" defer></script>
+    <script src="../../../js/admin/inquiry.js" defer></script>
+    <title>문의상세페이지</title>
+</head>
+<body>
+    <div id="adminInquiryView" class="wrap detail">
+        <div data-include-file="../menu.html" class="includeJs"></div>
+        <div class="common-right">
+            <header data-include-file="../header.html" class="includeJs"></header>
+            <div class="content-wrap">
+                <h2 class="tit">문의상세정보</h2>
+                <div class="detail-wrap">
+                    <section>
+                        <h3 class="sec-tit">문의</h3>
+                        <div class="table-wrap">
+                            <form action="">
+                                <table class="type2">
+                                    <tr>
+                                        <th>문의번호</th>
+                                        <td>1</td>
+                                        <th>회원번호</th>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <th>작성자</th>
+                                        <td>홍길동</td>
+                                        <th>작성일자</th>
+                                        <td><input type="date" name="" id="" value="2023-01-10"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>제목</th>
+                                        <td colspan="3">안녕하세요 문의드립니다</td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <th>내용</th>
+                                        <td id="inquiry-content" colspan="3">안녕하세요 회원정보건으로 문의드립니다 </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </section>
+                    <section>
+                        <h3 class="sec-tit">답변</h3>
+                        <div class="table-wrap">
+                            <form action="">
+                                <table class="type2">
+                                    <tr>
+                                        <th>답변내용</th>
+                                        <td>
+                                            <div id="editorWrap">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+                <div class="btn-wrap">
+                    <button type="button" class="black-btn">뒤로가기</button>
+                    <button type="button" class="point-btn" id="ansBtn">답변등록</button>
+                    <button type="button" class="point-btn" id="delBtn">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layer-pop" id="inquiryDetailLayer">
+        <div class="bg" onclick="layerOut('inquiryDetailLayer')"></div>
+        <div class="inner-layer">
+            <p class="inner-text"></p>
+            <div class="btn-wrap two">
+                <button type="button" class="black-btn" onclick="layerOut('inquiryDetailLayer')">닫기</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const editor = new toastui.Editor({
+        el: document.querySelector('#editorWrap'), // 에디터를 적용할 요소 (컨테이너)
+        height: '500px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+        initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+        initialValue: '내용을 입력해 주세요.',     // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
+        previewStyle: 'vertical'                // 마크다운 프리뷰 스타일 (tab || vertical)
+    });
+</script>
+</html>
