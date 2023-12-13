@@ -6,7 +6,7 @@ async function report119() {
                 const userLongitude = position.coords.longitude;
                 console.log(`사용자의 위치 - 위도: ${userLatitude}, 경도: ${userLongitude}`);
 
-                const ambulanceData = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/ambulance/getRealTime', {
+                const ambulanceData = await fetch('http://localhost:3000/ambulance/getRealTime', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -40,23 +40,22 @@ async function report119() {
                 });
                 
                 const smsButton = document.getElementById('smsButton');
-                console.log(smsButton);
                 const id = localStorage.getItem('userId');
                 console.log(id)
                 try {
-                    const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/emergency/user/report/${id}`, {
+                    const response = await fetch(`http://localhost:3000/emergency/user/report/${id}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                        }
+                        },
+                        body: JSON.stringify({})
                     });
                     if (response.ok) {
-                        const message = await response.json();
-                        const messageString = JSON.stringify(message);
+                        const message = await response.text() // 텍스트로 변환
                         smsButton.addEventListener('click', () => {
-                            const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(messageString)}`;
+                            const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
                             window.location.href = smsLink;
-                    })
+                        })
                     } else {
                         if (response.status !== 200) {
                             alert('로그인 정보가 일치하지 않습니다.');
@@ -68,6 +67,7 @@ async function report119() {
                 } catch (error) {
                     console.error('Error:', error);
                 }
+                
             },
             (error) => {
                 console.error('위치 정보를 가져오는 중 에러 발생:', error);
