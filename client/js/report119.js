@@ -40,10 +40,11 @@ async function report119() {
                 });
                 
                 const smsButton = document.getElementById('smsButton');
+                console.log(smsButton);
                 const id = localStorage.getItem('userId');
                 console.log(id)
                 try {
-                    await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/emergency/user/report/${id}`, {
+                    const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/emergency/user/report/${id}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
