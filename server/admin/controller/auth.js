@@ -159,7 +159,7 @@ export async function AdminSignUp(req, res) {
     res.status(201).json( { id });
 }
 
-// 로그인 (사용자)
+// 로그인 (관리자)
 export async function adminSignIn(req, res) {
     const { id, password } = req.body;
 
@@ -169,6 +169,7 @@ export async function adminSignIn(req, res) {
     if (!user) {
         return res.status(401).json({ message: '입력한 아이디가 일치하지 않습니다. 다시 로그인해주세요.' });
     }
+    console.log(user);
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
@@ -176,8 +177,8 @@ export async function adminSignIn(req, res) {
         return res.status(401).json({ message: '입력한 비밀번호가 일치하지 않습니다. 다시 로그인해주세요.' });
     }
 
-    const token = createJwtToken(user.id);
-    res.status(200).json({ token, id });
+    const token = createJwtToken(user);
+    res.status(200).json({user, token});
 }
 
 // 회원 정보 전체 수정 
@@ -294,8 +295,6 @@ export async function signUp(req, res) {
 }
 
 // 로그인 (사용자)
-
-// 로그인 (사용자)
 export async function signIn(req, res) {
     const { id, password } = req.body;
 
@@ -312,8 +311,8 @@ export async function signIn(req, res) {
         return res.status(401).json({ message: '입력한 비밀번호가 일치하지 않습니다. 다시 로그인해주세요.' });
     }
 
-    const token = createJwtToken(user.id);
-    res.status(200).json({ token, id });
+    const token = createJwtToken(user);
+    res.status(200).json({user, token});
 }
 
 

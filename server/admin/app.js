@@ -11,7 +11,7 @@ import firstAidRouter from './router/firstAid.js'
 import emergencyRouter from './router/emergency.js'
 import pharmacyRouter from './router/pharmacy.js'
 import ambulanceRouter from './router/ambulance.js'
-import reportRouter from './router/report.js'
+import inquiryRouter from './router/inquiry.js'
 import {config} from './config.js'
 import { connectDB } from './db/database.js';
 import {initSocket} from './connection/socket.js'
@@ -31,7 +31,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(bodyParser.json({ limit: '70kb' }));
 
 app.use(express.json());
 app.use(morgan("dev"));
@@ -51,11 +50,14 @@ app.use('/firstAid/', firstAidRouter)
 
 // 응급실 & 특수응급
 app.use('/emergency' ,emergencyRouter)
-app.use('/emergency', reportRouter)
 // 사설구급차
 app.use('/ambulance', ambulanceRouter)
 // 약국
 app.use('/pharmacy', pharmacyRouter);
+// 문의하기
+app.use('/inquiry', inquiryRouter);
+app.use('/admin/inquiry', inquiryRouter);
+
 // 이미지 업로드
 app.use('/uploads', express.static('uploads'));
 

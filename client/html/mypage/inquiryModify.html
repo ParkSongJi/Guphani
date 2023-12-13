@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="../../css/mypage.css">
     <script src="../../js/mypage.js" defer></script>
     <script src="../../js/layout.js" defer></script>
-    <script src="../../js/inquery/form.js" defer></script>
-    <title>문의상세페이지</title>
+    <script src="../../js/inquery/modify.js" defer></script>
+    <title>문의수정페이지</title>
 </head>
 <body>
     <div id="inquiryForm">
@@ -19,9 +19,7 @@
             <div class="con-wrap">
                 <main>
                     <div class="inquirycon-wrap">
-                        <h2 class="page-tit">문의등록</h2>
-                        <!-- 수정 시 -->
-                        <!-- <h2 class="page-tit">문의수정</h2> -->
+                        <h2 class="page-tit">문의수정</h2>
                         <form>
                             <div class="input-area">
                                 <div class="select-wrap">
@@ -51,9 +49,7 @@
                                 </div>
                             </div>
                             <div class="btn-wrap">
-                                <button type="button" id="inquiryreg" class="point-btn">문의등록</button>
-                                <!-- 수정 시 -->
-                                <!-- <button type="submit" id="inquiryreg" class="point-btn" onclick="navigateTo('.inquiryList.html')">문의수정</button> -->
+                                <button type="button" id="modifyBtn" class="point-btn">문의수정</button>
                             </div>
                         </form>  
                     </div>
@@ -61,43 +57,16 @@
             </div>
         </div>
     </div>
-    <div class="layer-pop" id="inquireFormLayer">
-        <div class="bg" onclick="layerOut('inquireFormLayer')"></div>
+    <div class="layer-pop" id="inquireModifyLayer">
+        <div class="bg" onclick="layerOut('inquireModifyLayer')"></div>
         <div class="inner-layer">
-            <p id="layerText"></p>
+            <p id="layerText">문의가 <strong class="txt-point">수정</strong>되었습니다.</p>
             <div class="btn-wrap two">
-                <button type="button" class="black-btn" onclick="layerOut('inquireFormLayer')">닫기</button>
+                <button type="button" class="black-btn" onclick="window.location.href='./inquiryList.html'">닫기</button>
             </div>
         </div>
     </div>
     <!-- mypage모달 -->
     <div id="mypage" data-include-file="../inc/mypage.html" class="includeJs"></div>
 </body>
-<script>
-    // 문의하기 작성페이지
-    const selectbox = document.querySelector('#inquiryForm .selectbox')
-    const modal = document.querySelector('#inquiryForm .modal-wrap')
-    const li = modal.querySelectorAll('li')
-    const inquiryType = document.querySelector('.inquiry-type')
-
-    selectbox.addEventListener('click',(params)=>{
-    if(modal.classList.contains('fadeIn')){
-        modal.classList.add('fadeOut')
-        modal.classList.remove('fadeIn')
-    }else{
-        modal.classList.add('fadeIn')
-        modal.classList.remove('fadeOut')
-    }
-    })
-
-    // 
-    li.forEach((el)=>{
-        el.addEventListener('click',()=>{
-            inquiryType.innerText = el.children[0].innerText
-            modal.classList.add('fadeOut')
-            modal.classList.remove('fadeIn')
-        })
-    })
-
-</script>
 </html>
