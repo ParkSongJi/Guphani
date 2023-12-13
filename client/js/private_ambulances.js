@@ -7,7 +7,7 @@ async function getClosestAmbulances() {
         const userLongitude = position.coords.longitude; // 사용자의 경도
         console.log(`사용자의 위치 - 위도: ${userLatitude}, 경도: ${userLongitude}`);
         // 사용자 위경도를 이용해서 거리 순 구급차 리스트 정렬
-        const ambulanceData = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/ambulance/getRealTime', {
+        const ambulanceData = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/ambulance/getRealTime', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

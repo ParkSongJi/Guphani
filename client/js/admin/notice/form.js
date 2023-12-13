@@ -27,7 +27,7 @@ function fn_fetch(link) {
 async function handleEditor() {
     const title = document.getElementById('title').value
     const contents = editor.getMarkdown();    
-    const data = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/admin/notice/write`, {
+    const data = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/notice/write`, {
         method: "POST",
         headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ title, contents})

@@ -1,6 +1,6 @@
 var herf = window.location.search
 var id = herf.split('=')[1]
-let link = `https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/admin/firstAid/view?id=${id}`;
+let link = `https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/view?id=${id}`;
 
 // 수정버튼 링크 변경
 const modifyBtn = document.getElementById('modifyBtn')
@@ -40,7 +40,7 @@ fetch(link,{
 
 // 삭제
 function fn_del() {
-    fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/admin/firstAid/delete/${id}`,{
+    fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/delete/${id}`,{
         method: 'delete',
         headers: headers
     })

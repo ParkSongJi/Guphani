@@ -7,7 +7,7 @@ const table = document.querySelector('.list-table-wrap table');
 const tbody = table.querySelector('tbody');
 const pageUl = document.getElementById('pageUl');
 const totalCnt = document.querySelector('.list-table-wrap .total');
-let link = 'https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/admin/notice/list';
+let link = 'https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/notice/list';
 let html = '';
 let paging = '';
 let currentSearchQuery = '';
@@ -211,7 +211,7 @@ selectDel.addEventListener('click',()=>{
             `
         }
         // 선택삭제 패치
-        fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/admin/notice/delete`,{
+        fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/notice/delete`,{
             method: 'delete',
             headers: {
                 'Content-Type': 'application/json', // 전송하는 데이터의 형식을 지정합니다.
