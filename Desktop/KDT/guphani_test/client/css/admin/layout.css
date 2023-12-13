@@ -1,5 +1,0 @@
-@import url('../reset.css');
-@import url('./common.css');
-
-#adminNoticeList .list-table-wrap .top .btn-wrap a,
-#filstAidList .list-table-wrap .top .btn-wrap a{margin-right: 5px;}
