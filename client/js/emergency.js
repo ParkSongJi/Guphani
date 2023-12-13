@@ -167,7 +167,7 @@ function updateErList(data) {
           </span>
           <a href="${er.dutyTel3}"><span class="call"><i class="xi-call"></i>${er.dutyTel3}</span></a>
         </div>
-      `;
+      `
   
       li.addEventListener('click', () => {
         layerOn('emergencyDetail');
@@ -217,7 +217,7 @@ function createInfoFunc(er) {
       </ul>
   </div>
   <p class="time-info txt-point">* 운영시간은 변동될 수 있으니 방문 전 확인 후 이용 부탁드립니다.</p>
-</div>;`
+</div>`
 infoWrap.appendChild(section1)
 
 //진료과목넣기
@@ -420,12 +420,12 @@ section3.innerHTML = `
       ${equipmentList.map(item => `<li>${item}</li>`).join('')}
     </ul>
   </div>
-  <br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br>
 `
 infoWrap.appendChild(section3)
 
 infoWrap.innerHTML += `
-<a href="${er.dutyTel3}">
+<a href="tel:${er.dutyTel3}">
   <button type="button" class="point-btn call-btn">전화하기</button>
 </a>
 `

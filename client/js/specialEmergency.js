@@ -684,7 +684,7 @@ section3.innerHTML = `
 `
 infoWrap.appendChild(section3)
 infoWrap.innerHTML += `
-<a href="${er.dutyTel3}">
+<a href="tel:${er.dutyTel3}">
   <button type="button" class="point-btn call-btn">전화하기</button>
 </a>
 `

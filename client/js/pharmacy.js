@@ -347,7 +347,7 @@ function createInfoFunc(er) {
 infoWrap.appendChild(section)
 
 infoWrap.innerHTML += `
-<a href="${er.dutyTel1}">
+<a href="tel:${er.dutyTel1}">
   <button type="button" class="point-btn call-btn">전화하기</button>
 </a>
 `
@@ -361,7 +361,7 @@ locationBtn.addEventListener('click', () => {
   navigator.geolocation.getCurrentPosition(
     ({ coords }) => {
       const { latitude: latitude, longitude: longitude } = coords;
-      map.panTo(new kakao.maps.LatLng(latitude, longitude));
+      map.panTo(new kakao.maps.LatLng(latitude - 0.01, longitude));
     },
     (error) => {
       console.error('Geolocation 오류:', error);
