@@ -43,7 +43,7 @@
 #privateAmbulances .name{font-size: 1.428rem; font-weight: bold; margin-bottom: 0.714rem;}
 #privateAmbulances .addr{font-size: 0.857rem; color: var(--dark-gray); margin-bottom: 1.071rem;}
 #privateAmbulances .util{display: flex;}
-#privateAmbulances .util span{padding: 0.471rem 1.428rem; border-radius: 50px; border: 1px solid var(--gray-color); color: var(--gray-color); font-size: 0.9rem; display: flex; align-items: center;}
-#privateAmbulances .util span + span{margin-left: 0.357rem;}
-#privateAmbulances .util span:first-child{border-color: var(--point-color); color: var(--point-color);}
-#privateAmbulances .util span i{color: var(--gray-color); margin-right: 0.357rem;}
+#privateAmbulances .util span, #privateAmbulances .util button{padding: 0.471rem 1.428rem; border-radius: 50px; border: 1px solid var(--gray-color); color: var(--gray-color); font-size: 0.9rem; display: flex; align-items: center;}
+#privateAmbulances .util span + span, #privateAmbulances .util button + span{margin-left: 0.357rem;}
+#privateAmbulances .util span:first-child, #privateAmbulances .util button{border-color: var(--point-color); color: var(--point-color);}
+#privateAmbulances .util span i, #privateAmbulances .util button{color: var(--gray-color); margin-right: 0.357rem;}

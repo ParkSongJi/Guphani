@@ -43,7 +43,7 @@ async function getClosestAmbulances() {
               ` <div class="name ellip1">${name}</div>
                 <div class="addr">${addr}</div>
                 <div class="util">
-                <span class="call-button"><i class="xi-call"></i>${tel}</span>
+                <button type="button" class="call-button"><i class="xi-call"></i>${tel}</button>
                 <span>차량번호: ${carSeq}</span>
               `;
             list.appendChild(li);
