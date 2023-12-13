@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Token', token);
 
         try {
-            const response = await fetch(`https://www.guphani.com/auth/user/updateOther/${userId}`, {
+            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app//auth/user/updateOther/${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ const headers = {
     'Content-Type': 'application/json',
 };
 
-fetch(`https://www.guphani.com/auth/user/detail/${userId}`, {
+fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app//auth/user/detail/${userId}`, {
     method: 'GET',
     headers: headers,
 })

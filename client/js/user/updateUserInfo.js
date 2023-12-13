@@ -84,7 +84,7 @@ const headers = {
     'Content-Type': 'application/json',
 };
 
-fetch(`https://www.guphani.com/auth/user/detail/${userId}`, {
+fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app//auth/user/detail/${userId}`, {
     method: 'GET',
     headers: headers,
 })
@@ -168,7 +168,7 @@ fetch(`https://www.guphani.com/auth/user/detail/${userId}`, {
             const token = localStorage.getItem('token');
     
             try {
-                const response = await fetch(`https://www.guphani.com/auth/user/updateMain/${userId}`, {
+                const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app//auth/user/updateMain/${userId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 // 데이터패치
-fetch(`https://www.guphani.com/firstAid/user/list`)
+fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app//firstAid/user/list`)
 .then((response) => {return response.json()})
 .then((data) => {
     const listWrap = document.querySelector('.list-wrap')
