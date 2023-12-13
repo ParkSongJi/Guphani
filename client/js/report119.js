@@ -12,7 +12,7 @@ async function report119() {
                 console.log(`사용자의 위치 - 위도: ${userLatitude}, 경도: ${userLongitude}`);
                 console.log(id)
 
-                const ambulanceData = await fetch('http://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/ambulance/getRealTime', {
+                const ambulanceData = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/ambulance/getRealTime', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -42,13 +42,20 @@ async function report119() {
                     const telLink = `tel:${phoneNumber}`; // 전화번호를 tel 링크로 만들기
                     window.location.href = telLink; // 전화 연결 링크로 이동
                 });
-                
+
+                // id가 없을 경우 그냥 전송
+                if (!id){
+                    smsButton.addEventListener('click', () => {
+                        const smsLink = `sms:${phoneNumber}`;
+                        window.location.href = smsLink;
+                    })
+                }else {
                 // 체크박스가 체크되면 사용자 정보를 가져와서 문자를 보냄
                 // 체크가 해제되면 문자X
                 checkbox.addEventListener('change', async () => {
                     if (checkbox.checked) {
                         try {
-                            const response = await fetch(`http://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/emergency/user/report/${id}`, {
+                            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/emergency/user/report/${id}`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -81,6 +88,8 @@ async function report119() {
                         })
                     }
                 });
+                }
+                
                 
             },
             (error) => {
