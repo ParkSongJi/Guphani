@@ -43,10 +43,16 @@ async function getClosestAmbulances() {
               ` <div class="name ellip1">${name}</div>
                 <div class="addr">${addr}</div>
                 <div class="util">
-                <span><a href="${tel}"><i class="xi-call"></i>${tel}</a></span>
+                <span class="call-button"><i class="xi-call"></i>${tel}</span>
                 <span>차량번호: ${carSeq}</span>
               `;
             list.appendChild(li);
+            const callButton = li.querySelector('.call-button');
+
+            callButton.addEventListener('click', () => {
+              const telLink = `tel:${tel}`;
+              window.location.href = telLink;
+            });
           }
 
         });
