@@ -37,7 +37,6 @@ app.use(morgan("dev"));
 app.use(cors());
 
 // user
-// app.use('/user', authRouter)
 app.use('/auth', authRouter);
 
 // 공지사항

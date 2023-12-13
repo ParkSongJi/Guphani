@@ -4,6 +4,7 @@ import passport from 'passport';
 import mongoose from 'mongoose';
 import LocalStrategy from 'passport-local';
 import { User } from '../data/auth.js'; 
+import * as userRepository from '../data/auth.js';
 import { config } from '../config.js';
 import coolsms from 'coolsms-node-sdk';
 
@@ -250,23 +251,50 @@ export async function searchUser(req, res, next) {
 
 }
 
-// 회원 정보 전체 조회 
-export async function searchAll(req, res, next) {
-    try {
-        const allUsers = await User.find();
-        
-        if (!allUsers || allUsers.length === 0) {
-            res.json({ result: '실패', message: '회원을 찾을 수 없습니다' });
-            return;
-        }
-        res.json({ result: '성공', message: '전체 회원 정보 조회 성공', users: allUsers });
-    } catch (error) {
-        console.error('전체 회원 정보 조회 중 에러 발생:', error);
-        res.json({ result: '실패', message: '전체 회원 정보 조회 중 에러 발생' });
+// 회원 전체보기
+export async function searchAll(req, res) {
+    console.log('들어옴');
+    const { name, id, gender } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    // const title = req.query.title || '';
+
+    const query = {};
+
+    // 작성자 이름으로 검색
+    if (name) {
+        query.name = { $regex: new RegExp(name, 'i') };
     }
 
-}
+    // 아이디 검색
+    if (id) {
+        query.id = { $regex: new RegExp(id, 'i') };
+    }
 
+    // 성별 검색
+    if (gender) {
+        query.gender = { $regex: new RegExp(gender, 'i') };
+    }
+
+    try {
+        const totalUsers = await userRepository.countUsers(query);
+        const totalPages = Math.ceil(totalUsers / limit);
+        const users = await userRepository.getAll(query, page, limit);
+
+        res.status(200).json({ users, totalPages });
+    } catch (error) {
+        console.error(error); // 오류를 로깅
+        res.status(500).json({ message: '서버 오류 발생' });
+    }
+}
+    
+
+// 회원 선택 삭제
+export async function deleteUsers(req, res) {
+    const datas = req.body;
+    const del = await userRepository.removes(datas.ids);
+    res.sendStatus(200);
+}
 // ----------------------------------------------------------------------
 
 // 회원가입 (사용자/관리자)

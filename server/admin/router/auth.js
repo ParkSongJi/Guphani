@@ -94,6 +94,8 @@ router.get('/user/detail/:id',  authController.searchUser);
 // 회원 정보 전체 조회 
 router.get('/users', authController.searchAll);
 
+// 사용자 다중삭제
+router.put('/user/delete',isAuth, authController.deleteUsers);
 // -------------------------------------------------------------------
 
 // 사용자 회원 탈퇴 

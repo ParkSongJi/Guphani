@@ -22,40 +22,39 @@
             <table>
               <tr>
                 <th>이름</th>
-                <td><input type="text" name="" id="" placeholder="이름을 입력하세요" class="txt-box"></td>
+                <td><input type="text" name="name" id="name" placeholder="이름을 입력하세요" class="txt-box"></td>
                 <th>아이디</th>
-                <td><input type="text" name="" id="" placeholder="아이디를 입력하세요" class="txt-box"></td>
-                <td class="button-td"><button type="button" class="point-btn">검색</button></td>
+                <td><input type="text" name="id" id="id" placeholder="아이디를 입력하세요" class="txt-box"></td>
+                <td class="button-td"><button type="button" id="schBtn" class="point-btn">검색</button></td>
               </tr>
               <tr>
                 <th>성별</th>
                 <td colspan="3">
                   <div class="radio-wrap">
-                    <input type="radio" name="gender" id="gender1" value="m" class="type1">
+                    <input type="radio" name="gender" id="gender1" value="male" class="type1">
                     <label for="gender1">남자</label>
                   </div>
                   <div class="radio-wrap">
-                    <input type="radio" name="gender" id="gender2" value="w" class="type1">
+                    <input type="radio" name="gender" id="gender2" value="female" class="type1">
                     <label for="gender2">여자</label>
                   </div>
                 </td>
-                <td class="button-td"><button type="button" class="black-btn">초기화</button></td>
+                <td class="button-td"><button type="button" class="black-btn" id="resetBtn">초기화</button></td>
               </tr>
             </table>
           </div>
           <div class="list-table-wrap">
             <div class="top">
-              <span id="totalCount" class="total">${user.users.length}건</span>
-
+              <span id="totalCount" class="total">12건</span>
               <div class="btn-wrap">
-                <button type="button" class="black-btn">선택삭제</button>
+                <button type="button" class="black-btn" id="selectDel">선택삭제</button>
               </div>
             </div>
 
             <div class="bottom">
               <table>
                 <colgroup>
-                  <col style="width: 5%;">
+                  <!-- <col style="width: 5%;"> -->
                   <col style="width: 5%;">
                   <col style="width: 10%;">
                   <col style="width: 10%;">
@@ -67,7 +66,7 @@
                   <col style="width: 10%;">
                 </colgroup>
                 <thead>
-                  <th><input type="checkbox" name="" id="allAgree" class="type1"></th>
+                  <!-- <th><input type="checkbox" name="" id="allAgree" class="type1"></th> -->
                   <th>No</th>
                   <th>아이디</th>
                   <th>이름</th>
@@ -79,17 +78,16 @@
                   <th>상세보기</th>
                 </thead>
                 <tbody>
-                  <!-- Rows will be dynamically added here by JavaScript -->
+
                 </tbody>
                 
               </table>
             </div>
           </div>
           <div class="page">
-            <ul id="pagination">
-                <!-- Pagination will be dynamically added here by JavaScript -->
+            <ul id="pageUl">
             </ul>
-        </div>
+          </div>
         </div>
       </div>
     </div>

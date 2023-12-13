@@ -242,10 +242,12 @@ selectDel.addEventListener('click',()=>{
 // 초기화 버튼
 const resetBtn = document.getElementById('resetBtn')
 resetBtn.addEventListener('click',()=>{
-    titleSearch.value = ''
+    nameSearch.value = ''
     contentSearch.value = ''
-    startDate.value = ''
-    endDate.value = ''
+    sortSearch.value = ''
+    answerStatusSearch.forEach((el)=>{
+        el.checked = false
+    })
 })
 
 

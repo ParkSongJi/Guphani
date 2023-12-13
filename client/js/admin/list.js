@@ -1,163 +1,254 @@
-// 체크박스 전체선택
-const allAgree = document.querySelector('.list-table-wrap #allAgree')
-
-allAgree.addEventListener('change', () => {
-    agrees.forEach((el) => {
-        el.checked = allAgree.checked;
-    });
-});
-
-document.addEventListener('click', function (el) {
-    if(el.target.type == 'checkbox' ){
-        agrees = document.querySelectorAll('.list-table-wrap tbody input[type="checkbox"]')
-        // 개별 체크박스에 클릭 이벤트 리스너 추가
-        agrees.forEach(function (agree) {
-            agree.addEventListener('change', () => {
-                // 하나라도 체크가 해제되었을 때 "allAgree" 체크박스도 해제
-                if (!agree.checked) {
-                    allAgree.checked = false;
-                } else {
-                    // 모든 체크박스가 체크되었을 때 "allAgree" 체크박스도 체크
-                    const allChecked = Array.from(agrees).every((cb) => cb.checked);
-                    allAgree.checked = allChecked;
-                }
-            });
-        });
-
-    }
-})
+const nameSearch = document.getElementById('name');
+const idSearch = document.getElementById('id');
+const genderSearch = document.getElementsByName('gender')
+const schBtn = document.getElementById('schBtn');
+const table = document.querySelector('.list-table-wrap table');
+const tbody = document.querySelector('.list-table-wrap tbody');
+const pageUl = document.getElementById('pageUl');
+const totalCnt = document.querySelector('.list-table-wrap .total');
+let link = 'http://localhost:8080/auth/users';
+let html = '';
+let paging = '';
+let currentSearchQuery = '';
 
 
-const userId = localStorage.getItem('userId');
+// 로컬스토리지에서 토큰을 받아옴
 const token = localStorage.getItem('token');
 
+// 헤더에 토큰을 넣음
 const headers = {
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json',
 };
 
-fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/users`, {
-    method: 'GET',
-    headers: headers,
-})
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
+// 체크박스 전체선택
+// const allAgree = document.getElementById('allAgree')
+
+// allAgree.addEventListener('change', () => {
+//     agrees.forEach((el) => {
+//         el.checked = allAgree.checked;
+//     });
+// });
+
+// document.addEventListener('click', function (el) {
+//     if(el.target.type == 'checkbox' ){
+//         agrees = document.querySelectorAll('.list-table-wrap tbody input[type="checkbox"]')
+//         // 개별 체크박스에 클릭 이벤트 리스너 추가
+//         agrees.forEach(function (agree) {
+//             agree.addEventListener('change', () => {
+//                 // 하나라도 체크가 해제되었을 때 "allAgree" 체크박스도 해제
+//                 if (!agree.checked) {
+//                     allAgree.checked = false;
+//                 } else {
+//                     // 모든 체크박스가 체크되었을 때 "allAgree" 체크박스도 체크
+//                     const allChecked = Array.from(agrees).every((cb) => cb.checked);
+//                     allAgree.checked = allChecked;
+//                 }
+//             });
+//         });
+
+//     }
+// })
+
+
+// 데이터와 페이징 가져오기
+function fetchUsers(queryString = '', page = 1) {
+    html = '';
+    paging = '';
+
+    let fetchUrl = link;
+    if (queryString !== '') {
+        fetchUrl += `?${queryString}&page=${page}`;
+    } else {
+        fetchUrl += `?page=${page}`;
+    }
+
+    fetch(fetchUrl, {
+        headers: headers
     })
-// ... (your existing code)
+        .then(response => response.json())
+        .then((data) => {
+            totalCnt.innerText = `총 ${data.users.total}개`;
+            // totalPages 변수를 설정
+            const totalPages = data.users.totalPage;
 
-.then(user => {
-    console.log('User Data:', user);
-
-    // Ensure that user.users is an array
-    if (Array.isArray(user.users)) {
-        const userData = {
-            result: '성공',
-            message: '전체 회원 정보 조회 성공',
-            users: user.users, // Use user.users instead of user
-        };
-
-        const tableBody = document.querySelector('.list-table-wrap tbody');
-        const itemsPerPage = 15; // Set the number of items per page
-        const totalPages = Math.ceil(userData.users.length / itemsPerPage);
-   
-        // Function to create a table row for a user
-        function createUserRow(user, index) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-          
-                <td><input type="checkbox" name="userCheckbox" class="type1"></td>
-                <td>${index}</td>
-                <td>${user.id}</td>
-                <td>${user.name}</td>
-                <td>${user.gender}</td>
-                <td>${user.birthdate}</td>
-                <td>${user.phoneNumber}</td>
-                <td>${user.isUser}</td>
-                <td>${user.joinDate.split('T')[0]}</td>
-                <td><a href="./view.html" class="gray-btn view-btn" data-user-id="${user.id}">상세보기</a></td>
-            `;
-
-            const viewBtn = row.querySelector('.view-btn');
-            viewBtn.addEventListener('click', (event) => {
-                const userId = viewBtn.dataset.userId;
-                localStorage.setItem('userId', userId);
-
-                // Now you can use the userId variable for further processing
-                console.log('Clicked "상세보기" for userId:', userId);
-                // Redirect to view.html with the userId in the URL
-                window.location.href = `./view.html`;
-            });
-            
-            return row;
-        }
-        // Function to update pagination
-        function updatePagination(currentPage) {
-            const paginationUl = document.getElementById('pagination');
-            if (paginationUl) {
-                paginationUl.innerHTML = '';
-
-                for (let i = 1; i <= totalPages; i++) {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<a href="#" data-page="${i}">${i}</a>`;
-                    if (i === currentPage) {
-                        li.classList.add('on');
-                    }
-                    paginationUl.appendChild(li);
-                }
+            if (data.users.data.length === 0) {
+                html += `<tr class="no-data"><td colspan="10">데이터가 없습니다</td></tr>`;
             } else {
-                console.error('Error: Pagination ul not found.');
+                data.users.data.forEach((el, idx) => {
+                    html += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>${el.id}</td>
+                        <td>${el.name}</td>
+                        `
+                        if(el.gender == 'male'){
+                            html += `<td>남자</td>`
+                        }else if(el.gender == 'female'){
+                            html += `<td>여자</td>`
+                        }
+                        html +=`
+                        <td>${el.birthdate}</td>
+                        <td>${el.phoneNumber}</td>`
+
+                        if(el.isUser == 'Y'){
+                            html += `<td class="point-txt">${el.isUser}</td>`
+                        }else if(el.isUser == 'N'){
+                            html += `<td>${el.isUser}</td>`
+                        }
+
+                        html +=`
+                        <td>${String(el.joinDate).split('T')[0]}</td>
+                        <td><a href="./view.html?id=${el._id}" class="gray-btn view-btn">상세보기</a></td>
+                    </tr>
+                    `;
+                });
             }
+            tbody.innerHTML = html;
+
+            paging += '<ul>';
+            if (page > 1) {
+                paging += `<li class="prev"><a href="#" onclick="changePage(${page - 1}, '${queryString}')"><i class="xi-angle-left"></i></a></li>`;
+            }
+            for (let i = 1; i <= totalPages; i++) {
+                if (page === i) {
+                    paging += `<li class='on'><a href="#" onclick="changePage(${i}, '${queryString}')">${i}</a></li>`;
+                } else {
+                    paging += `<li><a href="#" onclick="changePage(${i}, '${queryString}')">${i}</a></li>`;
+                }
+            }
+            if (page < totalPages) {
+                paging += `<li class="next"><a href="#" onclick="changePage(${page + 1}, '${queryString}')"><i class="xi-angle-right"></i></a></li>`;
+            }
+            paging += '</ul>';
+
+            pageUl.innerHTML = paging;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// 페이지 변경 함수
+function changePage(newPage, queryString) {
+    page = newPage;
+    const newUrl = `./list.html?page=${newPage}${queryString ? `&${queryString}` : ''}`;
+    window.location.href = newUrl;
+}
+
+// 페이지 로드 시 URL에서 검색 조건을 추출하고 적용하는 함수
+function loadSearchConditions() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name') || '';
+    const id = urlParams.get('id') || '';
+    const gender = urlParams.get('gender') || '';
+    const pageNum = parseInt(urlParams.get('page') || '1', 10);
+
+    // 검색 필드에 값 설정
+    nameSearch.value = name;
+    idSearch.value = id;
+    genderSearch.value = gender;
+
+    // 현재 검색 조건으로 데이터 불러오기
+    const query = { name, id, gender};
+    currentSearchQuery = Object.keys(query)
+        .filter(key => query[key] !== '')
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
+        .join('&');
+
+    fetchUsers(currentSearchQuery, pageNum);
+}
+
+window.onload = loadSearchConditions;
+
+// 검색 이벤트
+schBtn.addEventListener('click', () => {
+    const query = {};
+    page = 1;
+    if (nameSearch.value) query.name = nameSearch.value;
+    if (idSearch.value) query.id = idSearch.value;
+    genderSearch.forEach((el)=>{
+        if(el.checked){
+            query.gender = el.value; 
         }
+    })
 
-        
+    
 
-        // Insert user data into the table based on the current page
-        
-        function insertUserData(page) {
-            tableBody.innerHTML = ''; // Clear existing rows
-            const startIdx = (page - 1) * itemsPerPage;
-            const endIdx = startIdx + itemsPerPage;
-            
-            userData.users.slice(startIdx, endIdx).forEach((user, index) => {
-                const row = createUserRow(user, startIdx + index + 1);
-                tableBody.appendChild(row);
-            });
-        } 
+    currentSearchQuery = Object.keys(query)
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
+        .join('&');
 
-        // Event listener for pagination click
-        document.getElementById('pagination').addEventListener('click', (event) => {
-            event.preventDefault();
-            const clickedPage = parseInt(event.target.dataset.page, 10);
-            if (!isNaN(clickedPage)) {
-                updatePagination(clickedPage);
-                insertUserData(clickedPage);
-            }
-        });
+    fetchUsers(currentSearchQuery, 1);
+});
 
-        // Initial pagination update for the first page
-        updatePagination(1);
 
-        // Initial insertion of user data for the first page
-        insertUserData(1);
+// 삭제 모달창 및 체크된 id확인
+// let layerText = ''
+// const delBtn = document.getElementById('delBtn')
+// const textArea = document.querySelector('.layer-pop .inner-text')
+// const layerBtnArea = document.querySelector('.layer-pop .btn-wrap')
+// const selectDel = document.getElementById('selectDel')
+// let delArr = []
+// selectDel.addEventListener('click',()=>{
+//     delArr = []
+//     agrees = document.querySelectorAll('.list-table-wrap tbody input[type="checkbox"]')
+//     agrees.forEach((el)=>{
+//         if(el.checked == true){
+//             delArr.push(el.value)
+//         }
+//     })
+//     const datas = {
+//         ids: delArr
+//     };
 
-        
-/*
-        // Insert user data into the table
-        userData.users.forEach((user, index) => {
-            const row = createUserRow(user, index);
-            tableBody.appendChild(row);
-        }); */ 
-// Update the total count
-const totalCountSpan = document.getElementById('totalCount');
-if (totalCountSpan) {
-    totalCountSpan.textContent = `${user.users.length}건`;
-} else {
-    console.error('Error: Total count span not found.');
-}
-} else {
-console.error('Error: User data is not in the expected format.');
-}
+//     console.log(datas);
+//     if(delArr.length == 0){
+//         layerText = `선택된 회원이 없습니다.` 
+//         textArea.innerHTML = layerText
+//         layerBtnArea.innerHTML = `
+//         <button type="button" class="black-btn" onclick="layerOut('userListLayer')">닫기</button>`
+//     }else{
+//         layerText = `해당 회원의 상태가 <strong class="point-txt">탈퇴 상태로 변경됩니다.</strong><br>변경 하시겠습니까?`
+//         textArea.innerHTML = layerText
+//         layerBtnArea.innerHTML = `
+//             <button type="button" class="black-btn" onclick="layerOut('userListLayer')">닫기</button>
+//             <button type="button" class="point-btn del" onclick="fn_del()">삭제</button>
+//         `
+//     }
+
+//     layerOn('userListLayer')
+
+//     document.addEventListener('click',(e)=>{
+//         if (e.target.matches('.layer-pop .point-btn.del')) {
+//             layerText = `회원 상태가 <strong class="point-txt">변경</strong><br>되었습니다.`
+//             textArea.innerHTML = layerText
+//             layerBtnArea.innerHTML = `
+//                 <button type="button" class="black-btn" onclick="window.location.href='./list.html?page=1'">닫기</button>
+//             `
+//         }
+//         // 선택삭제 패치
+//         fetch(`http://localhost:8080/auth/user/delete`,{
+//             method: 'put',
+//             headers: {
+//                 'Content-Type': 'application/json', // 전송하는 데이터의 형식을 지정합니다.
+//                 'Authorization': `Bearer ${token}`,
+//             },
+//             body: JSON.stringify(datas)
+//         })
+//         .then((response) => {return response.json()})
+//         .then((data) => {console.log(data)})
+    
+//     })
+
+// })
+
+// 초기화 버튼
+const resetBtn = document.getElementById('resetBtn')
+resetBtn.addEventListener('click',()=>{
+    nameSearch.value = ''
+    idSearch.value = ''
+    genderSearch.forEach((el)=>{
+        el.checked = false
+    })
 })
+
+
