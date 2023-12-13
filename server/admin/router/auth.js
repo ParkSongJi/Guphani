@@ -53,8 +53,17 @@ const validateSignup = [
 ]
 
 
+// 아이디 검색 
+router.post('/searchId', authController.searchId)
+
+// 비밀번호 변경용 검색 
+router.post('/searchPw', authController.searchPw)
+
 // 아이디 중복검사
-router.post('/findById', authController.findById);
+router.get('/duplicateIdTest', authController.duplicateIdTest);
+
+// 비밀번호 재설정 
+router.put('/updatePassword', authController.updatePassword); 
 
 // 관리자 회원가입 (postman에서만,관리자 권한 부여하기 위해서)
 router.post('/admin/regist', authController.AdminSignUp);
@@ -101,11 +110,11 @@ router.put('/user/delete',isAuth, authController.deleteUsers);
 // 사용자 회원 탈퇴 
 router.delete('/user/withdraw/:id', authController.withdraw);
 
-// 사용자 회원 정보 수정 (id, password, name, birthdate, phonenumber, address)
-router.put('/user/updateMain/:id',  authController.updateMain);
+// 사용자 회원 정보 수정 (password, name, birthdate, phonenumber, address)
+router.put('/user/updateMain',  authController.updateMain);
 
 // 사용자 추가 정보 수정 (기저 질환, 알러지, 평소 복용약, 보호자 번호, 보호자 관계)
-router.put('/user/updateOther/:id', authController.updateOther);
+router.put('/user/updateOther', authController.updateOther);
 
 // 사용자 회원 정보 상세 조회 
 router.get('/user/detail/:id',  authController.searchUser);

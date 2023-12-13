@@ -39,7 +39,6 @@ export async function sendVerificationMessage(phoneNumber) {
             from: config.sms.sendNumber,
             text: `인증 번호는 ${verificationCode}입니다.`
         };
-        
         const response = await messageService.sendOne(params);
         verificationStorage[phoneNumber] = verificationCode;
         return { verificationCode, response };
@@ -57,7 +56,6 @@ export async function sendVerification(req, res) {
     const phoneNumber = req.body.phnumber;
     try {
         const { verificationCode } = await sendVerificationMessage(phoneNumber);
-        // 실제 운영시에는 인증번호를 반환하지 않습니다.
         res.status(200).json({ message: '인증번호가 전송되었습니다.' });
     } catch (error) {
         res.status(500).json({ message: '인증번호 전송 실패', error: error.toString() });
@@ -77,7 +75,6 @@ export async function verifyCode(req, res) {
         res.status(500).json({ message: '인증 검증 실패', error: error.toString() });
     }
 }
-
 
 // Passport Local Strategy
 passport.use(new LocalStrategy(
@@ -125,11 +122,23 @@ try {
 }
 });
 
-// 중복검사
+// 아이디 중복검사
 export async function findById(req, res) {
     const id = req.body 
     console.log(id);
     const found = await User.findOne({ id: id });
+
+    if(found){
+        return res.status(409).json({isUser:'Y'});
+    }
+    return res.status(200).json({isUser:'N'});
+}
+
+// 핸드폰번호 중복검사
+export async function findByHp(req, res) {
+    const hp = req.body 
+    console.log(hp);
+    const found = await User.findOne({ phoneNumber: hp });
 
     if(found){
         return res.status(409).json({isUser:'Y'});
@@ -303,7 +312,7 @@ export async function signUp(req, res) {
 
     const found = await User.findOne({ id: id });
     if (found) {
-        return res.status(409).json({ message: `${id}이 이미 가입되었음, 다른 아이디로 회원가입해주세요`});
+        return res.status(409).json({ message: `${id}이 이미 존재합니다. 다른 아이디로 회원가입해주세요`});
     }
 
     const hashed = await bcrypt.hash(password, 10);
@@ -325,10 +334,9 @@ export async function signUp(req, res) {
 // 로그인 (사용자)
 export async function signIn(req, res) {
     const { id, password } = req.body;
-
     // Retrieve the hashed password from the database
     const user = await User.findOne({ id: id, isUser: 'Y' });
-    
+    console.log(user);
     if (!user) {
         return res.status(401).json({ message: '입력한 아이디가 일치하지 않습니다. 다시 로그인해주세요.' });
     }
@@ -393,7 +401,7 @@ export async function withdraw(req, res, next) {
 
         // Compare user ID from token with the ID in the request parameters
         if (userIdFromToken !== req.params.id) {
-            res.status(403).json({ result: '실패', message: '권한이 없습니다. 본인 계정만 탈퇴 가능합니다.' });
+            res.status(403).json({ result: '실패', message: '본인 계정만 탈퇴 가능합니다.' });
             return;
         }
 
@@ -411,12 +419,12 @@ export async function withdraw(req, res, next) {
 
         res.json({
             result: '성공',
-            message: '회원님이 성공적으로 탈퇴하셨습니다. 다음 기회에 급하니를 찾아주세요.',
+            message: '성공적으로 탈퇴되었습니다. 급하니는 회원가입 없이도 사용가능합니다.',
             user: updatedUser,
         });
     } catch (error) {
-        console.error('회원 정보 탈퇴 중 에러 발생:', error);
-        res.json({ result: '실패', message: '회원 정보 탈퇴 중 에러 발생' });
+        console.error('회원 탈퇴 중 에러 발생:', error);
+        res.json({ result: '실패', message: '회원 탈퇴 중 에러 발생' });
     }
 }
 
@@ -424,19 +432,19 @@ export async function withdraw(req, res, next) {
 // 회원 정보 수정 (사용자)
 export async function updateMain(req, res, next) {
     try {
-        const { name, birthdate, gender, phoneNumber } = req.body;
+        const { id, name, birthdate, gender, phoneNumber } = req.body;
 
         // Extract user ID from the token
-        const userIdFromToken = req.id;
+        // const userIdFromToken = req.id;
 
         // Compare user ID from token with the ID in the request parameters
-        if (userIdFromToken !== req.params.id) {
-            res.status(403).json({ result: '실패', message: '권한이 없습니다. 본인 정보만 수정 가능합니다.' });
-            return;
-        }
+        // if (userIdFromToken !== req.params.id) {
+        //     res.status(403).json({ result: '실패', message: '본인 정보만 수정 가능합니다.' });
+        //     return;
+        // }
 
         const updatedUser = await User.findOneAndUpdate(
-            { id: req.params.id },
+            { id : id },
             { $set: { name, birthdate, gender, phoneNumber }},
             { new: true }
         );
@@ -455,19 +463,19 @@ export async function updateMain(req, res, next) {
 // 추가 정보 수정 (사용자)
 export async function updateOther(req, res, next) {
     try {
-        const { guardianPhoneNumber, guardianRelationship, bloodType, underlyingDisease, allergy, medication } = req.body;
+        const { id, guardianPhoneNumber, guardianRelationship, bloodType, underlyingDisease, allergy, medication } = req.body;
 
         // Extract user ID from the token
         const userIdFromToken = req.id;
 
         // Compare user ID from token with the ID in the request parameters
-        if (userIdFromToken !== req.params.id) {
-            res.status(403).json({ result: '실패', message: '권한이 없습니다. 본인 정보만 수정 가능합니다.' });
-            return;
-        }
+        // if (userIdFromToken !== req.params.id) {
+        //     res.status(403).json({ result: '실패', message: ' 본인 정보만 수정 가능합니다.' });
+        //     return;
+        // }
 
         const updatedOtherUser = await User.findOneAndUpdate(
-            { id: req.params.id },
+            { id: id },
             { $set: { guardianPhoneNumber, guardianRelationship, bloodType, underlyingDisease, allergy, medication }},
             { new: true }
         );
@@ -479,7 +487,88 @@ export async function updateOther(req, res, next) {
 
         res.json({ result: '성공', message: '회원님의 추가 정보가 업데이트 되었습니다. 확인해주세요.', user: updatedOtherUser });
     } catch (error) {
-        console.error('회원님의 추가 정보 업데이트 할 때 에러가 발생했습니다:', error);
-        res.json({ result: '실패', message: '회원님의 추가 정보 업데이트할 때 에러발생했습니다.' });
+        console.error('에러가 발생했습니다. 다시 시도해주세요.', error);
+        res.json({ result: '실패', message: '에러가 발생했습니다. 다시 시도해주세요.' });
+    }
+}
+
+
+// 아이디 찾기 
+export async function searchId(req, res, next) {
+    try {
+        const { name, phoneNumber } = req.body;
+        const foundUser = await User.findOne({ phoneNumber }); // Use findOne instead of find
+        if (foundUser) {
+            res.json({ id: foundUser.id, message: '회원을 찾음'}); 
+        } else {
+            res.status(404).json({ message: '회원을 찾을 수 없음' });
+        }
+    } catch (error) {
+        console.error('Error in searchId:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+// 비번찾기
+export async function searchPw(req, res, next) {
+    try {
+        const { id, phoneNumber } = req.body;
+        const foundUser = await User.findOne({ id }); // Use findOne instead of find
+        if (foundUser.phoneNumber.replace(/-/g, '') === phoneNumber) {
+            res.json({ id: foundUser.id, message: '회원을 찾음'}); 
+        } else {
+            res.status(404).json({ message: '회원을 찾을 수 없음' });
+        }
+    } catch (error) {
+        console.error('Error in searchId:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+// 아이디 찾기 위해서 mongodb에 있는 userid 들 불러오기 
+export async function duplicateIdTest(req, res, next) {
+    try {
+        // Fetch all user IDs from the User collection in MongoDB, selecting only the 'id' field
+        const allUserIds = await User.find({}, 'id');
+
+        // Send the array of user IDs as a JSON response to the client
+        res.json(allUserIds);
+    } catch (error) {
+        // Handle errors during the fetching process
+        console.error('Error fetching user IDs:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+// 비밀번호 재설정 
+export async function updatePassword(req, res, next) {
+    try {
+        const { id, phoneNumber, newPassword } = req.body; // Extract newPassword from req.body
+        const user = await User.findOne({ id, phoneNumber }); // Use findOne instead of find
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        const hashed = await bcrypt.hash(newPassword, 10);
+
+
+        const updatedPassword = await User.findOneAndUpdate(
+            { id, phoneNumber },
+            { $set: { password: hashed } }, // Update the password field
+            { new: true }
+        );
+
+        if (!updatedPassword) {
+            res.json({ result: '실패', message: '비밀번호 재설정 실패' });
+            return;
+        }
+
+        // Return success response
+        return res.status(200).json({ message: 'Password updated successfully.' });
+    } catch (error) {
+        // Handle errors appropriately, for now, just log the error
+        console.error('Error updating password:', error);
+        return res.status(500).json({ error: 'Internal server error.' });
     }
 }

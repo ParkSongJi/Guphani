@@ -126,18 +126,13 @@ document.addEventListener('DOMContentLoaded', function () {
         let bloodValue = '';
 
         // Check if a gender option is selected
-        let isBloodSelected = false;
+       let isBloodSelected = false;
         bloodInputs.forEach((el) => {
             if (el.checked) {
                 bloodValue = el.value;
                 isBloodSelected = true;
             }
         });
-
-        if (!isBloodSelected) {
-            makePopup('혈액형을 선택해주세요');
-            return;
-        }
 
         // Retrieve userId from localStorage
         const userId = localStorage.getItem('userId');

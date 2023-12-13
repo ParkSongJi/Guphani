@@ -43,17 +43,18 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
         let html = ''
         if (user) {
             html += `
-                <div class="login-on">
-                    <div class="name">${name}님</div>
-                    <div class="user-sub">
-                       <span>${bloodType}형</span>
-                        <span>${calculateAge(birthdate)}세</span>
-                    </div>
-                    <ul>
-                        ${generateListItems('disease', underlyingDisease)}
-                        ${generateListItems('allergy', allergy)}
-                    </ul>
-                </span>`
+            <div class="login-on">
+                <div class="name">${name ? `${name}님` : ''}</div>
+                <div class="user-sub">
+                    ${bloodType ? `<span>${bloodType}형</span>` : ''}
+                    ${birthdate ? `<span>${calculateAge(birthdate)}세</span>` : ''}
+                </div>
+                <ul>
+                    ${generateListItems('disease', underlyingDisease) } 
+                    ${generateListItems('allergy', allergy)}
+                </ul>
+            </span>`;
+        
 
             userUtilWrap.innerHTML = `<button type="button" class="mypageBtn" onclick="mypageOn()">마이페이지</button>
             <button type="button" class="logout" id="logoutBtn">로그아웃</button>`
@@ -104,8 +105,12 @@ function calculateAge(birthdate) {
 
 // Function to generate list items for diseases and allergies
 function generateListItems(className, items) {
-return items.map(item => `<li class="${className}"><span>${item}</span></li>`).join('');
+    if (items[0] !== ''){
+        return items.map(item => `<li class="${className}"><span>${item}</span></li>`).join('');
+    }
+    return ''
 }
+
 
 
 window.addEventListener('click',(e)=>{

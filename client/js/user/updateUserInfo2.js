@@ -54,20 +54,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const medicineListValues = getListValues('medicineList');
         const guard_hp = document.getElementById('guard_hp').value.replace(/\D/g, '');
         const guard_rel = document.getElementById('guard_rel').value.trim();
-
-        if (guard_hp.length !== 11) {
-            makePopup(`[${guard_hp}]유효한 번호를 입력해주세요 (숫자 11자리)`);
+        const storedUserData = localStorage.getItem('userData');
+        console.log(guard_hp.length);
+        if (guard_hp.length < 11 && guard_hp.length >= 1) {
+            makePopup(`숫자 11자리로 이루어진 유효한 번호를 입력해주세요 `);
             return;
-        }
-
-        if (guard_rel === '') {
+        }else if (guard_hp.length !== 0 && guard_rel === '') {
             makePopup('보호자와의 관계를 입력해주세요');
             return;
-        }
-        
-        const storedUserData = localStorage.getItem('userData');
-
-        if (storedUserData) {
+        }else if (storedUserData) {
             const userData = JSON.parse(storedUserData);
             const newData = {};
 
@@ -79,9 +74,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             console.log(newData);
             console.log(userData);
-            window.location.href = '../index.html';
+            handleServerClientConnection()
         } else {
-         //   makePopup('오류가 발생했습니다. 추가 정보 수정을 다시 진행해주세요');
+           makePopup('오류가 발생했습니다. 추가 정보 수정을 다시 진행해주세요');
         }
     }
 
@@ -102,11 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        if (!isBloodSelected) {
-            makePopup('혈액형을 선택해주세요');
-            return;
-        }
-
         console.log('Sick List Values:', sickListValues);
         console.log('Allergy List Values:', allergyListValues);
         console.log('Medicine List Values:', medicineListValues);
@@ -119,14 +109,21 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('UserId in user_register3:', userId);
         console.log('Token', token);
 
+        if (JSON.stringify(sickListValues) === JSON.stringify(OriginUnderlyingDisease) 
+        && JSON.stringify(OriginAllergy)===JSON.stringify(allergyListValues) 
+        && JSON.stringify(OriginMedication)===JSON.stringify(medicineListValues)) {
+            return makePopup('변경된 정보가 없습니다')
+        }
+
         try {
-            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateOther/${userId}`, {
+            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateOther`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`, 
                 },
                 body: JSON.stringify({
+                    id : userId,
                     guardianPhoneNumber: guard_hp,
                     guardianRelationship: guard_rel,
                     underlyingDisease: sickListValues,
@@ -139,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Server Response:', data);
-                window.location.href = '../index.html';
+                location.reload()
             } else {
                 const errorMessage = await response.text();
                 console.error('Server Error:', errorMessage);
@@ -153,11 +150,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (submitFormButton) {
         submitFormButton.addEventListener('click', handleFormSubmission);
     }
-
-    const updateOtherForm = document.getElementById('submitForm');
-    if (updateOtherForm) {
-        updateOtherForm.addEventListener('click', handleServerClientConnection);
-    }
 });
 
 // 회원 정보 기본값으로 넣어주기
@@ -168,6 +160,14 @@ const headers = {
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json',
 };
+
+let OriginUnderlyingDisease
+let OriginAllergy 
+let OriginMedication 
+let OriginGuardianPhoneNumber 
+let OriginGuardianRelationship
+let OriginBloodType 
+
 
 fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/detail/${userId}`, {
     method: 'GET',
@@ -187,9 +187,16 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
         const underlyingDisease = user.user.underlyingDisease;
         const allergy = user.user.allergy;
         const medication = user.user.medication;
-        const guardianPhoneNumber = user.user.guardianPhoneNumber;
-        const guardianRelationship = user.user.guardianRelationship;
+        const guardianPhoneNumber = user.user.guardianPhoneNumber !== undefined ? user.user.guardianPhoneNumber : '';
+        const guardianRelationship = user.user.guardianRelationship !== undefined ? user.user.guardianRelationship : '';
         const bloodType = user.user.bloodType;
+
+        OriginUnderlyingDisease = user.user.underlyingDisease;
+        OriginAllergy = user.user.allergy;
+        OriginMedication = user.user.medication;
+        OriginGuardianPhoneNumber = user.user.guardianPhoneNumber !== undefined ? user.user.guardianPhoneNumber : '';
+        OriginGuardianRelationship = user.user.guardianRelationship !== undefined ? user.user.guardianRelationship : '';
+        OriginBloodType = user.user.bloodType;
         
         const Is_A = document.getElementById('bloodType_A'); 
         const Is_B = document.getElementById('bloodType_B'); 
@@ -202,9 +209,15 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
             Is_A.checked = true;
         } else if (bloodType === 'B') {
             Is_B.checked = true;
-        } else {
+        } else if (bloodType === 'AB') {
             Is_AB.checked = true;
-        }
+        } else {
+            // Uncheck all checkboxes
+            Is_O.checked = false;
+            Is_A.checked = false;
+            Is_B.checked = false;
+            Is_AB.checked = false;      
+          }
 
         console.log('혈액형:', bloodType);
         console.log('기저질환:', underlyingDisease);
@@ -286,5 +299,4 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
         console.error('Error:', error);
     
     });
-
 

@@ -1,5 +1,4 @@
 // 아이디 검증
-
 const idCheck = document.getElementById('idCheck')
 const pwCheck = document.getElementById('userpw');
 const pwDoubleCheck = document.getElementById('userpw_check');
@@ -22,50 +21,63 @@ function makePopup(popupMessage){
     layerOn('register2Layer');
 }
 
-idCheck.addEventListener('click',()=>{
+function validatePhoneNumber(phoneNumber) {
+    const sanitizedPhoneNumber = phoneNumber.replace(/[^0-9]/g, '');
+    return sanitizedPhoneNumber.length >= 10 && sanitizedPhoneNumber.length <= 11;
+}
+
+idCheck.addEventListener('click', async () => {
     const useridInput = document.getElementById('userid');
     const userId = useridInput.value.trim();
     let popupMessage;
-    // 아이디 입력값이 비어있는 경우
 
     // 정규표현식을 사용하여 아이디 검증
     const idPattern = /^[a-z][a-z0-9]{3,11}$/;
     const isValidId = idPattern.test(userId);
 
+    try {
+        const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/duplicateIdTest', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            // If the response is successful, parse the JSON
+            const data = await response.json();
+            allUserIds = data.map(user => user.id);
+        } else {
+            throw new Error('Failed to fetch user IDs');
+        }
+    } catch (error) {
+        console.error('Error fetching user IDs:', error);
+        // Handle the error, show a message, or perform other actions
+        return;
+    }
+
     // 중복확인 -> 추후에 조정 필요
-    const isDuplicate = '반하나'
+    // Check if the array includes the userId
+    const isDuplicate = allUserIds.some(user => user === userId);
 
     // 팝업창에 표시될 메시지
-    if(userId === ''){
-        popupMessage = '아이디를 입력해주세요.'
-    } else if (userId  === isDuplicate) {
+    if (userId === '') {
+        popupMessage = '아이디를 입력해주세요.';
+    } else if (isDuplicate) {
         popupMessage = '중복된 아이디입니다.';
-        useridInput.value = ''
-    } else if(!isValidId) {
+        useridInput.value = '';
+    } else if (!isValidId) {
         popupMessage = '아이디 형식에 맞지 않습니다';
-        useridInput.value = '';        
-    } else{
+        useridInput.value = '';
+    } else {
         popupMessage = `아이디 ${userId}는 사용 가능합니다`;
-        useridInput.disabled = true; 
-        idBool = true
+        useridInput.disabled = true;
+        idBool = true;
     }
-    makePopup(popupMessage)
-
-    // const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/findById', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         id: userId
-    //     })
-    // }).then((result)=>{return result})
-    // .then((data) =>{
-    //     makePopup(popupMessage)
-    // });
+    makePopup(popupMessage);
+});
 
 
-})
 
 //아이디 검증
 const idInput = document.getElementById('userid')
@@ -101,6 +113,7 @@ pwCheck.addEventListener('input', () => {
         document.getElementById('pw_info').style.visibility = 'hidden'
     }
 });
+
 // 비밀번호 확인 검증
 pwDoubleCheck.addEventListener('input', () => {
     const userpwInput = document.getElementById('userpw');
@@ -144,6 +157,7 @@ function birthPatternCheck(){
     }
     return isValidBirth
 }
+
 // 생일 받아오기 -> 다음 눌렀을때만 검증해서 팝업에 안내문구 뜨게
 birthCheck.addEventListener('input',()=>{
     const birthPatternCheckResult = birthPatternCheck()
@@ -314,8 +328,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
-
-function validatePhoneNumber(phoneNumber) {
-    const sanitizedPhoneNumber = phoneNumber.replace(/[^0-9]/g, '');
-    return sanitizedPhoneNumber.length >= 10 && sanitizedPhoneNumber.length <= 11;
-}
