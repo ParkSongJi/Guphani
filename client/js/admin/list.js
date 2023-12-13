@@ -6,7 +6,7 @@ const table = document.querySelector('.list-table-wrap table');
 const tbody = document.querySelector('.list-table-wrap tbody');
 const pageUl = document.getElementById('pageUl');
 const totalCnt = document.querySelector('.list-table-wrap .total');
-let link = 'http://localhost:8080/auth/users';
+let link = 'https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/users';
 let html = '';
 let paging = '';
 let currentSearchQuery = '';
@@ -226,7 +226,7 @@ schBtn.addEventListener('click', () => {
 //             `
 //         }
 //         // 선택삭제 패치
-//         fetch(`http://localhost:8080/auth/user/delete`,{
+//         fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/delete`,{
 //             method: 'put',
 //             headers: {
 //                 'Content-Type': 'application/json', // 전송하는 데이터의 형식을 지정합니다.
