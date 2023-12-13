@@ -20,11 +20,11 @@ export async function generateEmergencyMessage(id) {
       if (user.underlyingDisease && user.underlyingDisease.length > 0) {
         emergencyMessage += `기저질환: ${user.underlyingDisease.join(', ')}\n`;
       }
-      if (user.allergyName) {
-        emergencyMessage += `알러지: ${user.allergyName}\n`;
+      if (user.allergy) {
+        emergencyMessage += `알러지: ${user.allergy}\n`;
       }
-      if (user.medicationName) {
-        emergencyMessage += `복용약: ${user.medicationName}\n`;
+      if (user.medication) {
+        emergencyMessage += `복용약: ${user.medication}\n`;
       }
     }
     emergencyMessage += '긴급상황입니다.'
