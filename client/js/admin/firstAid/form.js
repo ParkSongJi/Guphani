@@ -26,7 +26,7 @@ async function handleEditor() {
     const title = document.getElementById('title').value
     const contents = editor.getMarkdown();    
     const youtube = document.getElementById('youtube').value
-    const data = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080//admin/firstAid/write`, {
+    const data = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/admin/firstAid/write`, {
         method: "POST",
         headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${token}`, },
         body: JSON.stringify({ title, contents, youtube})

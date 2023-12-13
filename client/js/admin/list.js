@@ -36,7 +36,7 @@ const headers = {
     'Content-Type': 'application/json',
 };
 
-fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080//auth/users`, {
+fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/auth/users`, {
     method: 'GET',
     headers: headers,
 })

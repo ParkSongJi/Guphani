@@ -6,7 +6,7 @@ async function report119() {
                 const userLongitude = position.coords.longitude;
                 console.log(`사용자의 위치 - 위도: ${userLatitude}, 경도: ${userLongitude}`);
 
-                const ambulanceData = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080//ambulance/getRealTime', {
+                const ambulanceData = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/ambulance/getRealTime', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ async function report119() {
                 const id = localStorage.getItem('userId');
                 console.log(id)
                 try {
-                    await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080//emergency/user/report/${id}`, {
+                    await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/emergency/user/report/${id}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
