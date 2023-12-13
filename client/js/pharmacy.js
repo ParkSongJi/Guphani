@@ -128,7 +128,7 @@ detailBack.addEventListener('click',()=>{
   bodyTag1.style.overflow = 'unset'
 })
 
-const socket = io('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/');
+const socket = io('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app:8080/');
 
 socket.on('connect', () => {
   console.log('서버연결성공');
