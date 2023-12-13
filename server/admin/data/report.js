@@ -1,23 +1,40 @@
 import {User} from './auth.js'
 
-
-
 export async function generateEmergencyMessage(id) {
-    try {
-      // MongoDB에서 _id를 사용하여 유저 문서를 찾습니다.
-      const user = await User.findOne({id:id});
-  
-      // 유저 정보를 필요한 형태의 문자열로 조합하여 반환합니다.
-      const { name, birthdate, bloodType, underlyingDisease, allergyName, medicationName } = user;
-  
-      // 메시지 생성
-      const emergencyMessage = `이름: ${name}\n나이: ${birthdate}\n혈액형: ${bloodType}형\n특이사항: ${underlyingDisease}, ${allergyName}, ${medicationName} 복용중\n긴급상황입니다.`;
-  
-      // 생성한 메시지 반환
-      return emergencyMessage;
-    } catch (error) {
-      // 에러 처리
-      console.error('Error:', error.message);
-      return null;
+  try {
+    // MongoDB에서 id를 사용하여 유저 정보를 찾음.
+    const user = await User.findOne({ id: id });
+    let emergencyMessage = '';
+
+    if (user) {
+      if (user.name) {
+        emergencyMessage += `이름: ${user.name}\n`;
+      }
+      if (user.birthdate) {
+        emergencyMessage += `생년월일: ${user.birthdate}\n`;
+      }
+      if (user.bloodType) {
+        emergencyMessage += `혈액형: ${user.bloodType}형\n`;
+      }
+      // underlyingDisease가 값이 비어있는데 기저질환: 이 메시지에 포함되는 현상이 나타나서 length 조건 추가
+      if (user.underlyingDisease && user.underlyingDisease.length > 0) {
+        emergencyMessage += `기저질환: ${user.underlyingDisease.join(', ')}\n`;
+      }
+      if (user.allergyName) {
+        emergencyMessage += `알러지: ${user.allergyName}\n`;
+      }
+      if (user.medicationName) {
+        emergencyMessage += `복용약: ${user.medicationName}\n`;
+      }
     }
+    emergencyMessage += '긴급상황입니다.'
+
+    // 생성한 메시지 반환
+    return emergencyMessage;
+  } catch (error) {
+    // 에러 처리
+    console.error('Error:', error.message);
+    return null;
   }
+}
+

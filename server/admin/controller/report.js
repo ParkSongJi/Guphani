@@ -5,7 +5,6 @@ export async function createSMS(req, res, next) {
     try {
         const { id } = await User.findOne({ id: req.params.id });
         const emergencyMessage = await generateEmergencyMessage(id);
-        res.json({ result: '성공', message: '문자 작성 완료', emergencyMessage });
         console.log(emergencyMessage)
     } catch (error) {
         console.error('에러가 발생했습니다:', error);
