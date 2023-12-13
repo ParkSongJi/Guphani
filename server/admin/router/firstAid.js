@@ -15,23 +15,22 @@ const validateWrite = [
 
 // 사용자 응급처치
 router.get('/user/list', firstAidController.userGetfirstAids)
+router.get('/user/detail', firstAidController.getfirstAid)
 
-router.use(isAuth)
 // 응급처치 작성
-router.post('/write',validateWrite, firstAidController.create)
+router.post('/write',validateWrite,isAuth, firstAidController.create)
 // 응급처치 전체 불러오기
-router.get('/list', firstAidController.getfirstAids)
+router.get('/list',isAuth, firstAidController.getfirstAids)
 // 응급처치 상세보기
-router.get('/view', firstAidController.getfirstAid)
+router.get('/view',isAuth, firstAidController.getfirstAid)
 // 응급처치 수정하기
-router.get('/modify', firstAidController.getfirstAid)
-router.put('/modify/:id', validateWrite, firstAidController.updatefirstAid)
+router.get('/modify',isAuth, firstAidController.getfirstAid)
+router.put('/modify/:id',isAuth, validateWrite, firstAidController.updatefirstAid)
 // 응급처치 삭제하기
-router.delete('/delete/:id', firstAidController.deletefirstAid)
+router.delete('/delete/:id',isAuth, firstAidController.deletefirstAid)
 // 응급처치 다중삭제
-router.delete('/delete', firstAidController.deletefirstAids)
+router.delete('/delete',isAuth, firstAidController.deletefirstAids)
 // 응급처치 이미지 첨부
 // router.post('/firstAid/imgUpload', firstAidController.uploadImg)
-
 
 export default router;

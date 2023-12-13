@@ -52,8 +52,9 @@ async function report119() {
                     });
                     if (response.ok) {
                         const message = await response.json();
+                        const messageString = JSON.stringify(message);
                         smsButton.addEventListener('click', () => {
-                            const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+                            const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(messageString)}`;
                             window.location.href = smsLink;
                     })
                     } else {

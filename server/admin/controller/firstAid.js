@@ -82,6 +82,7 @@ export async function userGetfirstAids(req, res) {
 
 // 응급처치 상세보기
 export async function getfirstAid(req, res, next) {
+    console.log('상세보기 들어옴');
     const { id } = req.query;
     const firstAid = await firstAidRepository.getById(id);
     console.log(id);
