@@ -128,34 +128,17 @@ detailBack.addEventListener('click',()=>{
   bodyTag1.style.overflow = 'unset'
 })
 
-const socket = io('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app');
+const socket = io('http://localhost:8080');
 
 socket.on('connect', () => {
   console.log('서버연결성공');
-  const listContainer = document.querySelector('.list-ul');
-  const loadingMessageId = 'loadingMessage';
-
-  // 이미 로딩 메시지가 있는지 확인
-  if (!document.getElementById(loadingMessageId)) {
-    const loadingMessage = document.createElement('li');
-    loadingMessage.innerHTML = '<i class="xi-spinner-3  xi-spin"></i>';
-    loadingMessage.style.textAlign = 'center';
-    loadingMessage.id = loadingMessageId;
-    loadingMessage.classList.add('name');
-    listContainer.appendChild(loadingMessage);
-  }
+   
   socket.emit('getNearPharmacy', { latitude: latitude, longitude: longitude });
   setKakaoMap("map", latitude, longitude);
 });
 let pharmacyList
 i = 0
 socket.on('updatePharmacy', (newData) => {
-  if(newData.length != 0){
-    const loadingMessage = document.getElementById('loadingMessage');
-    if (loadingMessage) {
-      loadingMessage.remove();
-    }
-  }
   if(i === 2){
     everyBtn.click();
   }
