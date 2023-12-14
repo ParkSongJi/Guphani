@@ -357,19 +357,19 @@ infoWrap.innerHTML += `
 
 const locationBtn = document.querySelector('.location-btn');
 // 현재위치로 이동
-locationBtn.addEventListener('click', () => {
-  navigator.geolocation.getCurrentPosition(
-    ({ coords }) => {
-      const { latitude: latitude, longitude: longitude } = coords;
-      map.panTo(new kakao.maps.LatLng(latitude, longitude));
-    },
-    (error) => {
-      console.error('Geolocation 오류:', error);
-    }
-  );
-});
+// locationBtn.addEventListener('click', () => {
+//   navigator.geolocation.getCurrentPosition(
+//     ({ coords }) => {
+//       const { latitude: latitude, longitude: longitude } = coords;
+//       map.panTo(new kakao.maps.LatLng(latitude, longitude));
+//     },
+//     (error) => {
+//       console.error('Geolocation 오류:', error);
+//     }
+//   );
+// });
 
 // 지금은 걍 가라데이터로
-// locationBtn.addEventListener('click', () => {
-//   map.panTo(new kakao.maps.LatLng(latitude-0.0015, longitude));
-// });
+locationBtn.addEventListener('click', () => {
+  map.panTo(new kakao.maps.LatLng(latitude-0.0015, longitude));
+});
