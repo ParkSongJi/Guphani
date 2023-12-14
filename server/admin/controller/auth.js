@@ -199,7 +199,7 @@ export async function updateUser(req, res, next) {
             allergy, medication } = req.body;
         
         const updatedUser = await User.findOneAndUpdate(
-            { id: req.params.id }, // 아이디로 condition 필터
+            { _id: req.params.id }, // 아이디로 condition 필터
             { $set: { name, gender, birthdate, phoneNumber, isAdmin, isUser, guardianPhoneNumber, 
             guardianRelationship, bloodType, underlyingDisease, allergy, medication } }, // 회원 정보 중에서 수정할 부분 
             { new: true } // 값 출력 
