@@ -1,42 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-    <link rel="stylesheet" href="../../css/layout.css" />
     <link rel="stylesheet" href="../../css/mypage.css">
-    <script src="../../js/layout.js" defer></script>
     <script src="../../js/mypage.js" defer></script>
-    <script src="../../js/inquery/list.js" defer></script>
-    <title>문의하기</title>
-  </head>
-  <body>
-    <div id="inquiryList" class="inner-wrap">
+    <script src="../../js/layout.js" defer></script>
+    <script src="../../js/inquery/form.js" defer></script>
+    <title>문의상세페이지</title>
+</head>
+<body>
+    <div id="inquiryForm">
         <!-- Header Section -->
         <header data-include-file="../inc/header.html" class="includeJs basic"></header>
-        <div class="con-wrap">
-            <main>
-                <h2 class="page-tit">문의하기</h2>
-                <ul class="list-wrap">
-
-                </ul>
-                <a href="./inquiryForm.html" class="inner-wrap point-btn">문의하기</a>
-            </main>
+        <div class="inner-wrap">
+            <div class="con-wrap">
+                <main>
+                    <div class="inquirycon-wrap">
+                        <h2 class="page-tit">문의등록</h2>
+                        <!-- 수정 시 -->
+                        <!-- <h2 class="page-tit">문의수정</h2> -->
+                        <form>
+                            <div class="input-area">
+                                <div class="select-wrap">
+                                    <p class="smalltitle">분류 <span class="txt-point">*</span></p>
+                                    <div class="txt-box selectbox">
+                                        <input type="hidden" name="sort" id="sort">
+                                        <span class="inquiry-type">문의 분류를 선택하세요</span>
+                                        <button type="button" class="xi-angle-down"></button>
+                                    </div>
+                                    <div class="modal-wrap">
+                                        <div class="select-box" id="searchSelect">
+                                            <ul>
+                                                <li><span>회원정보 문의</span></li>
+                                                <li><span>오류 문의</span></li>
+                                                <li><span>기타 문의</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="smalltitle">제목 <span class="txt-point">*</span></p>
+                                    <input type="text" name="" id="title" class="txt-box" placeholder="제목을 입력해주세요">
+                                </div>
+                                <div>
+                                    <p class="smalltitle">내용 <span class="txt-point">*</span></p>
+                                    <textarea placeholder="내용을 입력해주세요" wrap="off" id="contents"></textarea>
+                                </div>
+                            </div>
+                            <div class="btn-wrap">
+                                <button type="button" id="inquiryreg" class="point-btn">문의등록</button>
+                                <!-- 수정 시 -->
+                                <!-- <button type="submit" id="inquiryreg" class="point-btn" onclick="navigateTo('.inquiryList.html')">문의수정</button> -->
+                            </div>
+                        </form>  
+                    </div>
+                </main>
+            </div>
         </div>
     </div>
-    <div class="layer-pop" id="inquireDelLayer">
-        <div class="bg" onclick="layerOut('inquireDelLayer')"></div>
+    <div class="layer-pop" id="inquireFormLayer">
+        <div class="bg" onclick="layerOut('inquireFormLayer')"></div>
         <div class="inner-layer">
-          <h2 class="mypage-logout-tit">문의삭제</h2>
-          <p id="layerText">문의가 <strong class="txt-point">영구적으로 삭제</strong>됩니다.<br>삭제하시겠습니까?</p>
-          <div class="btn-wrap two">
-            <button type="button" class="point-btn" id="leyerDelBtn">삭제</button>
-            <button type="button" class="black-btn" onclick="layerOut('inquireDelLayer')">닫기</button>
-          </div>
+            <p id="layerText"></p>
+            <div class="btn-wrap two">
+                <button type="button" class="black-btn" onclick="layerOut('inquireFormLayer')">닫기</button>
+            </div>
         </div>
     </div>
     <!-- mypage모달 -->
     <div id="mypage" data-include-file="../inc/mypage.html" class="includeJs"></div>
-  </body>
+</body>
+<script>
+    // 문의하기 작성페이지
+    const selectbox = document.querySelector('#inquiryForm .selectbox')
+    const modal = document.querySelector('#inquiryForm .modal-wrap')
+    const li = modal.querySelectorAll('li')
+    const inquiryType = document.querySelector('.inquiry-type')
+
+    selectbox.addEventListener('click',(params)=>{
+    if(modal.classList.contains('fadeIn')){
+        modal.classList.add('fadeOut')
+        modal.classList.remove('fadeIn')
+    }else{
+        modal.classList.add('fadeIn')
+        modal.classList.remove('fadeOut')
+    }
+    })
+
+    // 
+    li.forEach((el)=>{
+        el.addEventListener('click',()=>{
+            inquiryType.innerText = el.children[0].innerText
+            modal.classList.add('fadeOut')
+            modal.classList.remove('fadeIn')
+        })
+    })
+
+</script>
 </html>

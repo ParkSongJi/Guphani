@@ -38,7 +38,7 @@ inquiryBtn.addEventListener('click',()=>{
             return false
         }
     
-        const response = await fetch(`http://localhost:8080/inquiry/user/write`, {
+        const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/inquiry/user/write`, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({userId, title:title.value, contents:contents.value, sort:sort.value})
