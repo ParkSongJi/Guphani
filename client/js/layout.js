@@ -1,3 +1,4 @@
+const loginUserData = JSON.parse(localStorage.getItem('user'));
 (function(){
     function includeHtml() {
         const includeTarget = document.querySelectorAll('.includeJs');
@@ -48,6 +49,7 @@ function mypageOut() {
 
 
 function withdrawal() {
+    const userId = loginUserData.id
     layerOn('withdrawalLayer')
     const withdrawalBtn = document.querySelector('.withdrawalBtn')
     const txtWrap = document.querySelector('.txt-wrap')
@@ -57,19 +59,23 @@ function withdrawal() {
         const token = localStorage.getItem('token');
     
         try {
-            const response =  fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/withdraw/${userId}`, {
+            const response =  fetch(`http://localhost:8080/auth/user/withdraw/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
             });
+            if(response.ok){
+                console.log('탈퇴완료');
+            }
         } catch (error) {
             console.error('Error during deletion:', error);
         }
 
         txtWrap.innerText = '회원탈퇴가 완료되었습니다.'
         btnWrap.innerHTML = `<button type="button" class="black-btn" onclick="location='./index.html'">닫기</button>`
+        localStorage.removeItem('user')
         localStorage.removeItem('token')
         localStorage.removeItem('userId')
     })

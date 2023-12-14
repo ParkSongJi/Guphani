@@ -1,7 +1,4 @@
 
-// 
-const loginUserData = JSON.parse(localStorage.getItem('user'));
-
 if (loginUserData) {
     const name = loginUserData["name"];
     const birthdate = loginUserData["birthdate"];

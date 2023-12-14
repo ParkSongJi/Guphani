@@ -39,7 +39,7 @@ const title = document.getElementById('title')
 const contents = document.getElementById('contents')
 // 내용 출력
 async function viewFetch() {
-    const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/inquiry/modify?id=${id}`,{
+    const response = await fetch(`http://localhost:8080/inquiry/modify?id=${id}`,{
         method:'GET',
         headers: headers
     })
@@ -59,7 +59,7 @@ const modifyBtn = document.getElementById('modifyBtn')
 modifyBtn.addEventListener('click',()=>{
     const sort = inquirySort.innerText
     async function modify() {
-        const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/inquiry/modify/${id}`,{
+        const response = await fetch(`http://localhost:8080/inquiry/modify/${id}`,{
             method:'PUT',
             headers: headers,
             body:JSON.stringify({sort, title:title.value, contents:contents.value})

@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         }
         try {
-            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/admin/login', {
+            const response = await fetch('http://localhost:8080/auth/admin/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

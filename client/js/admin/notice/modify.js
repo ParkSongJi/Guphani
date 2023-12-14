@@ -1,6 +1,6 @@
 var herf = window.location.search
 var id = herf.split('=')[1]
-let link = `https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/notice/modify?id=${id}`;
+let link = `http://localhost:8080/admin/notice/modify?id=${id}`;
 const modifyBtn = document.getElementById('modifyBtn')
 const textArea = document.querySelector('.layer-pop .inner-text')
 const layerBtnArea = document.querySelector('.layer-pop .btn-wrap')
@@ -28,7 +28,7 @@ const editor = new toastui.Editor({
             formData.append('file', blob);
 
             try {
-                const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/notice/modify/imgUpload', {
+                const response = await fetch('http://localhost:8080/admin/notice/modify/imgUpload', {
                     method: 'POST',
                     body: formData,
                 });
@@ -77,7 +77,7 @@ async function handleEditor(blob, callback) {
 
 
     // fetch를 할 때, body에 JSON으로 불러온 데이터를 보낸다.
-    const data = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/notice/modify/${id}`, {
+    const data = await fetch(`http://localhost:8080/admin/notice/modify/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

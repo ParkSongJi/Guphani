@@ -55,7 +55,7 @@ findIdBtn.addEventListener('click', async () => {
         makePopup('이름과 전화번호를 모두 입력해주세요');
     } else {
         try {
-            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/searchId', {
+            const response = await fetch('http://localhost:8080/auth/searchId', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ findIdBtn.addEventListener('click', async () => {
         makePopup('이름과 전화번호를 모두 입력해주세요');
     } else {
         try {
-            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/searchId', {
+            const response = await fetch('http://localhost:8080/auth/searchId', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -340,7 +340,7 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
         makePopup('이름과 전화번호를 모두 입력해주세요');
     } else {
         try {
-            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/searchPW', {
+            const response = await fetch('http://localhost:8080/auth/searchPW', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -366,7 +366,7 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
                     });
                     try {
                         // inputHp로 인증번호 전송
-                        const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/sendVerification', {
+                        const response = await fetch('http://localhost:8080/auth/user/sendVerification', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -392,7 +392,7 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
                         const inputVerificationCode = `${document.getElementById('findpw-twostep').value}`;
             
                         try {
-                            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/verifyCode', {
+                            const response = await fetch('http://localhost:8080/auth/user/verifyCode', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -432,7 +432,7 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
                                         makePopup('비밀번호가 일치하지 않습니다')
                                     }else{
                                         try {
-                                            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/updatePassword', {
+                                            const response = await fetch('http://localhost:8080/auth/updatePassword', {
                                                 method: 'PUT',
                                                 headers: {
                                                     'Content-Type': 'application/json',
@@ -500,7 +500,7 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
 
 //         try {
 //             // phnumber로 인증번호 전송
-//             const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/sendVerification', {
+//             const response = await fetch('http://localhost:8080/auth/user/sendVerification', {
 //                 method: 'POST',
 //                 headers: {
 //                     'Content-Type': 'application/json',
@@ -525,7 +525,7 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
 //             const inputVerificationCode = `${document.getElementById('verficateCode').value}`;
 
 //             try {
-//                 const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/verifyCode', {
+//                 const response = await fetch('http://localhost:8080/auth/user/verifyCode', {
 //                     method: 'POST',
 //                     headers: {
 //                         'Content-Type': 'application/json'
@@ -589,7 +589,7 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
 //             document.getElementById('resetPwBtn').addEventListener('click', async function() {
 //                 const newPassword = document.getElementById('newPw').value.trim();
 //                 try {
-//                     const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/updatePassword', {
+//                     const response = await fetch('http://localhost:8080/auth/updatePassword', {
 //                         method: 'PUT',
 //                         headers: {
 //                             'Content-Type': 'application/json',
