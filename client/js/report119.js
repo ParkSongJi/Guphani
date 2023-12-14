@@ -1,5 +1,3 @@
-client>js>report119.js 코드
-
 async function report119() {
     if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(

@@ -222,3 +222,8 @@
 #firstAidView .youtube{width: 100%; margin-bottom: 1.428rem;}
 #firstAidView .youtube iframe{width: 100% !important; height: 100% !important; min-height: 21.428rem;}
 #firstAidView .txt-wrap{font-size: 1rem; line-height: 1.5; background: var(--gray-bg); padding: 1.428rem; box-sizing: border-box; border-radius: 0.714rem;}
+
+/* 로딩 */
+#specialEmergencySh .list-ul li#loadingMessage{text-align: center;}
+#specialEmergencySh .list-ul li#loadingMessage i{font-size: 5rem; text-align: center; padding: 5rem 0; color: var(--point-color);}
+

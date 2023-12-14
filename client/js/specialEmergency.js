@@ -316,7 +316,7 @@ socket.on('connect', () => {
     // 이미 로딩 메시지가 있는지 확인
     if (!document.getElementById(loadingMessageId)) {
       const loadingMessage = document.createElement('li');
-      loadingMessage.textContent = '로딩 중입니다...';
+      loadingMessage.innerHTML = '<i class="xi-spinner-3  xi-spin"></i>';
       loadingMessage.style.textAlign = 'center';
       loadingMessage.id = loadingMessageId;
       loadingMessage.classList.add('name');
