@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateAll/${userId}`, {
+            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateAll/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

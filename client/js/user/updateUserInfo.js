@@ -225,6 +225,7 @@ fetch(`http://localhost:8080/auth/user/detail/${userId}`, {
                                 // 인증이 성공하면 인증번호 입력칸, 인증버튼 숨김
                                 document.getElementById('verification').style.display = 'none';
                                 makePopup('인증 성공');
+                                location.reload()
 
                             } else {
                                 makePopup('인증 실패');
@@ -291,6 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('Server Response:', data);
                 makePopup('업데이트 되었습니다')
 
+
             } else {
                 const errorMessage = await response.text();
                 console.error('Server Error:', errorMessage);
@@ -337,4 +339,4 @@ changeBtn.addEventListener('click', () => {
 
 
         
-        
+   
