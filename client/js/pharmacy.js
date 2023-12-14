@@ -17,20 +17,16 @@ async function getClosestAmbulances() {
             userLongitude,
           }),
         });
-
         if (!ambulanceData.ok) {
           console.error('Failed to fetch emergency data:', ambulanceData.status, ambulanceData.statusText);
           return;
         }
-
         const result = await ambulanceData.json();
         console.log('Emergency data received from server:', result);
-
         // 데이터를 HTML에 추가
         // HTML에 접근할 때 <ul class="list-ul"></ul> 과 같은 요소가 존재해야 함
         const list = document.querySelector('.list-ul');
         list.innerHTML = ''; // 기존 리스트 초기화
-
         result.forEach((ambulance) => {
           if (ambulance.onrTel) {
             // const distance = ambulance.distance ? ambulance.distance.toFixed(2) : '정보 없음'; 혹시나 쓸 일이 있을까 싶어 주석으로 남겨뒀습니다.
@@ -45,19 +41,16 @@ async function getClosestAmbulances() {
                 <div class="util">
                   <span class="call-button"><i class="xi-call"></i>${tel}</span>
                   <span>차량번호: ${carSeq}</span>
-                </div> 
+                </div>
               `;
             list.appendChild(li);
             // 클릭 이벤트 리스너 추가
             const callButton = li.querySelector('.call-button');
-
             callButton.addEventListener('click', () => {
               const telLink = `tel:${tel}`;
               window.location.href = telLink;
             });
-            
           }
-
         });
       },
       (error) => {
@@ -68,6 +61,5 @@ async function getClosestAmbulances() {
     console.log('Geolocation API를 지원하지 않습니다.');
   }
 }
-
 // 페이지 로드 시 getClosestAmbulances 함수 호출
 window.onload = getClosestAmbulances;
