@@ -262,9 +262,8 @@ export async function searchUser(req, res, next) {
 }
 // 사용자 정보 상세 조회
 export async function searchMoUser(req, res, next) {
-    const id = req.userId
     try {
-        const userInfo = await User.findById(id);
+        const userInfo = await User.findById(req.params.id);
         
         if (!userInfo) {
             res.json({ result: '실패', message: '해당 회원을 찾을 수 없습니다' });
