@@ -4,7 +4,6 @@ import cors from 'cors'
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import crypto from 'crypto';
-import passport from 'passport';
 import authRouter from './router/auth.js'
 import noticeRouter from './router/notice.js'
 import firstAidRouter from './router/firstAid.js'
@@ -30,8 +29,6 @@ app.use(
         saveUninitialized: true
     })
 );
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(express.json());
 app.use(morgan("dev"));
@@ -57,7 +54,7 @@ app.use('/auth', authRouter);
 
 // 공지사항
 app.use('/admin/notice/', noticeRouter)
-app.use('/notice/', noticeRouter)
+app.use('/notice', noticeRouter)
 
 // 응급처치
 app.use('/admin/firstAid/', firstAidRouter)
@@ -72,8 +69,8 @@ app.use('/ambulance', ambulanceRouter)
 // 약국
 app.use('/pharmacy', pharmacyRouter);
 // 문의하기
-app.use('/inquiry', inquiryRouter);
 app.use('/admin/inquiry', inquiryRouter);
+app.use('/inquiry', inquiryRouter);
 
 // 이미지 업로드
 app.use('/uploads', express.static('uploads'));

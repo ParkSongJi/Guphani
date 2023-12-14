@@ -4,27 +4,49 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
     <link rel="stylesheet" href="../../css/layout.css" />
     <link rel="stylesheet" href="../../css/mypage.css" />
+    <script src="https://uicdn.toast.com/editor/3.0.2/toastui-editor-all.min.js"></script>
     <script src="../../js/layout.js" defer></script>
-    <title>공지사항</title>
+    <script src="../../js/inquery/view.js" defer></script>
+    <title>문의사항 상세페이지</title>
   </head>
   <body>
-    <div id="notice">
-        <div id="inquiryList" class="inner-wrap">
-            <!-- Header Section -->
-            <header data-include-file="../inc/header.html" class="includeJs basic"></header>
+    <div id="inquiryView">
+        <!-- Header Section -->
+        <header data-include-file="../inc/header.html" class="includeJs basic"></header>
+        <div class="inner-wrap">
             <div class="con-wrap">
                 <main>
-                    <h2 class="page-tit">공지사항</h2>
-                    <ul class="list-wrap">
-                    </ul>
+                    <h2 class="page-tit"></h2>
+                    <div>
+                        <h3 class="sub-tit" id="title"></h3>
+                    </div>
+                    <div class="date" id="date"></div>
+                    <div class="content">
+                        <div class="user-inquiry">
+                            <div class="tit">문의</div>
+                            <div class="txt-wrap" id="content"></div>
+                        </div>
+                        <div class="admin-answer">
+                            <div class="tit">답변</div>
+                            <div class="txt-wrap">
+                                <div id="editorWrap">
+                                    <div>등록된 답변이 없습니다.</div>
+                                </div>
+                                <div class="date" id="admin-date"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-wrap">
+                        <button type="button" class="black-btn" onclick="window.location.href='./inquiryList.html'">목록가기</button>
+                    </div>
                 </main>
             </div>
         </div>
     </div>
     <!-- mypage모달 -->
-        <!-- mypage모달 -->
     <div id="mypage">
       <div class="inner-wrap">
         <header class="header-box">
@@ -244,32 +266,5 @@
         </div>
       </div>
     </div>  
-  </body>
-  <script>
-    // 데이터패치
-    fetch(`http://localhost:8080/notice/user/list`)
-    .then((response) => {return response.json()})
-    .then((data) => {
-        const listWrap = document.querySelector('.list-wrap')
-        let html = ''
-        data.forEach((el) => {
-            html +=`
-            <li class='list' onclick='window.location.href="./noticeDetail.html?id=${el._id}"'>
-                <div class="head">
-                    <p class="bo-tit ellip2">${el.title}</p>
-                </div>
-                <div class="body">
-                    <p class="ellip2">${el.contents}</p>
-                </div>
-                <div class="foot">
-                    <div class="bo-date">${String(el.createdAt).split('T')[0]}</div>
-                    <div class="util-wrap">
-                    </div>
-                </div>
-            </li>
-            `
-        });
-        listWrap.innerHTML = html;
-    });
-  </script>
+</body>
 </html>

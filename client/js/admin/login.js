@@ -1,16 +1,3 @@
-/* 
-loginBtn.addEventListener('click',() => {
-    userId = document.getElementById('userid').value
-    userPw = document.getElementById('userpw').value
-
-    if(userId !== originUserId || userPw !== originUserPw){
-        document.querySelector('.red-font').style.display = 'block'
-    }else{
-        document.querySelector('.red-font').style.display = 'none'
-        window.location.href = 'list.html';
-    }
-}) */ 
-
 document.addEventListener('DOMContentLoaded', function () {
     const loginBtn = document.getElementById('loginBtn');
 
@@ -65,9 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 window.location.href = 'list.html'; 
             } else {
                 if (response.status !== 200) {
-                    alert('로그인 정보가 일치하지 않습니다.');
+                    makePopup('로그인 정보가 일치하지 않습니다.');
                 } else {
-                    alert('서버에서 오류가 발생했습니다.');
+                    makePopup('서버에서 오류가 발생했습니다.');
                 }
                 console.log('failed');
             }
@@ -76,3 +63,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
+
+// 레이어 팝업창
+function layerOn(el) {
+    const layer = document.getElementById(el)
+    layer.classList.add('fadeIn')
+    layer.classList.remove('fadeOut')
+}
+function layerOut(el) {
+    const layer = document.getElementById(el)
+    layer.classList.add('fadeOut')
+    layer.classList.remove('fadeIn')
+}
+
+function makePopup(popupMessage){
+    const message = document.getElementById('message');
+    message.innerText = popupMessage;
+
+    // 팝업창 열기
+    layerOn('loginLayer');
+}

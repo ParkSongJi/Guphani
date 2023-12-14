@@ -37,5 +37,6 @@ function layerOut(el) {
 function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('user');
     window.location.href = '../user/login.html'
 }

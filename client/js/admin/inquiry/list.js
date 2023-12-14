@@ -88,13 +88,17 @@ function fetchInquirys(queryString = '', page = 1) {
                         <td>${String(el.createdAt).split('T')[0]}</td>
                         `
                         if(el.answerStatus == 'N'){
-                            html += `<td>대기</td>`
+                            html += `<td class="point-txt">대기</td>`
                         }else if(el.answerStatus == 'Y'){
-                            html += `<td class="point-txt">완료</td>`
+                            html += `<td>완료</td>`
                         }
-                        html +=`
-                        <td>${String(el.answerDate).split('T')[0]}</td>
-                        <td><a href="./view.html?id=${el._id}" class="gray-btn view-btn">상세보기</a></td>
+                        if(el.answerDate == undefined){
+                            html +=`<td>-</td>`
+                        }else{
+                            html +=`
+                            <td>${String(el.answerDate).split('T')[0]}</td>`
+                        }
+                        html += `<td><a href="./view.html?id=${el._id}" class="gray-btn view-btn">상세보기</a></td>
                     </tr>
                     `;
                 });

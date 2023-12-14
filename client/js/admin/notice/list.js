@@ -83,7 +83,7 @@ function fetchUsers(queryString = '', page = 1) {
                         <td><input type="checkbox" name="" id="check${idx + 1}" class="type1" value='${el._id}'></td>
                         <td>${idx + 1}</td>
                         <td>${el.title}</td>
-                        <td>${el.contents}</td>
+                        <td class="ellip2">${el.contents}</td>
                         <td>${String(el.createdAt).split('T')[0]}</td>
                         <td><button type="button" onclick="location='./view.html?id=${el._id}'" class="gray-btn view-btn">상세보기</button></td>
                     </tr>

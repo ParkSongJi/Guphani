@@ -20,7 +20,7 @@ const inquiry = Mongoose.model('inquiry', inquirySchema)
 
 // 사용자 문의사항
 export async function userGetByUserId(id) {
-    const data = await inquiry.find({userId:id})
+    const data = await inquiry.find({userId:id}).sort({createdAt : -1})
     return data;
 }
 

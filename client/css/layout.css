@@ -84,6 +84,8 @@
 #inquiryList header.basic{background: var(--gray-bg);}
 #inquiryList h2.page-tit{padding: 0 2.857rem 0}
 #inquiryList li{background: var(--white-color); border-bottom: 1px solid var(--gray-color); padding-top: 2.857rem; box-sizing: border-box;}
+#inquiryList li.no-data p{padding: 6rem 0 8rem; text-align: center;}
+#inquiryList li.no-data{border-bottom: 0px;}
 #inquiryList li .head{display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.428rem; cursor: pointer; padding: 0 2.857rem; box-sizing: border-box;} 
 #inquiryList li .head .bo-status{flex-basis: 5.714rem; border: 1px solid var(--gray-color); padding: 0.714rem; box-sizing: border-box; text-align: center; border-radius: 3.578rem; margin-left: 1.071rem; background: var(--gray-bg); color: var(--gray-color); font-size: 1rem;}
 #inquiryList li .head .bo-status.on{border-color:var(--point-color); background: #FFF4F4; color: var(--point-color);}
@@ -98,7 +100,21 @@
 #inquiryList li .detail .admin{padding-top: 1.071rem; margin-top: 1.071rem; border-top: 1px solid var(--light-gray);}
 #inquiryList li .detail strong{font-size: 1.142rem; font-weight: bold; display: block; margin-bottom: 0.714rem;}
 #inquiryList li .detail p{font-size: 1rem;}
+#inquiryList li .detail .answerContents{margin-bottom: 0.714rem;}
+#inquiryList li .detail .bo-date{color: var(--gray-color); font-size: 0.914rem;}
 #inquiryList .point-btn{border-radius: 0.714rem 0.714rem 0 0 ; position: fixed; bottom: 0;}
+
+/* 문의사항 디테일페이지 */
+#inquiryView .inner-wrap{padding: 0 2.857rem; box-sizing: border-box;}
+#inquiryView .page-tit{margin-bottom: 1.428rem;}
+#inquiryView .sub-tit{font-size: 1.428rem; border-bottom: 1px solid var(--gray-color); padding-bottom: 0.714rem;}
+#inquiryView .date{margin: 10px 0; font-size: 1rem; color: var(--gray-color);}
+#inquiryView .content{padding: 2.142rem 1.428rem; box-sizing: border-box; background: var(--gray-bg); border-radius: 0.714rem;}
+#inquiryView .user-inquiry::after{width: 100%; height: 0.8px; background: var(--gray-color); content: ''; display: block; margin: 20px 0;}
+#inquiryView .txt-wrap{font-size: 1rem; line-height: 1.5; box-sizing: border-box; }
+#inquiryView .tit{font-size: 1.25rem; margin-bottom: 10px; font-weight: 600; }
+#inquiryView .btn-wrap button{height: 4.28rem; line-height: 4.28rem; margin-top: 1.428rem;}
+
 
 /* 특수응급 */
 
@@ -222,6 +238,18 @@
 #firstAidView .youtube{width: 100%; margin-bottom: 1.428rem;}
 #firstAidView .youtube iframe{width: 100% !important; height: 100% !important; min-height: 21.428rem;}
 #firstAidView .txt-wrap{font-size: 1rem; line-height: 1.5; background: var(--gray-bg); padding: 1.428rem; box-sizing: border-box; border-radius: 0.714rem;}
+
+/* 공지사항 디테일페이지 */
+#noticeView .inner-wrap{padding: 0 2.857rem; box-sizing: border-box;}
+#noticeView .page-tit{margin-bottom: 1.428rem;}
+#noticeView .sub-tit{font-size: 1.428rem; border-bottom: 1px solid var(--gray-color); padding-bottom: 0.714rem;}
+#noticeView .date{margin: 10px 0; font-size: 1rem; color: var(--gray-color);}
+#noticeView .content{padding: 1.428rem 0; box-sizing: border-box;}
+#noticeView .youtube{width: 100%; margin-bottom: 1.428rem;}
+#noticeView .youtube iframe{width: 100% !important; height: 100% !important; min-height: 21.428rem;}
+#noticeView .txt-wrap{font-size: 1rem; line-height: 1.5; background: var(--gray-bg); padding: 1.428rem; box-sizing: border-box; border-radius: 0.714rem;}
+#noticeView .btn-wrap button{height: 4.285rem; line-height: 4.285rem;}
+
 
 /* 로딩 */
 #specialEmergencySh .list-ul li#loadingMessage{text-align: center;}

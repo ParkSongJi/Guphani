@@ -14,6 +14,7 @@ const validateWrite = [
 
 // 사용자 공지사항
 router.get('/user/list', noticeController.userGetNotices)
+router.get('/user/detail', noticeController.getNotice)
 
 // 공지사항 이미지 첨부
 router.post('/modify/imgUpload', noticeController.uploadImg)

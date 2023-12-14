@@ -4,27 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
     <link rel="stylesheet" href="../../css/layout.css" />
     <link rel="stylesheet" href="../../css/mypage.css" />
+    <script src="https://uicdn.toast.com/editor/3.0.2/toastui-editor-all.min.js"></script>
     <script src="../../js/layout.js" defer></script>
-    <title>공지사항</title>
+    <title>공지사항 상세페이지</title>
   </head>
   <body>
-    <div id="notice">
-        <div id="inquiryList" class="inner-wrap">
-            <!-- Header Section -->
-            <header data-include-file="../inc/header.html" class="includeJs basic"></header>
+    <div id="noticeView">
+        <!-- Header Section -->
+        <header data-include-file="../inc/header.html" class="includeJs basic"></header>
+        <div class="inner-wrap">
             <div class="con-wrap">
                 <main>
-                    <h2 class="page-tit">공지사항</h2>
-                    <ul class="list-wrap">
-                    </ul>
+                    <h2 class="page-tit"></h2>
+                    <h3 class="sub-tit" id="title"></h3>
+                    <div class="date" id="date"></div>
+                    <div class="content">
+                        <div class="txt-wrap">
+                            <div id="editorWrap">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-wrap">
+                      <button type="button" class="black-btn" onclick="window.location.href='./notice.html'">목록가기</button>
+                    </div>
                 </main>
             </div>
         </div>
     </div>
     <!-- mypage모달 -->
-        <!-- mypage모달 -->
     <div id="mypage">
       <div class="inner-wrap">
         <header class="header-box">
@@ -244,32 +254,25 @@
         </div>
       </div>
     </div>  
-  </body>
-  <script>
-    // 데이터패치
-    fetch(`http://localhost:8080/notice/user/list`)
-    .then((response) => {return response.json()})
-    .then((data) => {
-        const listWrap = document.querySelector('.list-wrap')
-        let html = ''
-        data.forEach((el) => {
-            html +=`
-            <li class='list' onclick='window.location.href="./noticeDetail.html?id=${el._id}"'>
-                <div class="head">
-                    <p class="bo-tit ellip2">${el.title}</p>
-                </div>
-                <div class="body">
-                    <p class="ellip2">${el.contents}</p>
-                </div>
-                <div class="foot">
-                    <div class="bo-date">${String(el.createdAt).split('T')[0]}</div>
-                    <div class="util-wrap">
-                    </div>
-                </div>
-            </li>
-            `
-        });
-        listWrap.innerHTML = html;
+</body>
+<script>
+var herf = window.location.search
+var id = herf.split('=')[1]
+let link = `http://localhost:8080/notice/user/detail?id=${id}`;
+// 상세보기 내용 출력
+let code; // 전역 변수로 선언
+async function fetchData() {
+    const response = await fetch(link);
+    const data = await response.json();
+    console.log(data);
+    document.getElementById('title').innerText = data.title;
+    document.getElementById('date').innerText = (data.createdAt).split('T')[0];
+    const viewer = toastui.Editor.factory({
+        el: document.querySelector('#editorWrap'),
+        viewer: true,
+        initialValue: data.contents
     });
-  </script>
+}
+fetchData();
+</script>
 </html>

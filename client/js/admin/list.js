@@ -96,7 +96,11 @@ function fetchUsers(queryString = '', page = 1) {
                         }else if(el.isUser == 'N'){
                             html += `<td>${el.isUser}</td>`
                         }
-
+                        if(el.isAdmin == 'Y'){
+                            html += `<td class='point-txt'>${el.isAdmin}</td>`
+                        }else if(el.isAdmin == 'N'){
+                            html += `<td>${el.isAdmin}</td>`
+                        }
                         html +=`
                         <td>${String(el.joinDate).split('T')[0]}</td>
                         <td><a href="./view.html?id=${el._id}" class="gray-btn view-btn">상세보기</a></td>

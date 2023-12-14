@@ -20,7 +20,8 @@ router.post('/user/write',validateWrite, isAuth, inquiryController.create)
 // 문의하기 전체 불러오기
 router.get('/list', isAuth, inquiryController.getInquirys)
 // 문의하기 상세보기
-router.get('/view',isAuth, inquiryController.getInquiry)
+router.get('/view',isAuth, inquiryController.getInquiry) //관리자
+router.get('/user/view',isAuth, inquiryController.getInquiry) //사용자
 // 문의하기 수정하기
 router.get('/modify',isAuth, inquiryController.getInquiry)
 router.put('/modify/:id',isAuth, inquiryController.updateInquiry)

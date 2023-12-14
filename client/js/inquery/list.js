@@ -24,7 +24,7 @@ fetch(`http://localhost:8080/inquiry/user/list`,{
     }
     data.forEach((el) => {
         html +=`
-        <li>
+        <li onclick="window.location.href='./inquiryDetail.html?id=${el._id}'">
             <div class="head">
                 <p class="bo-tit ellip2">[${el.sort}] ${el.title}</p>
         `   
@@ -49,30 +49,6 @@ fetch(`http://localhost:8080/inquiry/user/list`,{
             html +=
             `
                 </div>
-            </div>
-            <div class="detail">
-                <div class="user">
-                    <strong>문의</strong>
-                    <p>${el.contents}</p>
-                </div>`
-                
-            if(el.answerStatus == 'Y'){
-                html += `
-                    <div class="admin">
-                        <strong>답변</strong>
-                        <p>안녕하세요 회원정보 수정건으로 문의드립니다. 수정은 꼭 비밀번호를 입력하고 수정해야하나요? 안녕하세요 회원정보수정건으로 문의드립니다. 수정은 꼭 비밀번호를 입력하고 수정해야하나요?</p>
-                    </div>
-                `
-            }else{
-                html += `
-                <div class="admin">
-                    <strong>답변</strong>
-                    <p>등록된 답변이 없습니다.</p>
-                </div>
-                `
-            }
-            html +=
-            `
             </div>
         </li>
         `

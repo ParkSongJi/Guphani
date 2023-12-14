@@ -323,7 +323,7 @@ function createInfoFunc(er) {
   <div class="addr">${er.dutyAddr}</div>
   <div class="util">
       <span class="bed ${er.openNow ? 'on' : 'off'}">${er.openNow ? '영업중' : '영업종료'}</span>
-      <a href="${er.dutyTel1}"><span class="call"><i class="xi-call"></i>${er.dutyTel1}</span></a>
+      <a href="tel:${er.dutyTel1}"><span class="call"><i class="xi-call"></i>${er.dutyTel1}</span></a>
   </div>
   <div class="sec-tit">진료시간</div>
   <div class="time-wrap">
@@ -347,7 +347,7 @@ function createInfoFunc(er) {
 infoWrap.appendChild(section)
 
 infoWrap.innerHTML += `
-<a href="${er.dutyTel1}">
+<a href="tel:${er.dutyTel1}">
   <button type="button" class="point-btn call-btn">전화하기</button>
 </a>
 `
@@ -357,19 +357,19 @@ infoWrap.innerHTML += `
 
 const locationBtn = document.querySelector('.location-btn');
 // 현재위치로 이동
-// locationBtn.addEventListener('click', () => {
-//   navigator.geolocation.getCurrentPosition(
-//     ({ coords }) => {
-//       const { latitude: latitude, longitude: longitude } = coords;
-//       map.panTo(new kakao.maps.LatLng(latitude, longitude));
-//     },
-//     (error) => {
-//       console.error('Geolocation 오류:', error);
-//     }
-//   );
-// });
+locationBtn.addEventListener('click', () => {
+  navigator.geolocation.getCurrentPosition(
+    ({ coords }) => {
+      const { latitude: latitude, longitude: longitude } = coords;
+      map.panTo(new kakao.maps.LatLng(latitude, longitude));
+    },
+    (error) => {
+      console.error('Geolocation 오류:', error);
+    }
+  );
+});
 
 // 지금은 걍 가라데이터로
-locationBtn.addEventListener('click', () => {
-  map.panTo(new kakao.maps.LatLng(latitude-0.0015, longitude));
-});
+// locationBtn.addEventListener('click', () => {
+//   map.panTo(new kakao.maps.LatLng(latitude-0.0015, longitude));
+// });
