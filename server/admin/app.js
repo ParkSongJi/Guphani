@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 // app.use(cors());
 // 허용되는 출처 설정
-const allowedOrigins = ['https://www.guphani.com'];
+// const allowedOrigins = ['https://www.guphani.com'];
 
 // cors 미들웨어 사용
 app.use(cors({

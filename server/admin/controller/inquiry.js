@@ -7,7 +7,8 @@ import { config } from '../config.js';
 // 문의사항 작성
 export async function create(req, res) {
     console.log('문의사항 들어옴');
-    const { userId, title, contents, sort } = req.body;
+    const { title, contents, sort } = req.body;
+    const userId = req.id._id
     const name = req.id.name;
     const inquiry = await inquiryRepository.createInquiry({
         userId,
