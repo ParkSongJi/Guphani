@@ -215,3 +215,11 @@ h1.logo.top .st0 {fill: #ff5e5e;}
 #pharmacyDetail .bed-info .on .txt{color: var(--point-color);}
 #pharmacyDetail .call-btn{border-radius: 1.428rem 1.428rem 0 0; position: fixed; bottom: 0; box-shadow: 0 0 0.714rem #0002; z-index: 10;}
 #pharmacyDetail section li,#pharmacyDetail section span{font-size: 1.2rem;}
+
+/* 로딩 */
+#pharmacymap .list-ul li#loadingMessage,
+#emergencymap .list-ul li#loadingMessage{text-align: center;}
+
+#pharmacymap .list-ul li#loadingMessage i,
+#emergencymap .list-ul li#loadingMessage i{font-size: 5rem; text-align: center; padding: 5rem 0; color: var(--point-color);}
+

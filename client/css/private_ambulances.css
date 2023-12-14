@@ -47,3 +47,7 @@
 #privateAmbulances .util span + span, #privateAmbulances .util button + span{margin-left: 0.357rem;}
 #privateAmbulances .util span:first-child, #privateAmbulances .util button{border-color: var(--point-color); color: var(--point-color);}
 #privateAmbulances .util span i, #privateAmbulances .util button{color: var(--gray-color); margin-right: 0.357rem;}
+
+/* 로딩 */
+#privateAmbulances .list-ul li#loadingMessage{text-align: center;}
+#privateAmbulances .list-ul li#loadingMessage i{font-size: 5rem; text-align: center; padding: 5rem 0; color: var(--point-color);}
