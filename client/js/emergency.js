@@ -105,7 +105,7 @@ socket.on('updateData', (newData) => {
     const loadingMessage = document.getElementById('loadingMessage');
     if (loadingMessage) {
       loadingMessage.remove();
-  }
+    }
   }
   updateErList(newData);
   
