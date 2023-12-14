@@ -222,7 +222,7 @@ export async function deleteUser(req, res, next) {
     try {
         // Update isUser field to 'N' instead of deleting the user
         const updatedUser = await User.findOneAndUpdate(
-            { req.params.id },
+            { _id:req.params.id },
             { $set: { isUser: 'N' } },
             { new: true }
         );
