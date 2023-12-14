@@ -11,6 +11,7 @@ import firstAidRouter from './router/firstAid.js'
 import emergencyRouter from './router/emergency.js'
 import pharmacyRouter from './router/pharmacy.js'
 import ambulanceRouter from './router/ambulance.js'
+import reportRouter from './router/report.js'
 import inquiryRouter from './router/inquiry.js'
 import {config} from './config.js'
 import { connectDB } from './db/database.js';
@@ -64,6 +65,8 @@ app.use('/firstAid/', firstAidRouter)
 
 // 응급실 & 특수응급
 app.use('/emergency' ,emergencyRouter)
+// 119
+app.use('/emergency', reportRouter)
 // 사설구급차
 app.use('/ambulance', ambulanceRouter)
 // 약국
