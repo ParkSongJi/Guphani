@@ -245,8 +245,9 @@ export async function deleteUser(req, res, next) {
 
 // 회원 정보 상세 조회
 export async function searchUser(req, res, next) {
+    const id = req.params.id
     try {
-        const userInfo = await User.findById(req.params.id);
+        const userInfo = await User.findById(id);
         
         if (!userInfo) {
             res.json({ result: '실패', message: '해당 회원을 찾을 수 없습니다' });

@@ -81,40 +81,10 @@ let realOriginBirthdate
 let realOriginGender 
 let realOriginPhoneNumber 
 
-// 수정사항 저장
-changeBtn.addEventListener('click', () => {
-    const newName = document.getElementById('name').value.trim()
-    const newBirth = document.getElementById('birthdate').value.trim()
-    const newHp = document.getElementById('phoneNumber').value.trim()
-    const newGender = document.querySelector('input[name="gender"]:checked').value
-    let result
-    if(realOriginName === newName && realOriginBirthdate===newBirth &&realOriginGender === newGender &&realOriginPhoneNumber=== newHp){
-        result = false
-        return makePopup2('변경사항이 없습니다');
-    }else if(!nameBool && realOriginName !== newName ){
-        result = false
-        return makePopup2('이름이 양식에 맞지 않습니다');
-    }else if(!birthBool && realOriginBirthdate !== newBirth){
-        result = false
-        return makePopup2('생년월일이 양식에 맞지 않습니다');
-    }else if(!hpBool && realOriginPhoneNumber !== newHp){
-        result = false
-        return makePopup2('전화번호 인증을 해주세요');
-    }else{
-        result = true
-    }
-    
-
-    if (result) {
-        const updateOtherForm = document.getElementById('submitForm');
-        if (updateOtherForm) {
-            handleServerClientConnection()
-        };
-    } 
-});
 
 
-fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/detail/${userId}`, {
+
+fetch(`http://localhost:8080/auth/user/detail/${userId}`, {
     method: 'GET',
     headers: headers,
 })
@@ -211,7 +181,7 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
     
                     try {
                         // phnumber로 인증번호 전송
-                        const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/sendVerification', {
+                        const response = await fetch('http://localhost:8080/auth/user/sendVerification', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -236,7 +206,7 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
                         const inputVerificationCode = `${document.getElementById('verficateCode').value}`;
 
                         try {
-                            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/verifyCode', {
+                            const response = await fetch('http://localhost:8080/auth/user/verifyCode', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -301,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateMain`, {
+            const response = await fetch(`http://localhost:8080/auth/user/updateMain`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -319,6 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Server Response:', data);
+                makePopup('업데이트 되었습니다')
 
             } else {
                 const errorMessage = await response.text();
@@ -329,6 +300,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // 수정사항 저장
+changeBtn.addEventListener('click', () => {
+    const newName = document.getElementById('name').value.trim()
+    const newBirth = document.getElementById('birthdate').value.trim()
+    const newHp = document.getElementById('phoneNumber').value.trim()
+    const newGender = document.querySelector('input[name="gender"]:checked').value
+    let result
+    if(realOriginName === newName && realOriginBirthdate===newBirth &&realOriginGender === newGender &&realOriginPhoneNumber=== newHp){
+        result = false
+        return makePopup2('변경사항이 없습니다');
+    }else if(!nameBool && realOriginName !== newName ){
+        result = false
+        return makePopup2('이름이 양식에 맞지 않습니다');
+    }else if(realOriginBirthdate !== newBirth){
+        if((newBirth <= 19000000 || newBirth >= 20500000 )){
+            return makePopup2('생년월일이 양식에 맞지 않습니다');
+        }else{
+            result = true
+        }
+    }else if(!hpBool && realOriginPhoneNumber !== newHp){
+        result = false
+        return makePopup2('전화번호 인증을 해주세요');
+    }else{
+        result = true
+    }
+    
+
+    if (result) {
+        handleServerClientConnection()
+        
+    } 
+});
 
 });
 
