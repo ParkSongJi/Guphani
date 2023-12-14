@@ -26,11 +26,8 @@ function generateVerificationCode(length) {
   return code;
 }
 
+// 생성된 인증번호 6자리를 verificationCode에 변환 후 verificationStorage[phoneNumber]에 저장
 export async function sendVerificationMessage(phoneNumber) {
-    if (verificationStorage[phoneNumber]) {
-        return { verificationCode: verificationStorage[phoneNumber] };
-    }
-
     const verificationCode = generateVerificationCode(6);
     console.log(verificationCode)
     try {
@@ -48,20 +45,28 @@ export async function sendVerificationMessage(phoneNumber) {
     }
 }
 
-export function getVerificationCode(phoneNumber) {
-    return verificationStorage[phoneNumber];
-}
-
+// 입력한 전화번호로 인증번호를 전송
 export async function sendVerification(req, res) {
+
     const phoneNumber = req.body.phnumber;
+    console.log(phoneNumber)
     try {
-        const { verificationCode } = await sendVerificationMessage(phoneNumber);
+        const verificationCode = await sendVerificationMessage(phoneNumber);
+        console.log(verificationCode)
         res.status(200).json({ message: '인증번호가 전송되었습니다.' });
     } catch (error) {
         res.status(500).json({ message: '인증번호 전송 실패', error: error.toString() });
     }
 }
 
+
+// 인증코드 반환
+export function getVerificationCode(phoneNumber) {
+    return verificationStorage[phoneNumber];
+}
+
+
+// 저장된 인증번호(storedCode)와 입력한 인증번호(verificationCode)를 비교
 export async function verifyCode(req, res) {
     const { phnumber, verificationCode } = req.body;
     try {
