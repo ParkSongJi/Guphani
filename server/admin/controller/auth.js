@@ -260,6 +260,23 @@ export async function searchUser(req, res, next) {
     }
 
 }
+// 사용자 정보 상세 조회
+export async function searchMoUser(req, res, next) {
+    const id = req.userId
+    try {
+        const userInfo = await User.findById(id);
+        
+        if (!userInfo) {
+            res.json({ result: '실패', message: '해당 회원을 찾을 수 없습니다' });
+            return;
+        }
+        res.json({ result: '성공', message: '해당 회원 정보 조회 성공', user: userInfo });
+    } catch (error) {
+        console.error('회원 정보 조회 중 에러 발생:', error);
+        res.json({ result: '실패', message: '회원 정보 조회 중 에러 발생' });
+    }
+
+}
 
 // 회원 전체보기
 export async function searchAll(req, res) {

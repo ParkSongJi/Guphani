@@ -60,7 +60,7 @@ const headers = {
     'Authorization': `Bearer ${token}`,
 };
 
-fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/detail/${id}`, {
+fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/admin/detail/${id}`, {
     method: 'GET',
     headers: headers,
 })

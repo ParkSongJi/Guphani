@@ -98,7 +98,7 @@ router.put('/user/updateAll/:id', authController.updateUser);
 router.delete('/user/delete/:id', authController.deleteUser);
 
 // 회원 정보 상세 조회 
-router.get('/user/detail/:id',  authController.searchUser);
+router.get('/user/admin/detail/:id',  authController.searchUser);
 
 // 회원 정보 전체 조회 
 router.get('/users', authController.searchAll);
@@ -117,6 +117,6 @@ router.put('/user/updateMain',  authController.updateMain);
 router.put('/user/updateOther', authController.updateOther);
 
 // 사용자 회원 정보 상세 조회 
-router.get('/user/detail/:id',  authController.searchUser);
+router.get('/user/detail/:id',  authController.searchMoUser);
 
 export default router;
