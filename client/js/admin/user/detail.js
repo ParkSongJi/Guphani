@@ -1,10 +1,10 @@
-let layerText = ''
-const modifyBtn = document.getElementById('modifyBtn')
-const delBtn = document.getElementById('delBtn')
-const textArea = document.querySelector('.layer-pop .inner-text')
-const layerBtnArea = document.querySelector('.layer-pop .btn-wrap')
-var herf = window.location.search
-var id = herf.split('=')[1]
+let layerText = '';
+const modifyBtn = document.getElementById('modifyBtn');
+const delBtn = document.getElementById('delBtn');
+const textArea = document.querySelector('.layer-pop .inner-text');
+const layerBtnArea = document.querySelector('.layer-pop .btn-wrap');
+var herf = window.location.search;
+var id = herf.split('=')[1];
 
 function fn_delete() {
     const deleteButton = document.getElementById('delBtn');
@@ -16,45 +16,43 @@ function fn_delete() {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
-
             },
         });
     } catch (error) {
-        console.error('Error during deletion:', error);
-        makePopup2('Error during user deletion.');
+        console.error('회원 삭제 중 에러 발생:', error);
+        makePopup2('회원 삭제 중 에러가 발생했습니다.');
     }
 }
 
-modifyBtn.addEventListener('click',()=>{
-    layerOn('userDetailLayer')
-    layerText = `회원정보가<br><strong class="point-txt">수정</strong> 되었습니다.`
-    textArea.innerHTML = layerText
-})
+modifyBtn.addEventListener('click', () => {
+    layerOn('userDetailLayer');
+    layerText = `회원정보가<br><strong class="point-txt">수정</strong> 되었습니다.`;
+    textArea.innerHTML = layerText;
+});
 
-delBtn.addEventListener('click',()=>{
-    layerOn('userDetailLayer')
-    layerText = `회원정보가 <strong class="point-txt">영구적으로 삭제됩니다</strong><br>삭제 하시겠습니까?`
-    textArea.innerHTML = layerText
+delBtn.addEventListener('click', () => {
+    layerOn('userDetailLayer');
+    layerText = `회원정보가 <strong class="point-txt">영구적으로 삭제됩니다</strong><br>삭제 하시겠습니까?`;
+    textArea.innerHTML = layerText;
     layerBtnArea.innerHTML = `
         <button type="button" class="black-btn" onclick="layerOut('userDetailLayer')">닫기</button>
         <button type="button" class="point-btn del" onclick="fn_delete()">삭제</button>
-    `
-})
+    `;
+});
 
-document.addEventListener('click',(e)=>{
+document.addEventListener('click', (e) => {
     if (e.target.matches('.layer-pop .point-btn.del')) {
-        layerText = `회원정보가 <strong class="point-txt">삭제</strong><br>되었습니다.`
-        textArea.innerHTML = layerText
+        layerText = `회원정보가 <strong class="point-txt">삭제</strong><br>되었습니다.`;
+        textArea.innerHTML = layerText;
         layerBtnArea.innerHTML = `
             <button type="button" class="black-btn" onclick="location.reload()">닫기</button>
-        `
+        `;
     }
-})
+});
 
 // 각 회원 기존의 데이터 불러오기 
 const userId = localStorage.getItem('userId');
-const token = localStorage.getItem('token')
-
+const token = localStorage.getItem('token');
 const headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
@@ -80,9 +78,6 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
 
         if (user) {
         
-    
-
-            // Assuming 'user' contains the user details fetched from the API
             const basicInfoTable = document.querySelector('.detail-wrap section:nth-child(1) table');
             basicInfoTable.innerHTML = `
                 <tr>
@@ -168,7 +163,7 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
         }
     })
     .catch(error => {
-        console.error('Error fetching user data:', error);
+        console.error('회원 데이터 가져오기 오류:', error);
     });
 
 // 관리자가 회원 정보 수정하기 
@@ -178,16 +173,6 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
 // 사용할 Router: 'auth/user/updateAll/:id'
 
 document.addEventListener('DOMContentLoaded', function () {
-
-    function getListValues(listClassName) {
-        const list = document.querySelector(`.${listClassName}`);
-        if (list) {
-            const listItems = list.querySelectorAll('li span');
-            return Array.from(listItems).map(item => item.innerText);
-        }
-        return [];
-    }
- 
     async function handleServerClientConnection() {
         const userName = document.getElementById('name').value;
         const userGender = document.getElementById('gender').value;
@@ -199,19 +184,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const userMedication = document.getElementById('medication').value; 
         const userUnderlyingDisease = document.getElementById('underlyingDisease').value; 
 
-
-
-         // Assuming user.user.isAdmin is either 'Y' or 'N'
         const isAdminYes = document.getElementById('admin1').checked;
         const isAdminNo = document.getElementById('admin2').checked;
-
-        // Convert the boolean values to 'Y' or 'N'
         const isAdmin = isAdminYes ? 'Y' : (isAdminNo ? 'N' : '');
         
-
-        // Assuming user.user.isUser is either 'N' or 'Y'   
-
-
         const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
 
@@ -233,10 +209,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     allergy: userAllergy, 
                     medication: userMedication, 
                     underlyingDisease: userUnderlyingDisease
-
-
- 
-                    
                 }),
             });
 
@@ -257,7 +229,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateOtherForm.addEventListener('click', handleServerClientConnection);
     }
 });
-
 
 
 

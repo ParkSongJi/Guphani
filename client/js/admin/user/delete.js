@@ -1,26 +1,37 @@
-// 버튼 클릭시 회원 탈퇴 서버랑 연결 
-
 function hideDiv(divId) {
-    const element = document.getElementById(divId);
-    if (element) {
-        element.style.display = 'none';
+    try {
+        const element = document.getElementById(divId);
+        if (element) {
+            element.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('오류가 발생했습니다:', error.message);
+        handleCatchError('div 숨기기 중 오류가 발생했습니다.');
     }
 }
 
 function showDiv(divId) {
-    const element = document.getElementById(divId);
-    if (element) {
-        element.style.display = 'block';
+    try {
+        const element = document.getElementById(divId);
+        if (element) {
+            element.style.display = 'block';
+        }
+    } catch (error) {
+        console.error('오류가 발생했습니다:', error.message);
+        handleCatchError('div 표시 중 오류가 발생했습니다.');
     }
 }
 
 function navigateTo(url) {
-    window.location.href = url;
+    try {
+        window.location.href = url;
+    } catch (error) {
+        console.error('오류가 발생했습니다:', error.message);
+        handleCatchError('페이지 이동 중 오류가 발생했습니다.');
+    }
 }
 
-// client.js (or your client-side JavaScript file)
-
-
-// document.addEventListener('DOMContentLoaded', function () {
-    
-// });
+// 공통 오류 처리 함수
+function handleCatchError(errorMessage) {
+    console.error(errorMessage);
+}

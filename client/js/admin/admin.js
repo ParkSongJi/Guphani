@@ -7,36 +7,51 @@
                 let xhttp = new XMLHttpRequest();
             
                 xhttp.onreadystatechange = function() {
-                    if (this.readyState === XMLHttpRequest.DONE) {
-                        this.status === 200 ? (el.innerHTML = this.responseText) : null
-                        this.status === 404 ? (el.innerHTML = 'include not found.') : null
+                    try {
+                        if (this.readyState === XMLHttpRequest.DONE) {
+                            if (this.status === 200) {
+                                el.innerHTML = this.responseText;
+                            } else if (this.status === 404) {
+                                throw new Error('include not found.');
+                            } else {
+                                throw new Error(`Failed to fetch include file. Status: ${this.status}`);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error during includeHtml:', error.message);
+                        el.innerHTML = 'Error during includeHtml.';
                     }
-                }
+                };
+                
                 xhttp.open('GET', targetFile, true);
                 xhttp.send();
-                return;
             }
         });
-    };
+    }
 
     includeHtml();
 })();
 
 // 레이어 팝업창
 function layerOn(el) {
-    const layer = document.getElementById(el)
-    layer.classList.add('fadeIn')
-    layer.classList.remove('fadeOut')
+    const layer = document.getElementById(el);
+    layer.classList.add('fadeIn');
+    layer.classList.remove('fadeOut');
 }
 function layerOut(el) {
-    const layer = document.getElementById(el)
-    layer.classList.add('fadeOut')
-    layer.classList.remove('fadeIn')
+    const layer = document.getElementById(el);
+    layer.classList.add('fadeOut');
+    layer.classList.remove('fadeIn');
 }
 
 function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('user');
-    window.location.href = '../user/login.html'
+    try {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('user');
+        window.location.href = '../user/login.html';
+    } catch (error) {
+        console.error('Error during logout:', error.message);
+        // Handle the error as needed
+    }
 }

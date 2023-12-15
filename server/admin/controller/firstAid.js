@@ -1,3 +1,5 @@
+import * as firstAidRepository from '../data/firstAid.js';
+
 export async function create(req, res) {
     try {
         const { title, contents, youtube } = req.body;

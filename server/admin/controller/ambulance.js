@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import haversine from 'haversine-distance';
 dotenv.config();
 
+
 // 구급차 api에서 데이터들을 가져와 몽고db Ambulances 스키마에 저장
 export async function fetchDataAndSaveToDB(req, res) {
     try {
