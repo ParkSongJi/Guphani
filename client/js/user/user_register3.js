@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             // PUT request
-            const response = await fetch(`http://localhost:8080/auth/user/addInfo/${userId}`, {
+            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/addInfo/${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

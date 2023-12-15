@@ -1,16 +1,16 @@
-const titleSearch = document.getElementById('titleSearch')
-const contentSearch = document.getElementById('contentSearch')
-const startDate = document.getElementById('startDate')
-const endDate = document.getElementById('endDate')
-const schBtn = document.getElementById('schBtn')
-const table = document.querySelector('.list-table-wrap table')
-const tbody = table.querySelector('tbody')
-const pageUl = document.getElementById('pageUl')
-const totalCnt = document.querySelector('.list-table-wrap .total')
-let link = 'http://localhost:8080/admin/firstAid/list'
-let html = ''
-let paging = ''
-let currentSearchQuery = ''
+const titleSearch = document.getElementById('titleSearch');
+const contentSearch = document.getElementById('contentSearch');
+const startDate = document.getElementById('startDate');
+const endDate = document.getElementById('endDate');
+const schBtn = document.getElementById('schBtn');
+const table = document.querySelector('.list-table-wrap table');
+const tbody = table.querySelector('tbody');
+const pageUl = document.getElementById('pageUl');
+const totalCnt = document.querySelector('.list-table-wrap .total');
+let link = 'https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/list';
+let html = '';
+let paging = '';
+let currentSearchQuery = '';
 
 // 로컬스토리지에서 토큰을 받아옴
 const token = localStorage.getItem('token');
@@ -22,7 +22,7 @@ const headers = {
 };
 
 // 체크박스 전체선택
-const allAgree = document.querySelector('.list-table-wrap #allAgree')
+const allAgree = document.querySelector('.list-table-wrap #allAgree');
 
 allAgree.addEventListener('change', () => {
     agrees.forEach((el) => {
@@ -31,8 +31,8 @@ allAgree.addEventListener('change', () => {
 });
 
 document.addEventListener('click', function (el) {
-    if(el.target.type == 'checkbox' ){
-        agrees = document.querySelectorAll('.list-table-wrap tbody input[type="checkbox"]')
+    if (el.target.type == 'checkbox') {
+        agrees = document.querySelectorAll('.list-table-wrap tbody input[type="checkbox"]');
         // 개별 체크박스에 클릭 이벤트 리스너 추가
         agrees.forEach(function (agree) {
             agree.addEventListener('change', () => {
@@ -46,10 +46,8 @@ document.addEventListener('click', function (el) {
                 }
             });
         });
-
     }
-})
-
+});
 
 // 데이터와 페이징 가져오기
 function fetchUsers(queryString = '', page = 1) {
@@ -63,17 +61,17 @@ function fetchUsers(queryString = '', page = 1) {
         fetchUrl += `?page=${page}`;
     }
 
-    fetch(fetchUrl,{
+    fetch(fetchUrl, {
         headers: headers
     })
-    .then(response => response.json())
-    .then(data => {
-        totalCnt.innerText = `총 ${data.total}개`
-        if(data.data.length == 0){
-            html += `<tr><td colspan="6">데이터가 없습니다</td></tr>`;
-        } else {
-            data.data.forEach((el, idx) => {
-                html += `
+        .then(response => response.json())
+        .then(data => {
+            totalCnt.innerText = `총 ${data.total}개`;
+            if (data.data.length == 0) {
+                html += `<tr><td colspan="6">데이터가 없습니다</td></tr>`;
+            } else {
+                data.data.forEach((el, idx) => {
+                    html += `
                     <tr>
                         <td><input type="checkbox" name="" id="check${idx + 1}" class="type1" value='${el._id}'></td>
                         <td>${idx + 1}</td>
@@ -83,20 +81,22 @@ function fetchUsers(queryString = '', page = 1) {
                         <td><button type="button" onclick="location='./view.html?id=${el._id}'" class="gray-btn view-btn">상세보기</button></td>
                     </tr>
                 `;
-            });
-        }
-        tbody.innerHTML = html;
+                });
+            }
+            tbody.innerHTML = html;
 
-        // 페이징
-        updatePagination(data.totalPage, page);
-    })
-    .catch(error => console.error('Error:', error));
+            // 페이징
+            updatePagination(data.totalPage, page);
+        })
+        .catch(error => {
+            console.error('데이터와 페이징 가져오기 중 에러가 발생했습니다', error);
+        });
 }
 
 // 페이징 업데이트
 function updatePagination(totalPages, currentPage) {
     paging = '';
-    if(currentPage == 1){
+    if (currentPage == 1) {
         paging += '';
     } else {
         paging += `<li class="prev"><a href="#" onclick="changePage(${currentPage - 1})"><i class="xi-angle-left"></i></a></li>`;
@@ -104,7 +104,7 @@ function updatePagination(totalPages, currentPage) {
     for (let i = 1; i <= totalPages; i++) {
         paging += `<li ${currentPage === i ? 'class="on"' : ''}><a href="#" onclick="changePage(${i})">${i}</a></li>`;
     }
-    if(currentPage == totalPages){
+    if (currentPage == totalPages) {
         paging += '';
     } else {
         paging += `<li class="next"><a href="#" onclick="changePage(${currentPage + 1})"><i class="xi-angle-right"></i></a></li>`;
@@ -140,8 +140,12 @@ window.onload = loadSearchConditions;
 
 // 페이지 변경
 function changePage(newPage) {
-    const newUrl = `./list.html?page=${newPage}&${currentSearchQuery}`;
-    window.location.href = newUrl;
+    try {
+        const newUrl = `./list.html?page=${newPage}&${currentSearchQuery}`;
+        window.location.href = newUrl;
+    } catch (error) {
+        console.error('페이지 변경시 에러가 발생했습니다:', error);
+    }
 }
 
 // 검색 이벤트
@@ -162,72 +166,72 @@ schBtn.addEventListener('click', () => {
 });
 
 // 삭제 모달창 및 체크된 id확인
-let layerText = ''
-const delBtn = document.getElementById('delBtn')
-const textArea = document.querySelector('.layer-pop .inner-text')
-const layerBtnArea = document.querySelector('.layer-pop .btn-wrap')
-const selectDel = document.getElementById('selectDel')
-let delArr = []
-selectDel.addEventListener('click',()=>{
-    delArr = []
-    agrees = document.querySelectorAll('.list-table-wrap tbody input[type="checkbox"]')
-    agrees.forEach((el)=>{
-        if(el.checked == true){
-            delArr.push(el.value)
+let layerText = '';
+const delBtn = document.getElementById('delBtn');
+const textArea = document.querySelector('.layer-pop .inner-text');
+const layerBtnArea = document.querySelector('.layer-pop .btn-wrap');
+const selectDel = document.getElementById('selectDel');
+let delArr = [];
+selectDel.addEventListener('click', () => {
+    delArr = [];
+    agrees = document.querySelectorAll('.list-table-wrap tbody input[type="checkbox"]');
+    agrees.forEach((el) => {
+        if (el.checked == true) {
+            delArr.push(el.value);
         }
-    })
+    });
     const datas = {
         ids: delArr
     };
 
-    if(delArr.length == 0){
-        layerText = `선택된 응급처치가 없습니다.` 
-        textArea.innerHTML = layerText
+    if (delArr.length == 0) {
+        layerText = `선택된 응급처치가 없습니다.`;
+        textArea.innerHTML = layerText;
         layerBtnArea.innerHTML = `
-        <button type="button" class="black-btn" onclick="layerOut('firstAidViewDetailLayer')">닫기</button>`
-    }else{
-        layerText = `해당 응급처치가 <strong class="point-txt">영구적으로 삭제됩니다</strong><br>삭제 하시겠습니까?`
-        textArea.innerHTML = layerText
+        <button type="button" class="black-btn" onclick="layerOut('firstAidViewDetailLayer')">닫기</button>`;
+    } else {
+        layerText = `해당 응급처치가 <strong class="point-txt">영구적으로 삭제됩니다</strong><br>삭제 하시겠습니까?`;
+        textArea.innerHTML = layerText;
         layerBtnArea.innerHTML = `
             <button type="button" class="black-btn" onclick="layerOut('firstAidViewDetailLayer')">닫기</button>
             <button type="button" class="point-btn del" onclick="fn_del()">삭제</button>
-        `
+        `;
     }
 
-    layerOn('firstAidViewDetailLayer')
+    layerOn('firstAidViewDetailLayer');
 
-    document.addEventListener('click',(e)=>{
+    document.addEventListener('click', (e) => {
         if (e.target.matches('.layer-pop .point-btn.del')) {
-            layerText = `응급처치가 <strong class="point-txt">삭제</strong><br>되었습니다.`
-            textArea.innerHTML = layerText
+            layerText = `응급처치가 <strong class="point-txt">삭제</strong><br>되었습니다.`;
+            textArea.innerHTML = layerText;
             layerBtnArea.innerHTML = `
                 <button type="button" class="black-btn" onclick="window.location.href='./list.html?page=1'">닫기</button>
-            `
+            `;
         }
         // 선택삭제 패치
-        fetch(`http://localhost:8080/admin/firstAid/delete`,{
+        fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/delete`, {
             method: 'delete',
             headers: {
-                'Content-Type': 'application/json', // 전송하는 데이터의 형식을 지정합니다.
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(datas)
         })
-        .then((response) => {return response.json()})
-        .then((data) => {console.log(data)})
-    
-    })
-})
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('선택삭제 중 에러가 발생했습니다', error);
+            });
+    });
+});
 
 // 초기화 버튼
-const resetBtn = document.getElementById('resetBtn')
-resetBtn.addEventListener('click',()=>{
-    titleSearch.value = ''
-    contentSearch.value = ''
-    startDate.value = ''
-    endDate.value = ''
-})
-
-
-
-
+const resetBtn = document.getElementById('resetBtn');
+resetBtn.addEventListener('click', () => {
+    titleSearch.value = '';
+    contentSearch.value = '';
+    startDate.value = '';
+    endDate.value = '';
+});

@@ -28,8 +28,13 @@ const pharmacySchema = new Mongoose.Schema({
 const Pharmacy = Mongoose.model('pharmacy', pharmacySchema);   
 
 function combineDaysAndTime(start, end) {
-    return `${start[0]}${start[1]}:${start[2]}${start[3]}-${end[0]}${end[1]}:${end[2]}${end[3]}`
+    try{
+        return `${start[0]}${start[1]}:${start[2]}${start[3]}-${end[0]}${end[1]}:${end[2]}${end[3]}`
+    }catch(error){
+        console.error(error)
+    }
 }
+
 
 const cityMapping = {
     '서울특별시': 'Seoul_Pharmacies',
@@ -54,59 +59,63 @@ const cityMapping = {
 export async function setPharmacyDataByCityArray() {
 
     let pageNo = 1;
-
+    
     while (true) {
-        const response = await fetch(`https://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyFullDown?serviceKey=MFQhV%2FZRnUepzJxZ%2BHB1FIHAiJdEcnbf5n8u3Jc2UoLAbkogcZekWtdQyVAU7NeMGScZlxkyD%2BZfDvfLyp%2BEVA%3D%3D&pageNo=${pageNo}&numOfRows=1000`, { method: 'GET' });
-        const xmldata = await response.text();
-        let datas;
-        parseString(xmldata, async (err, result) => {
-            const items = result.response.body[0].items[0].item;
-            datas = items;
+        try{
+            const response = await fetch(`https://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyFullDown?serviceKey=MFQhV%2FZRnUepzJxZ%2BHB1FIHAiJdEcnbf5n8u3Jc2UoLAbkogcZekWtdQyVAU7NeMGScZlxkyD%2BZfDvfLyp%2BEVA%3D%3D&pageNo=${pageNo}&numOfRows=1000`, { method: 'GET' });
+            const xmldata = await response.text();
+            let datas;
+            parseString(xmldata, async (err, result) => {
+                const items = result.response.body[0].items[0].item;
+                datas = items;
 
-            // 여기에서 데이터 하나씩 처리 가능
-            for (var i = 0; i < datas.length; i++) {
-                const data = datas[i];
-                // 여기서 정제
-                const pharmacyDetail = {
-                    hpid: data.hpid[0],
-                    dutyTime1Mon: (data.dutyTime1s && data.dutyTime1c) ? combineDaysAndTime(data.dutyTime1s[0], data.dutyTime1c[0]) : '-',
-                    dutyTime2Tue: (data.dutyTime2s && data.dutyTime2c) ? combineDaysAndTime(data.dutyTime2s[0], data.dutyTime2c[0]) : '-',
-                    dutyTime3Wed: (data.dutyTime3s && data.dutyTime3c) ? combineDaysAndTime(data.dutyTime3s[0], data.dutyTime3c[0]) : '-',
-                    dutyTime4Thu: (data.dutyTime4s && data.dutyTime4c) ? combineDaysAndTime(data.dutyTime4s[0], data.dutyTime4c[0]) : '-',
-                    dutyTime5Fri: (data.dutyTime5s && data.dutyTime5c) ? combineDaysAndTime(data.dutyTime5s[0], data.dutyTime5c[0]) : '-',
-                    dutyTime6Sat: (data.dutyTime6s && data.dutyTime6c) ? combineDaysAndTime(data.dutyTime6s[0], data.dutyTime6c[0]) : '-',
-                    dutyTime7Sun: (data.dutyTime7s && data.dutyTime7c) ? combineDaysAndTime(data.dutyTime7s[0], data.dutyTime7c[0]) : '-',
-                    dutyTime8Hol: (data.dutyTime8s && data.dutyTime8c) ? combineDaysAndTime(data.dutyTime8s[0], data.dutyTime8c[0]) : '-',
-                    dutyAddr: data.dutyAddr && data.dutyAddr[0]?.trim() || null,
-                    dutyEtc: data.dutyEtc && data.dutyEtc[0]?.trim() || null,
-                    dutyInf: data.dutyInf && data.dutyInf[0]?.trim() || null,
-                    dutyMapimg: data.dutyMapimg && data.dutyMapimg[0]?.trim() || null,
-                    dutyName: data.dutyName && data.dutyName[0]?.trim() || null,
-                    dutyTel1: data.dutyTel1 && data.dutyTel1[0]?.trim() || null,
-                    postCdn1: data.postCdn1 && data.postCdn1[0]?.trim() || null,
-                    postCdn2: data.postCdn2 && data.postCdn2[0]?.trim() || null,
-                    wgs84Lat: data.wgs84Lat && data.wgs84Lat[0]?.trim() || null,
-                    wgs84Lon: data.wgs84Lon && data.wgs84Lon[0]?.trim() || null
-                };
+                // 여기에서 데이터 하나씩 처리 가능
+                for (var i = 0; i < datas.length; i++) {
+                    const data = datas[i];
+                    // 여기서 정제
+                    const pharmacyDetail = {
+                        hpid: data.hpid[0],
+                        dutyTime1Mon: (data.dutyTime1s && data.dutyTime1c) ? combineDaysAndTime(data.dutyTime1s[0], data.dutyTime1c[0]) : '-',
+                        dutyTime2Tue: (data.dutyTime2s && data.dutyTime2c) ? combineDaysAndTime(data.dutyTime2s[0], data.dutyTime2c[0]) : '-',
+                        dutyTime3Wed: (data.dutyTime3s && data.dutyTime3c) ? combineDaysAndTime(data.dutyTime3s[0], data.dutyTime3c[0]) : '-',
+                        dutyTime4Thu: (data.dutyTime4s && data.dutyTime4c) ? combineDaysAndTime(data.dutyTime4s[0], data.dutyTime4c[0]) : '-',
+                        dutyTime5Fri: (data.dutyTime5s && data.dutyTime5c) ? combineDaysAndTime(data.dutyTime5s[0], data.dutyTime5c[0]) : '-',
+                        dutyTime6Sat: (data.dutyTime6s && data.dutyTime6c) ? combineDaysAndTime(data.dutyTime6s[0], data.dutyTime6c[0]) : '-',
+                        dutyTime7Sun: (data.dutyTime7s && data.dutyTime7c) ? combineDaysAndTime(data.dutyTime7s[0], data.dutyTime7c[0]) : '-',
+                        dutyTime8Hol: (data.dutyTime8s && data.dutyTime8c) ? combineDaysAndTime(data.dutyTime8s[0], data.dutyTime8c[0]) : '-',
+                        dutyAddr: data.dutyAddr && data.dutyAddr[0]?.trim() || null,
+                        dutyEtc: data.dutyEtc && data.dutyEtc[0]?.trim() || null,
+                        dutyInf: data.dutyInf && data.dutyInf[0]?.trim() || null,
+                        dutyMapimg: data.dutyMapimg && data.dutyMapimg[0]?.trim() || null,
+                        dutyName: data.dutyName && data.dutyName[0]?.trim() || null,
+                        dutyTel1: data.dutyTel1 && data.dutyTel1[0]?.trim() || null,
+                        postCdn1: data.postCdn1 && data.postCdn1[0]?.trim() || null,
+                        postCdn2: data.postCdn2 && data.postCdn2[0]?.trim() || null,
+                        wgs84Lat: data.wgs84Lat && data.wgs84Lat[0]?.trim() || null,
+                        wgs84Lon: data.wgs84Lon && data.wgs84Lon[0]?.trim() || null
+                    };
 
-                // 데이터의 dutyAddr에 도시 정보가 있는지 확인
-                const cityInAddress = Object.keys(cityMapping).find(city => data.dutyAddr[0]?.includes(city));
+                    // 데이터의 dutyAddr에 도시 정보가 있는지 확인
+                    const cityInAddress = Object.keys(cityMapping).find(city => data.dutyAddr[0]?.includes(city));
 
-                if (cityInAddress) {
-                    // 해당 도시의 컬렉션 이름 생성
-                    const collectionName = `${cityMapping[cityInAddress]}`;
+                    if (cityInAddress) {
+                        // 해당 도시의 컬렉션 이름 생성
+                        const collectionName = `${cityMapping[cityInAddress]}`;
 
-                    // 해당 도시의 컬렉션에 데이터 저장
-                    const CityPharmacy = Mongoose.model(collectionName, pharmacySchema); // 사용 중인 스키마에 맞게 수정 필요
-                    await CityPharmacy.findOneAndUpdate(
-                        { hpid: pharmacyDetail.hpid },
-                        pharmacyDetail,
-                        { new: true, upsert: true }
-                    );
+                        // 해당 도시의 컬렉션에 데이터 저장
+                        const CityPharmacy = Mongoose.model(collectionName, pharmacySchema); // 사용 중인 스키마에 맞게 수정 필요
+                        await CityPharmacy.findOneAndUpdate(
+                            { hpid: pharmacyDetail.hpid },
+                            pharmacyDetail,
+                            { new: true, upsert: true }
+                        );
+                    }
                 }
-            }
-        });
-
+            });
+        }catch(error){
+            console.error(error)
+        }
+    try{
         if (datas.length < 1000) {
             break;
         } else {
@@ -114,11 +123,14 @@ export async function setPharmacyDataByCityArray() {
             console.log(pageNo);
             pageNo++;
         }
+    }catch(error){
+        console.error(error)
     }
-
+    }   
 }
 
 async function findPharmacyInDB(cityList, inputHpid) {
+    try{
     for(const city of cityList){
         const collectionName = cityMapping[city.city]
 
@@ -128,6 +140,9 @@ async function findPharmacyInDB(cityList, inputHpid) {
         if (originData) {
             return originData
         }
+    }
+    }catch(error){
+        console.error(error)
     }
 }
 
@@ -187,7 +202,7 @@ export async function getNearOpenPharmacy(userLat, userLon, count, cityList) {
 let openPharmacy = []
 export async function getAllPharmacy(latitude, longitude, socket) {
     console.log(latitude, longitude ,'기준으로 getAllPharmacy 실행');
-
+    try{
     const nearestCityList = findNearestCityList(latitude, longitude);
     let top500Pharmacy = [];  // 초기화
 
@@ -200,7 +215,10 @@ export async function getAllPharmacy(latitude, longitude, socket) {
     }else{
         socket.emit('updatePharmacy', openPharmacy);
     }
-    
+    }catch(error){
+        console.log(error)
+    }
+    try{
     for (const city of nearestCityList) {
         console.log(city,'시작');
         const modelName = cityMapping[city.city];
@@ -239,6 +257,10 @@ export async function getAllPharmacy(latitude, longitude, socket) {
         // socket으로 결과 전송
         socket.emit('updatePharmacy', top500Pharmacy);
     }
+    }catch(error){
+        console.error(error)
+    }
+    try{
     if(openPharmacy && openPharmacy.length === 100){
         const openPharmacy2 = await getNearOpenPharmacy(latitude, longitude, 1000);
         top500Pharmacy = top500Pharmacy.filter(pharmacy => !openPharmacy2.some(open => open.hpid === pharmacy.hpid));
@@ -249,6 +271,10 @@ export async function getAllPharmacy(latitude, longitude, socket) {
         socket.emit('updatePharmacy', top500Pharmacy);
 
     }
+    }catch(error){
+        console.error(error)
+    }
+    
 }
 
 
@@ -276,6 +302,7 @@ function findNearestCityList(targetLatitude, targetLongitude) {
     };  
     
     for (const [city, { latitude, longitude }] of Object.entries(citiesRangeLongLati)) {
+        try{
         const vertices = [
             { latitude: latitude[0], longitude: longitude[0] },
             { latitude: latitude[0], longitude: longitude[1] },
@@ -288,6 +315,9 @@ function findNearestCityList(targetLatitude, targetLongitude) {
         const adjustedDistance = city === '경기도' ? Math.abs(minDistance - 20) : city === '서울특별시' ? Math.abs(minDistance - 5) : minDistance;
 
         nearestCityList.push({ city, distance: Number(adjustedDistance) });
+        }catch(error){
+            console.error(error)
+        }
     }
   
     nearestCityList.sort((a, b) => a.distance - b.distance); // 거리를 기준으로 오름차순 정렬

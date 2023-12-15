@@ -4,59 +4,66 @@ import dotenv from 'dotenv';
 import haversine from 'haversine-distance';
 dotenv.config();
 
-// 구급차 api에서 데이터들을 가져와 몽고db Ambulances 스키마에 저장( carKndNam 불러오지 못했습니다ㅠㅠ 애초에 데이터가 없는 것 같아요)
-export async function fetchDataAndSaveToDB() {
-    let pageNo = 1;
-  
-    while (true) {
-        const response = await fetch(`https://apis.data.go.kr/B552657/AmblInfoInqireService/getAmblListInfoInqire?serviceKey=4VqI9ZKwHNgkrVIUOE6VYc9TVkWzrVvSwD6tMDQczav7OPJsFAcG6y9wrE1fcsG6cMsYWj7FQgryDYB%2BhVb23w%3D%3D&carseq=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C&pageNo=${pageNo}&numOfRows=1000`, { method: 'GET' });
-        const xmldata = await response.text();
-        let datas
-        parseString(xmldata, async (err, result) => {
-            const items = result.response.body[0].items[0].item;
-            datas = items;
-  
-            for (var i = 0; i < datas.length; i++) {
-                const data = datas[i];
-                // 데이터 처리 및 저장 로직 유지
-                const ambulanceDetail = {
-                    rnum: data.rnum[0],
-                    amblrescd: data. amblrescd && data. amblrescd[0]?.trim() || null,
-                    ambltypcd: data.ambltypcd && data.ambltypcd[0]?.trim() || null,
-                    carMafYea: data.carMafYea && data.carMafYea[0]?.trim() || null,
-                    carSeq: data.carSeq && data.carSeq[0]?.trim() || null,
+// 구급차 api에서 데이터들을 가져와 몽고db Ambulances 스키마에 저장
+export async function fetchDataAndSaveToDB(req, res) {
+    try {
+        let pageNo = 1;
 
-                    // carKndNam, carkndnam 둘 다 시도 해 봤으나 null.. url 페이지로 이동해서 확인해봐도 carkndnam 값이 없음. 문서에만 기록돼 있는 걸로 판단됨
-                    carKndNam: data.carkndnam && data.carkndnam[0]?.trim() || null,
+        while (true) {
+            const response = await fetch(`https://apis.data.go.kr/B552657/AmblInfoInqireService/getAmblListInfoInqire?serviceKey=4VqI9ZKwHNgkrVIUOE6VYc9TVkWzrVvSwD6tMDQczav7OPJsFAcG6y9wrE1fcsG6cMsYWj7FQgryDYB%2BhVb23w%3D%3D&carseq=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C&pageNo=${pageNo}&numOfRows=1000`, { method: 'GET' });
+            const xmldata = await response.text();
+            let datas;
+            parseString(xmldata, async (err, result) => {
+                if (err) {
+                    console.error('XML 파싱 에러:', err);
+                    return res.status(500).json({ error: 'XML 파싱 중 에러가 발생했습니다.' });
+                }
+                const items = result.response.body[0].items[0].item;
+                datas = items;
 
-                    dutyAddr: data.dutyAddr && data.dutyAddr[0]?.trim() || null,
-                    dutyName: data.dutyName && data.dutyName[0]?.trim() || null,
-                    onrAdr: data.onrAdr && data.onrAdr[0]?.trim() || null,
-                    onrNam: data.onrNam && data.onrNam[0]?.trim() || null,
-                    onrTel: data.onrTel && data.onrTel[0]?.trim() || null,
-                    onrZipCod: data.onrZipCod && data.onrZipCod[0]?.trim() || null,
-                    oprEmogcode: data.oprEmogcode && data.oprEmogcode[0]?.trim() || null,
-                    regday: data.regday && data.regday[0]?.trim() || null
-                };
-  
-                const result = await Ambulance.findOneAndUpdate(
-                    { rnum: ambulanceDetail.rnum }, // 필터
-                    ambulanceDetail, // 넣을 값
-                    { new: true, upsert: true } // 옵션
-                );
+                for (var i = 0; i < datas.length; i++) {
+                    const data = datas[i];
+                    // 데이터 처리 및 저장 로직 유지
+                    const ambulanceDetail = {
+                        rnum: data.rnum[0],
+                        amblrescd: data.amblrescd && data.amblrescd[0]?.trim() || null,
+                        ambltypcd: data.ambltypcd && data.ambltypcd[0]?.trim() || null,
+                        carMafYea: data.carMafYea && data.carMafYea[0]?.trim() || null,
+                        carSeq: data.carSeq && data.carSeq[0]?.trim() || null,
+                        carKndNam: data.carkndnam && data.carkndnam[0]?.trim() || null,
+                        dutyAddr: data.dutyAddr && data.dutyAddr[0]?.trim() || null,
+                        dutyName: data.dutyName && data.dutyName[0]?.trim() || null,
+                        onrAdr: data.onrAdr && data.onrAdr[0]?.trim() || null,
+                        onrNam: data.onrNam && data.onrNam[0]?.trim() || null,
+                        onrTel: data.onrTel && data.onrTel[0]?.trim() || null,
+                        onrZipCod: data.onrZipCod && data.onrZipCod[0]?.trim() || null,
+                        oprEmogcode: data.oprEmogcode && data.oprEmogcode[0]?.trim() || null,
+                        regday: data.regday && data.regday[0]?.trim() || null
+                    };
+
+                    const result = await Ambulance.findOneAndUpdate(
+                        { rnum: ambulanceDetail.rnum }, // 필터
+                        ambulanceDetail, // 넣을 값
+                        { new: true, upsert: true } // 옵션
+                    );
+                }
+            });
+
+            if (datas.length < 1000) {
+                break;
+            } else {
+                // pageNo 증가
+                console.log(pageNo);
+                pageNo++;
             }
-  
-        });
-        if (datas.length < 1000) {
-            break
-        } else {
-            // pageNo 증가
-            console.log(pageNo);
-            pageNo++;
         }
+
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('데이터 가져오기 및 저장 중 에러:', error);
+        return res.status(500).json({ error: '데이터 가져오기 및 저장 중 에러가 발생했습니다.' });
     }
-    return
-  }
+}
 
 // 현재 위치에서 가장 가까운 순으로 구급차 리스트 정렬 ( 현재 위치는 client에서 받음 )
 export async function getRealTimeData(req, res) {

@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/auth/user/updateOther`, {
+            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateOther`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ let OriginGuardianRelationship
 let OriginBloodType 
 
 
-fetch(`http://localhost:8080/auth/user/detail/${userId}`, {
+fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/detail/${userId}`, {
     method: 'GET',
     headers: headers,
 })

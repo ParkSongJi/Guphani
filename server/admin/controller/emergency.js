@@ -36,8 +36,3 @@ export async function getEquipment(req, res) {
     res.json(result)
     
 }
-// export async function getErWithRealTime(req, res) {
-//     const { langitute,longitute } = req.body;
-//     const result = await emergencyData.realTimeEr(langitute,longitute);
-//     res.json(result)
-// }

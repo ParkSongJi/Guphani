@@ -6,7 +6,6 @@ const ansBtn = document.getElementById('ansBtn')
 const textArea = document.querySelector('.layer-pop .inner-text')
 const layerBtnArea = document.querySelector('.layer-pop .btn-wrap')
 
-
 // 로컬스토리지에서 토큰을 받아옴
 const token = localStorage.getItem('token');
 
@@ -26,48 +25,59 @@ const editor = new toastui.Editor({
 
 // 뷰 상세보기
 async function viewFetch() {
-    const response = await fetch(`http://localhost:8080/admin/inquiry/view?id=${id}`,{
-        headers:headers
-    })
-    .then((result) =>{return result.json()})
-    .then((data)=>{
+    try {
+        const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/inquiry/view?id=${id}`,{
+            headers: headers
+        });
+
+        if (!response.ok) {
+            throw new Error('문의 상세 정보를 가져오는 중에 오류가 발생했습니다.');
+        }
+
+        const data = await response.json();
+
         document.getElementById('inquiryId').innerText = data._id
         document.getElementById('userId').innerText = data.userId
         document.getElementById('name').innerText = data.name
         document.getElementById('createdAt').innerText = String(data.createdAt).split('T')[0]
         document.getElementById('title').innerText = data.title
         document.getElementById('contents').innerText = data.contents
-        editor.setMarkdown(data.answerContents)
-        
-    })
+        editor.setMarkdown(data.answerContents);
+    } catch (error) {
+        console.error('오류가 발생했습니다:', error.message);
+    }
 }
 
-viewFetch()
-
+viewFetch();
 
 // 답변작성
 async function handleEditor() {
-    const answerContents = editor.getMarkdown();    
-    const answerDate = new Date();
-    const data = await fetch(`http://localhost:8080/admin/inquiry/answer`, {
-        method: "PUT",
-        headers: headers,
-        body: JSON.stringify({id,answerContents, answerDate})
-    })
-    .then((response) => {return response.json()})
-    .then((data) => { 
+    try {
+        const answerContents = editor.getMarkdown();
+        const answerDate = new Date();
+        const data = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/inquiry/answer`, {
+            method: "PUT",
+            headers: headers,
+            body: JSON.stringify({id,answerContents, answerDate})
+        });
+
+        if (!data.ok) {
+            throw new Error('답변 등록 중에 오류가 발생했습니다.');
+        }
+
         const innerText = document.querySelector('#inquiryDetailLayer .inner-text')
         const layerBtnArea = document.querySelector('#inquiryDetailLayer .btn-wrap')
-        if(data){
-            innerText.innerText = '답변이 등록되었습니다.'
-            layerBtnArea.innerHTML = `<button type="button" class="black-btn" onclick="location.reload()">닫기</button>`
-            layerOn('inquiryDetailLayer')
-        }
-    })
+        
+        innerText.innerText = '답변이 등록되었습니다.'
+        layerBtnArea.innerHTML = `<button type="button" class="black-btn" onclick="location.reload()">닫기</button>`
+        layerOn('inquiryDetailLayer');
+    } catch (error) {
+        console.error('오류가 발생했습니다:', error.message);
+    }
 }
 
-ansBtn.addEventListener('click',()=>{
-    if(editor.value == ''){
+ansBtn.addEventListener('click', () => {
+    if (editor.value == '') {
         layerText = '내용을 입력해주세요.'
         editor.focus()
         layerOn('inquiryDetailLayer')
@@ -76,30 +86,41 @@ ansBtn.addEventListener('click',()=>{
     }
 
     handleEditor()
-})
+});
 
 // 문의 삭제
-delBtn.addEventListener('click',()=>{
-    layerOn('inquiryDetailLayer')
-    layerText = `해당답변이 <strong class="point-txt">영구적으로 삭제됩니다</strong><br>삭제 하시겠습니까?`
-    textArea.innerHTML = layerText
-    layerBtnArea.innerHTML = `
-        <button type="button" class="black-btn" onclick="layerOut('inquiryDetailLayer')">닫기</button>
-        <button type="button" class="point-btn del" onclick="delFetch('${id}')">삭제</button>
-    `
-})
+delBtn.addEventListener('click', () => {
+    try {
+        layerOn('inquiryDetailLayer')
+        layerText = `해당답변이 <strong class="point-txt">영구적으로 삭제됩니다</strong><br>삭제 하시겠습니까?`
+        textArea.innerHTML = layerText
+        layerBtnArea.innerHTML = `
+            <button type="button" class="black-btn" onclick="layerOut('inquiryDetailLayer')">닫기</button>
+            <button type="button" class="point-btn del" onclick="delFetch('${id}')">삭제</button>
+        `
+    } catch (error) {
+        console.error('오류가 발생했습니다:', error.message);
+    }
+});
 
 async function delFetch(id) {
     console.log(id);
-    const response = await fetch(`http://localhost:8080/admin/inquiry/delete/${id}`,{
-        method:'DELETE',
-        headers:headers
-    })
-    if(response.ok){
+    try {
+        const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/inquiry/delete/${id}`,{
+            method:'DELETE',
+            headers:headers
+        });
+
+        if (!response.ok) {
+            throw new Error('문의 삭제 중에 오류가 발생했습니다.');
+        }
+
         const innerText = document.querySelector('#inquiryDetailLayer .inner-text')
         const layerBtnArea = document.querySelector('#inquiryDetailLayer .btn-wrap')
         innerText.innerText = '문의가 삭제 되었습니다.'
         layerBtnArea.innerHTML = `<button type="button" class="black-btn" onclick="window.location.href='./list.html'">닫기</button>`
-        layerOn('inquiryDetailLayer')
+        layerOn('inquiryDetailLayer');
+    } catch (error) {
+        console.error('오류가 발생했습니다:', error.message);
     }
 }

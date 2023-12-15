@@ -41,7 +41,7 @@ export async function sendVerificationMessage(phoneNumber) {
         return { verificationCode, response };
     } catch (error) {
         console.error(error);
-        throw error;
+        throw new Error('인증번호 전송 실패');
     }
 }
 
@@ -55,16 +55,14 @@ export async function sendVerification(req, res) {
         console.log(verificationCode)
         res.status(200).json({ message: '인증번호가 전송되었습니다.' });
     } catch (error) {
-        res.status(500).json({ message: '인증번호 전송 실패', error: error.toString() });
+        res.status(500).json({ message: '인증번호 전송 실패', error: error.message });
     }
 }
-
 
 // 인증코드 반환
 export function getVerificationCode(phoneNumber) {
     return verificationStorage[phoneNumber];
 }
-
 
 // 저장된 인증번호(storedCode)와 입력한 인증번호(verificationCode)를 비교
 export async function verifyCode(req, res) {
@@ -77,7 +75,7 @@ export async function verifyCode(req, res) {
             res.status(400).json({ message: '잘못된 인증번호' });
         }
     } catch (error) {
-        res.status(500).json({ message: '인증 검증 실패', error: error.toString() });
+        res.status(500).json({ message: '인증 검증 실패', error: error.message });
     }
 }
 
@@ -86,21 +84,21 @@ passport.use(new LocalStrategy(
     { usernameField: 'id' },
     async (id, password, done) => {
         try {
-        const user = await User.findOne({ id });
+            const user = await User.findOne({ id });
 
-        if (!user) {
-            return done(null, false, { message: 'Incorrect username.' });
-        }
+            if (!user) {
+                return done(null, false, { message: '아이디가 일치하지 않습니다.' });
+            }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+            const isMatch = await bcrypt.compare(password, user.password);
 
-        if (isMatch) {
-            return done(null, user);
-        } else {
-            return done(null, false, { message: 'Incorrect password.' });
-        }
+            if (isMatch) {
+                return done(null, user);
+            } else {
+                return done(null, false, { message: '비밀번호가 일치하지 않습니다.' });
+            }
         } catch (error) {
-        return done(error);
+            return done(error);
         }
     }
 ));
@@ -110,90 +108,109 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-try {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-    return done(null, false);
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return done(null, false);
+        }
+
+        const user = await User.findById(id);
+
+        if (!user) {
+            return done(null, false);
+        }
+
+        done(null, user);
+    } catch (err) {
+        done(err, null);
     }
-
-    const user = await User.findById(id);
-
-    if (!user) {
-    return done(null, false);
-    }
-
-    done(null, user);
-} catch (err) {
-    done(err, null);
-}
 });
 
 // 아이디 중복검사
 export async function findById(req, res) {
-    const id = req.body 
+    const id = req.body;
     console.log(id);
-    const found = await User.findOne({ id: id });
+    try {
+        const found = await User.findOne({ id: id });
 
-    if(found){
-        return res.status(409).json({isUser:'Y'});
+        if (found) {
+            return res.status(409).json({ isUser: 'Y' });
+        }
+        return res.status(200).json({ isUser: 'N' });
+    } catch (error) {
+        console.error('아이디 중복검사 중 에러 발생:', error);
+        res.status(500).json({ isUser: 'N', error: '아이디 중복검사 중 에러 발생' });
     }
-    return res.status(200).json({isUser:'N'});
 }
 
 // 핸드폰번호 중복검사
 export async function findByHp(req, res) {
-    const hp = req.body 
+    const hp = req.body;
     console.log(hp);
-    const found = await User.findOne({ phoneNumber: hp });
+    try {
+        const found = await User.findOne({ phoneNumber: hp });
 
-    if(found){
-        return res.status(409).json({isUser:'Y'});
+        if (found) {
+            return res.status(409).json({ isUser: 'Y' });
+        }
+        return res.status(200).json({ isUser: 'N' });
+    } catch (error) {
+        console.error('핸드폰번호 중복검사 중 에러 발생:', error);
+        res.status(500).json({ isUser: 'N', error: '핸드폰번호 중복검사 중 에러 발생' });
     }
-    return res.status(200).json({isUser:'N'});
 }
 
-// 회원가입 
+// 회원가입
 export async function AdminSignUp(req, res) {
     const { id, password, name, gender, birthdate, phoneNumber, isAdmin, isUser } = req.body;
-    const found = await User.findOne({ id: id });
-    if (found) {
-        return res.status(409).json({ message: `${id}이 이미 가입되었음`});
-    }
+    try {
+        const found = await User.findOne({ id: id });
+        if (found) {
+            return res.status(409).json({ message: '이미 가입된 아이디입니다.' });
+        }
 
-    const hashed = await bcrypt.hash(password, 10);
-    const newUser = new User({
-        id, 
-        password: hashed, 
-        name, 
-        gender, 
-        birthdate, 
-        phoneNumber, 
-        isAdmin, 
-        isUser });
-    await newUser.save(); 
-    
-    res.status(201).json( { id });
+        const hashed = await bcrypt.hash(password, 10);
+        const newUser = new User({
+            id,
+            password: hashed,
+            name,
+            gender,
+            birthdate,
+            phoneNumber,
+            isAdmin,
+            isUser
+        });
+        await newUser.save();
+
+        res.status(201).json({ id });
+    } catch (error) {
+        console.error('회원가입 중 에러 발생:', error);
+        res.status(500).json({ message: '회원가입 중 에러 발생' });
+    }
 }
 
 // 로그인 (관리자)
 export async function adminSignIn(req, res) {
     const { id, password } = req.body;
+    try {
+        // Retrieve the hashed password from the database
+        const user = await User.findOne({ id: id, isAdmin: 'Y' });
 
-  // Retrieve the hashed password from the database
-    const user = await User.findOne({ id: id, isAdmin: 'Y' });
+        if (!user) {
+            return res.status(401).json({ message: '아이디가 일치하지 않습니다. 다시 로그인해주세요.' });
+        }
 
-    if (!user) {
-        return res.status(401).json({ message: '입력한 아이디가 일치하지 않습니다. 다시 로그인해주세요.' });
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordMatch) {
+            return res.status(401).json({ message: '비밀번호가 일치하지 않습니다. 다시 로그인해주세요.' });
+        }
+
+        const token = createJwtToken(user);
+        res.status(200).json({ user, token });
+    } catch (error) {
+        console.error('로그인 중 에러 발생:', error);
+        res.status(500).json({ message: '로그인 중 에러 발생' });
     }
-    console.log(user);
-
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordMatch) {
-        return res.status(401).json({ message: '입력한 비밀번호가 일치하지 않습니다. 다시 로그인해주세요.' });
-    }
-
-    const token = createJwtToken(user);
-    res.status(200).json({user, token});
 }
 
 // 회원 정보 전체 수정 

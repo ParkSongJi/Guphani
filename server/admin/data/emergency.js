@@ -245,84 +245,111 @@ const apiUrl = 'http://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytLis
 const serviceKey = 'MFQhV%2FZRnUepzJxZ%2BHB1FIHAiJdEcnbf5n8u3Jc2UoLAbkogcZekWtdQyVAU7NeMGScZlxkyD%2BZfDvfLyp%2BEVA%3D%3D';
 
 const fetchAndGetData = async (url) => {
-  const response = await fetch(url, { method: 'GET' });
+  try {
+    const response = await fetch(url, { method: 'GET' });
 
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
+    if (!response.ok) {
+      throw new Error('네트워크 응답이 올바르지 않습니다');
+    }
+
+    return response.text();
+  } catch (error) {
+    console.error('데이터 가져오기 중 에러 발생:', error.message);
+    throw new Error('데이터를 가져오는 중 에러가 발생했습니다.');
   }
-
-  return response.text();
 };
 
 export async function getAllCitiesEr() {
-  const cities = ['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '세종특별자치시', '경기도', '강원특별자치도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도'];
+  try {
+    const cities = ['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '세종특별자치시', '경기도', '강원특별자치도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도'];
 
-  for (const city of cities) {
-    // console.log(city);
-    const response = await fetch(`https://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytListInfoInqire?serviceKey=MFQhV%2FZRnUepzJxZ%2BHB1FIHAiJdEcnbf5n8u3Jc2UoLAbkogcZekWtdQyVAU7NeMGScZlxkyD%2BZfDvfLyp%2BEVA%3D%3D&Q0=${city}&pageNo=1&numOfRows=1000`, { method: 'GET' });
-    const xmldata = await response.text();
-    parseString(xmldata, async (err, result) => {
-      const items = result.response.body[0].items[0].item;
-      for (const data of items){
-        const emergencyData = {
-          hpid: data.hpid[0],
-          dutyEmclsName: emptyHandling(data.dutyEmclsName),
-          dutyName: emptyHandling(data.dutyName),
-          dutyTel1: emptyHandling(data.dutyTel1),
-          dutyTel3: data.dutyTel3 && data.dutyTel3[0] ?.trim() || data.dutyTel1[0],
-          rnum: emptyHandling(data.rnum),
-          wgs84Lat: emptyHandling(data.wgs84Lat),
-          wgs84Lon: emptyHandling(data.wgs84Lon),
-          dutyAddr: emptyHandling(data.dutyAddr),
-          isRealTimeEmergencyData: !data.dutyEmclsName[0].includes('응급의료시설')
+    for (const city of cities) {
+      const response = await fetch(`https://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytListInfoInqire?serviceKey=MFQhV%2FZRnUepzJxZ%2BHB1FIHAiJdEcnbf5n8u3Jc2UoLAbkogcZekWtdQyVAU7NeMGScZlxkyD%2BZfDvfLyp%2BEVA%3D%3D&Q0=${city}&pageNo=1&numOfRows=1000`, { method: 'GET' });
+      const xmldata = await response.text();
+      parseString(xmldata, async (err, result) => {
+        if (err) {
+          throw err;
         }
-        await Emergency.findOneAndUpdate(
-          { hpid: emergencyData.hpid },
-          emergencyData,
-          { upsert: true }
-        );
-      }
-    })
+
+        const items = result.response.body[0].items[0].item;
+
+        for (const data of items) {
+          const emergencyData = {
+            hpid: data.hpid[0],
+            dutyEmclsName: emptyHandling(data.dutyEmclsName),
+            dutyName: emptyHandling(data.dutyName),
+            dutyTel1: emptyHandling(data.dutyTel1),
+            dutyTel3: data.dutyTel3 && data.dutyTel3[0]?.trim() || data.dutyTel1[0],
+            rnum: emptyHandling(data.rnum),
+            wgs84Lat: emptyHandling(data.wgs84Lat),
+            wgs84Lon: emptyHandling(data.wgs84Lon),
+            dutyAddr: emptyHandling(data.dutyAddr),
+            isRealTimeEmergencyData: !data.dutyEmclsName[0].includes('응급의료시설')
+          };
+
+          await Emergency.findOneAndUpdate(
+            { hpid: emergencyData.hpid },
+            emergencyData,
+            { upsert: true }
+          );
+        }
+      });
+    }
+  } catch (error) {
+    console.error('도시별 응급의료시설 데이터 가져오기 중 에러 발생:', error.message);
+    throw new Error('도시별 응급의료시설 데이터를 가져오는 중 에러가 발생했습니다.');
   }
 }
 
-// 기본정보 추가 
+
+// 기본정보 추가
 export async function getAllInfoEr() {
+  try {
     const allEmergencies = await Emergency.find({}, 'hpid'); // 데이터베이스에서 모든 hpid를 가져옴
     for (const emergency of allEmergencies) {
       try {
-        await getAllInfoErTest(emergency.hpid)
+        await getAllInfoErTest(emergency.hpid);
       } catch (error) {
-        console.error(`${emergency.hpid}:error`);
+        console.error(`${emergency.hpid} 데이터 추가 중 에러 발생:`, error.message);
       }
+    }
+  } catch (error) {
+    console.error('기본정보 추가 중 에러 발생:', error.message);
   }
-  return 
 }
-
 
 function combineDaysAndTime(start, end) {
-  return `${start[0]}${start[1]}:${start[2]}${start[3]}-${end[0]}${end[1]}:${end[2]}${end[3]}`
+  try {
+    return `${start[0]}${start[1]}:${start[2]}${start[3]}-${end[0]}${end[1]}:${end[2]}${end[3]}`;
+  } catch (error) {
+    console.error('날짜와 시간을 결합하는 중 에러 발생:', error.message);
+    throw new Error('날짜와 시간을 결합하는 중 에러가 발생했습니다.');
+  }
 }
 
+export async function getAllInfoErTest(hpid) {
+  try {
+    const url = `https://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytBassInfoInqire?serviceKey=MFQhV%2FZRnUepzJxZ%2BHB1FIHAiJdEcnbf5n8u3Jc2UoLAbkogcZekWtdQyVAU7NeMGScZlxkyD%2BZfDvfLyp%2BEVA%3D%3D&HPID=${hpid}&pageNo=1&numOfRows=10`;
 
-export async function getAllInfoErTest(hpid){
-  const url = `https://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytBassInfoInqire?serviceKey=MFQhV%2FZRnUepzJxZ%2BHB1FIHAiJdEcnbf5n8u3Jc2UoLAbkogcZekWtdQyVAU7NeMGScZlxkyD%2BZfDvfLyp%2BEVA%3D%3D&HPID=${hpid}&pageNo=1&numOfRows=10`
+    const response = await fetch(url, { method: 'GET' });
+    const responseParse = await response.text();
 
-  const response = await fetch(url, { method: 'GET' });
-  const responseParse = await response.text()
+    parseString(responseParse, async (err, result) => {
+      if (err) {
+        throw err;
+      }
 
-  parseString(responseParse, async (err, result) => {
-      const data = result.response.body[0].items[0].item[0]
+      const data = result.response.body[0].items[0].item[0];
       const emergencyData = {
         hpid: data.hpid[0],
-        dutyTime1Mon: (data.dutyTime1s && data.dutyTime1c) ? combineDaysAndTime(data.dutyTime1s[0],data.dutyTime1c[0]) : '-',
-        dutyTime2Tue: (data.dutyTime2s && data.dutyTime2c) ? combineDaysAndTime(data.dutyTime2s[0],data.dutyTime2c[0]) : '-',
-        dutyTime3Wed: (data.dutyTime3s && data.dutyTime3c) ? combineDaysAndTime(data.dutyTime3s[0],data.dutyTime3c[0]) : '-',
-        dutyTime4Thu: (data.dutyTime4s && data.dutyTime4c) ? combineDaysAndTime(data.dutyTime4s[0],data.dutyTime4c[0]) : '-',
-        dutyTime5Fri: (data.dutyTime5s && data.dutyTime5c) ? combineDaysAndTime(data.dutyTime5s[0],data.dutyTime5c[0]) : '-',
-        dutyTime6Sat: (data.dutyTime6s && data.dutyTime6c) ? combineDaysAndTime(data.dutyTime6s[0],data.dutyTime6c[0]) : '-',
-        dutyTime7Sun: (data.dutyTime7s && data.dutyTime7c) ? combineDaysAndTime(data.dutyTime7s[0],data.dutyTime7c[0]) : '-',
-        dutyTime8Hol: (data.dutyTime8s && data.dutyTime8c) ? combineDaysAndTime(data.dutyTime8s[0],data.dutyTime8c[0]) : '-',
+        dutyTime1Mon: (data.dutyTime1s && data.dutyTime1c) ? combineDaysAndTime(data.dutyTime1s[0], data.dutyTime1c[0]) : '-',
+        dutyTime2Tue: (data.dutyTime2s && data.dutyTime2c) ? combineDaysAndTime(data.dutyTime2s[0], data.dutyTime2c[0]) : '-',
+        dutyTime3Wed: (data.dutyTime3s && data.dutyTime3c) ? combineDaysAndTime(data.dutyTime3s[0], data.dutyTime3c[0]) : '-',
+        dutyTime4Thu: (data.dutyTime4s && data.dutyTime4c) ? combineDaysAndTime(data.dutyTime4s[0], data.dutyTime4c[0]) : '-',
+        dutyTime5Fri: (data.dutyTime5s && data.dutyTime5c) ? combineDaysAndTime(data.dutyTime5s[0], data.dutyTime5c[0]) : '-',
+        dutyTime6Sat: (data.dutyTime6s && data.dutyTime6c) ? combineDaysAndTime(data.dutyTime6s[0], data.dutyTime6c[0]) : '-',
+        dutyTime7Sun: (data.dutyTime7s && data.dutyTime7c) ? combineDaysAndTime(data.dutyTime7s[0], data.dutyTime7c[0]) : '-',
+        dutyTime8Hol: (data.dutyTime8s && data.dutyTime8c) ? combineDaysAndTime(data.dutyTime8s[0], data.dutyTime8c[0]) : '-',
         hvecNum: emptyHandling(data.hvec),
         hvoc: emptyHandling(data.hvoc),
         hvcc: emptyHandling(data.hvcc),
@@ -357,14 +384,18 @@ export async function getAllInfoErTest(hpid){
         hpnicuyn: emptyHandling(data.hpnicuyn),
         hpopyn: emptyHandling(data.hpopyn),
       };
+
       const updateResult = await Emergency.findOneAndUpdate(
         { hpid: emergencyData.hpid },
         emergencyData,
         { new: true }
-        );
-        return updateResult
-    
-  })
+      );
+      return updateResult;
+    });
+  } catch (error) {
+    console.error(`${hpid}의 기본정보 추가 중 에러 발생:`, error.message);
+    throw new Error('기본정보를 추가하는 중 에러가 발생했습니다.');
+  }
 }
 
 import XLSX from 'xlsx';
@@ -372,120 +403,132 @@ import XLSX from 'xlsx';
 
 
 export async function insertSpecialEr() {
-  // 파일 읽기
-  const workbook = XLSX.readFile('./GuphaniData.xlsx');
+  try {
+    // 파일 읽기
+    const workbook = XLSX.readFile('./GuphaniData.xlsx');
 
-  // 세 번째 시트 선택 (시트는 0부터 시작)
-  const sheetName = workbook.SheetNames[0];
-  const worksheet = workbook.Sheets[sheetName];
+    // 세 번째 시트 선택 (시트는 0부터 시작)
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
 
-  // 시트 데이터 읽기
-  const datas = XLSX.utils.sheet_to_json(worksheet);
-  // console.log(datas);
+    // 시트 데이터 읽기
+    const datas = XLSX.utils.sheet_to_json(worksheet);
 
-  // hpsaltCode를 기준으로 데이터를 그룹화
-  const groupedData = datas.reduce((result, item) => {
-    const key = item['암호화요양기호']; // hpsaltCode를 키로 사용
+    // hpsaltCode를 기준으로 데이터를 그룹화
+    const groupedData = datas.reduce((result, item) => {
+      const key = item['암호화요양기호']; // hpsaltCode를 키로 사용
 
-    // 이미 해당 그룹이 존재하는지 확인하고 없으면 새로운 Set과 빈 문자열 생성
-    if (!result[key]) {
-      result[key] = { 암호화요양기호: key, 검색코드명: '' }; // hpsaltCode를 key로 사용
-    }
+      // 이미 해당 그룹이 존재하는지 확인하고 없으면 새로운 Set과 빈 문자열 생성
+      if (!result[key]) {
+        result[key] = { 암호화요양기호: key, 검색코드명: '' }; // hpsaltCode를 key로 사용
+      }
 
-    // 검색코드명을 ,로 구분해서 추가
-    if (result[key]['검색코드명'].length > 0) {
-      result[key]['검색코드명'] += ',';
-    }
-    result[key]['검색코드명'] += item['검색코드명'];
+      // 검색코드명을 ,로 구분해서 추가
+      if (result[key]['검색코드명'].length > 0) {
+        result[key]['검색코드명'] += ',';
+      }
+      result[key]['검색코드명'] += item['검색코드명'];
 
-    return result;
-  }, {});
+      return result;
+    }, {});
 
-  // Set을 다시 배열로 변환하고 결과 출력
-  const finalResult = Object.values(groupedData);
+    // Set을 다시 배열로 변환하고 결과 출력
+    const finalResult = Object.values(groupedData);
 
-  // console.log(finalResult);
+    // hpsaltCode를 기준으로 업데이트 수행
+    await Promise.all(finalResult.map(async (hospitalData) => {
+      const { 암호화요양기호, 검색코드명 } = hospitalData;
 
-  // hpsaltCode를 기준으로 업데이트 수행
-  await Promise.all(finalResult.map(async (hospitalData) => {
-    const { 암호화요양기호, 검색코드명 } = hospitalData;
-
-    // Emergency에서 해당 hpsaltCode를 찾아 업데이트 수행
-    await Emergency.findOneAndUpdate(
-      { hpsaltCode: 암호화요양기호 },
-      { $set: { specialErList: 검색코드명 } },
-      { new: true }
-    );
-  }));
+      // Emergency에서 해당 hpsaltCode를 찾아 업데이트 수행
+      await Emergency.findOneAndUpdate(
+        { hpsaltCode: 암호화요양기호 },
+        { $set: { specialErList: 검색코드명 } },
+        { new: true }
+      );
+    }));
+  } catch (error) {
+    console.error('특수응급실 데이터 삽입 중 에러 발생:', error.message);
+    throw new Error('특수응급실 데이터를 삽입하는 중 에러가 발생했습니다.');
+  }
 }
 
 export async function insertSaltCode() {
-  const existingHospitals = await Emergency.find({});
-  const workbook = XLSX.readFile('./1.병원정보서비스.xlsx');
-  const sheetName = workbook.SheetNames[0];
-  const worksheet = workbook.Sheets[sheetName];
-  const workbookData = XLSX.utils.sheet_to_json(worksheet, { header: ['암호화요양기호', '요양기관명'] });
-  
+  try {
+    const existingHospitals = await Emergency.find({});
+    const workbook = XLSX.readFile('./1.병원정보서비스.xlsx');
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const workbookData = XLSX.utils.sheet_to_json(worksheet, { header: ['암호화요양기호', '요양기관명'] });
 
-  for (const { dutyName, hpsaltCode: existingHpsaltCode } of existingHospitals) {
-    const workbookHospital = workbookData.find(hospital => hospital.요양기관명 === dutyName) || workbookData.find(hospital => hospital.요양기관명.replace(' ', '') === dutyName) 
+    for (const { dutyName, hpsaltCode: existingHpsaltCode } of existingHospitals) {
+      const workbookHospital = workbookData.find(hospital => hospital.요양기관명 === dutyName) || workbookData.find(hospital => hospital.요양기관명.replace(' ', '') === dutyName);
 
-    if (workbookHospital && existingHpsaltCode !== workbookHospital.암호화요양기호) {
-      const updatedDocument = await Emergency.findOneAndUpdate(
-        { dutyName: dutyName },
-        { $set: { hpsaltCode: workbookHospital.암호화요양기호 } },
-        { new: true }
-      );
+      if (workbookHospital && existingHpsaltCode !== workbookHospital.암호화요양기호) {
+        const updatedDocument = await Emergency.findOneAndUpdate(
+          { dutyName: dutyName },
+          { $set: { hpsaltCode: workbookHospital.암호화요양기호 } },
+          { new: true }
+        );
+      }
     }
+  } catch (error) {
+    console.error('암호화요양기호 삽입 중 에러 발생:', error.message);
+    throw new Error('암호화요양기호를 삽입하는 중 에러가 발생했습니다.');
   }
 }
 
 export async function insertEquipment() {
-  const workbook = XLSX.readFile('./7.의료기관별상세정보서비스_05_의료장비정보.xlsx');
-  const sheetName = workbook.SheetNames[0];
-  const worksheet = workbook.Sheets[sheetName];
-  const datas = XLSX.utils.sheet_to_json(worksheet);
+  try {
+    const workbook = XLSX.readFile('./7.의료기관별상세정보서비스_05_의료장비정보.xlsx');
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const datas = XLSX.utils.sheet_to_json(worksheet);
 
-  // MongoDB에서 모든 병원의 암호화요양기호 가져오기
-  const existingHospitals = await Emergency.find({}, 'hpsaltCode');
-  const hpsaltCodesInDB = existingHospitals.map(hospital => hospital.hpsaltCode);
+    // MongoDB에서 모든 병원의 암호화요양기호 가져오기
+    const existingHospitals = await Emergency.find({}, 'hpsaltCode');
+    const hpsaltCodesInDB = existingHospitals.map(hospital => hospital.hpsaltCode);
 
-  // 몽구스에서 가져온 암호화요양기호로 필터링하여 그룹화
-  const groupedData = datas.reduce((result, item) => {
-    const key = item['암호화요양기호'];
+    // 몽구스에서 가져온 암호화요양기호로 필터링하여 그룹화
+    const groupedData = datas.reduce((result, item) => {
+      const key = item['암호화요양기호'];
 
-    if (hpsaltCodesInDB.includes(key)) {
-      if (!result[key]) {
-        result[key] = { 장비코드명: new Set() };
+      if (hpsaltCodesInDB.includes(key)) {
+        if (!result[key]) {
+          result[key] = { 장비코드명: new Set() };
+        }
+        result[key]['장비코드명'].add(item['장비코드명']);
       }
-      result[key]['장비코드명'].add(item['장비코드명']);
+
+      return result;
+    }, {});
+
+    const updatePromises = [];
+
+    for (const key in groupedData) {
+      const hpsaltCode = key;
+      const equipmentList = Array.from(groupedData[key]['장비코드명']).join(', ');
+
+      const updatePromise = Emergency.findOneAndUpdate(
+        { hpsaltCode },
+        { $set: { equipmentList } },
+        { new: true }
+      );
+
+      updatePromises.push(updatePromise);
     }
 
-    return result;
-  }, {});
+    const updatedDocuments = await Promise.all(updatePromises);
 
-  const updatePromises = [];
-
-  for (const key in groupedData) {
-    const hpsaltCode = key;
-    const equipmentList = Array.from(groupedData[key]['장비코드명']).join(', ');
-
-    const updatePromise = Emergency.findOneAndUpdate(
-      { hpsaltCode },
-      { $set: { equipmentList } },
-      { new: true }
-    );
-
-    updatePromises.push(updatePromise);
+    updatedDocuments.forEach((updatedDocument, index) => {
+      const hpsaltCode = Object.keys(groupedData)[index];
+      const equipmentList = Array.from(groupedData[hpsaltCode]['장비코드명']).join(', ');
+    });
+  } catch (error) {
+    console.error('의료장비 정보 삽입 중 에러 발생:', error.message);
+    throw new Error('의료장비 정보를 삽입하는 중 에러가 발생했습니다.');
   }
-
-  const updatedDocuments = await Promise.all(updatePromises);
-
-  updatedDocuments.forEach((updatedDocument, index) => {
-    const hpsaltCode = Object.keys(groupedData)[index];
-    const equipmentList = Array.from(groupedData[hpsaltCode]['장비코드명']).join(', ');
-  });
 }
+
 import haversine from 'haversine';
 const citiesRangeLongLati = {
   '서울특별시': {'latitude': [37.4, 37.9], 'longitude': [126.7, 127.3]},
@@ -507,26 +550,30 @@ const citiesRangeLongLati = {
   '제주특별자치도': {'latitude': [33.0, 34.5], 'longitude': [126.0, 127.5]},
 };
 function findNearestCityList(targetLatitude, targetLongitude) {
-  const targetCoord = { latitude: targetLatitude, longitude: targetLongitude };
-  let nearestCityList = [];
+  try {
+    const targetCoord = { latitude: targetLatitude, longitude: targetLongitude };
+    let nearestCityList = [];
 
-  for (const [city, { latitude, longitude }] of Object.entries(citiesRangeLongLati)) {
-    const vertices = [
-      { latitude: latitude[0], longitude: longitude[0] },
-      { latitude: latitude[0], longitude: longitude[1] },
-      { latitude: latitude[1], longitude: longitude[1] },
-      { latitude: latitude[1], longitude: longitude[0] },
-      { latitude: (latitude[0] + latitude[1]) / 2, longitude: (longitude[0] + longitude[1]) / 2 },
-    ];
+    for (const [city, { latitude, longitude }] of Object.entries(citiesRangeLongLati)) {
+      const vertices = [
+        { latitude: latitude[0], longitude: longitude[0] },
+        { latitude: latitude[0], longitude: longitude[1] },
+        { latitude: latitude[1], longitude: longitude[1] },
+        { latitude: latitude[1], longitude: longitude[0] },
+        { latitude: (latitude[0] + latitude[1]) / 2, longitude: (longitude[0] + longitude[1]) / 2 },
+      ];
 
-    const minDistance = Math.min(...vertices.map(vertex => haversine(targetCoord, vertex, { unit: 'km' })));
-    nearestCityList.push({ city, distance: minDistance });
+      const minDistance = Math.min(...vertices.map(vertex => haversine(targetCoord, vertex, { unit: 'km' })));
+      nearestCityList.push({ city, distance: minDistance });
+    }
+
+    nearestCityList.sort((a, b) => a.distance - b.distance); // 거리를 기준으로 오름차순 정렬
+    return nearestCityList;
+  } catch (error) {
+    console.error('가까운 도시 목록 찾기 중 에러 발생:', error.message);
+    throw new Error('가까운 도시 목록을 찾는 중 에러가 발생했습니다.');
   }
-
-  nearestCityList.sort((a, b) => a.distance - b.distance); // 거리를 기준으로 오름차순 정렬
-  return nearestCityList;
 }
-
 export async function realTimeEr(targetLatitude, targetLongitude, socket) {
   const latitude = parseFloat(targetLatitude);
   const longitude = parseFloat(targetLongitude);
@@ -601,6 +648,7 @@ export async function realTimeEr(targetLatitude, targetLongitude, socket) {
 }
 
 
+
 // api불러오는거 오류나도 오류난 도시만 출력하고 안멈추게
 async function fetchDataWithRetry(url, city, maxRetries = 3, delayBetweenRetries = 1000) {
   let retries = 0;
@@ -627,3 +675,4 @@ async function fetchDataWithRetry(url, city, maxRetries = 3, delayBetweenRetries
 function emptyHandling(value) {
   return value && value[0]?.trim() || null
 }
+

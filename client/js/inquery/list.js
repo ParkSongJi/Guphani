@@ -7,7 +7,7 @@ const headers = {
 };
 
 // 데이터패치
-fetch(`http://localhost:8080/inquiry/user/list`,{
+fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/inquiry/user/list`,{
     headers: headers
 })
 .then((response) => {return response.json()})
@@ -62,7 +62,7 @@ async function del(id) {
     layerOn('inquireDelLayer')
 
     layerDelBtn.addEventListener('click',()=>{
-        const response = fetch(`http://localhost:8080/inquiry/delete/${id}`,{
+        const response = fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/inquiry/delete/${id}`,{
             method:'DELETE',
             headers: headers
         })

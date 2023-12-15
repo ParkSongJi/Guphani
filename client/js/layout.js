@@ -59,7 +59,7 @@ function withdrawal() {
         const token = localStorage.getItem('token');
     
         try {
-            const response =  fetch(`http://localhost:8080/auth/user/withdraw/${userId}`, {
+            const response =  fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/withdraw/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
