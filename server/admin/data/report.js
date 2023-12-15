@@ -8,7 +8,7 @@ export async function generateEmergencyMessage(id) {
 
     if (user) {
       if (user.name) {
-        emergencyMessage += `이름: ${user.name} %0A`;
+        emergencyMessage += `%0A이름: ${user.name} %0A`;
       }
       if (user.birthdate) {
         emergencyMessage += `생년월일: ${user.birthdate} %0A`;
