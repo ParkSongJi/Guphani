@@ -53,10 +53,12 @@ async function info_fetch() {
     .then((user)=>{
         let indexInfo = ''
         let mypageInfo =''
+        let list = ''
         const mypageInfoWrap = document.querySelector('.mypage-info')
 
         const userInfoElement = document.querySelector('.user-info');
         const userUtilElement = document.querySelector('#index .util-wrap');
+        const mypageList = document.querySelector('.mypage-list');
 
         if(token){
             if (userInfoElement && userUtilElement) {
@@ -91,6 +93,30 @@ async function info_fetch() {
                 </ul>
             `     
             mypageInfoWrap.innerHTML = mypageInfo 
+
+            if(mypageList.classList.contains('index')){
+                list +=`
+                <li><a href="./user/updateUserInfo.html">회원정보 수정</a></li>
+                <li><a href="./mypage/inquiryList.html">문의하기</a></li>
+                <li><a href="./mypage/notice.html">공지사항</a></li>
+                <li><a href="./mypage/service.html">서비스이용약관</a></li>
+                <li><a href="./mypage/personal.html">개인정보 처리방침</a></li>
+                <li><a href="#" id="logoutBtn2">로그아웃</a></li>
+                <li onclick="withdrawal()"><a>회원탈퇴</a></li>
+                `
+            }else{
+                list +=`
+                <li><a href="../user/updateUserInfo.html">회원정보 수정</a></li>
+                <li><a href="../mypage/inquiryList.html">문의하기</a></li>
+                <li><a href="../mypage/notice.html">공지사항</a></li>
+                <li><a href="../mypage/service.html">서비스이용약관</a></li>
+                <li><a href="../mypage/personal.html">개인정보 처리방침</a></li>
+                <li><a href="#" id="logoutBtn2">로그아웃</a></li>
+                <li onclick="withdrawal()"><a>회원탈퇴</a></li>
+                `
+            }
+
+            mypageList.innerHTML = list
         }
     })
 }
@@ -191,6 +217,7 @@ window.addEventListener('click', (e) => {
 
 function withdrawal() {
     const userId = localStorage.getItem('userId')
+    console.log(userId);
     layerOn('withdrawalLayer')
     const withdrawalBtn = document.querySelector('.withdrawalBtn')
     const txtWrap = document.querySelector('.txt-wrap')
@@ -216,7 +243,6 @@ function withdrawal() {
 
         txtWrap.innerText = '회원탈퇴가 완료되었습니다.'
         btnWrap.innerHTML = `<button type="button" class="black-btn" onclick="location='./index.html'">닫기</button>`
-        localStorage.removeItem('user')
         localStorage.removeItem('token')
         localStorage.removeItem('userId')
     })

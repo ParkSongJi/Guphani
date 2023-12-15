@@ -15,7 +15,7 @@ const notice = Mongoose.model('notice', noticeSchema)
 // 사용자 공지사항
 export async function userGetAll() {
     try {
-        const data = await notice.find()
+        const data = await notice.find().sort({ createdAt: -1 })
         console.log('사용자 공지사항');
         return data;
     } catch (error) {

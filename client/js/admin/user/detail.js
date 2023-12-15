@@ -121,8 +121,8 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
                     <td colspan="3">
                     <div class="radio-wrap">
                     <select name="isUser" id="isUser">
-                                <option value="n" ${user.user.isUser === 'N' ? 'selected' : ''}>탈퇴</option>
-                                <option value="y" ${user.user.isUser === 'Y' ? 'selected' : ''}>정상</option>
+                                <option value="N" ${user.user.isUser === 'N' ? 'selected' : ''}>탈퇴</option>
+                                <option value="Y" ${user.user.isUser === 'Y' ? 'selected' : ''}>정상</option>
                             </select>
                         </div>
                     </td>
@@ -186,6 +186,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const isAdminYes = document.getElementById('admin1').checked;
         const isAdminNo = document.getElementById('admin2').checked;
         const isAdmin = isAdminYes ? 'Y' : (isAdminNo ? 'N' : '');
+        const isUser = document.getElementById('isUser').value;
+
         
         const token = localStorage.getItem('adminToken');
 
@@ -202,6 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     birthdate: userBirthdate,
                     phoneNumber: userPhoneNumber,
                     isAdmin: isAdmin,
+                    isUser:isUser,
                     guardianRelationship: userguardianRelationship, 
                     guardianPhoneNumber: userguardianPhoneNumber, 
                     allergy: userAllergy, 

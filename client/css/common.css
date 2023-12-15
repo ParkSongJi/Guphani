@@ -17,7 +17,7 @@
 .emergency{background: url('../img/icon1.png') no-repeat 50%/cover;}
 .pharmacy{background: url('../img/icon2.png') no-repeat 50%/cover;}
 .first-aid{background: url('../img/icon3.png') no-repeat 50%/cover;}
-.login-info{text-align: center; margin: 2.28rem 0 0; font-size: 1.25rem;}
+.login-info{text-align: center; margin: 3.4rem 0 1rem; font-size: 1.25rem;}
 .login-info strong{font-size: 1.25rem;}
 
 /* 공통 헤더 */

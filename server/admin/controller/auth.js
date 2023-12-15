@@ -383,15 +383,14 @@ export async function signIn(req, res) {
     const { id, password } = req.body;
     // Retrieve the hashed password from the database
     const user = await User.findOne({ id: id, isUser: 'Y' });
-    console.log(user);
     if (!user) {
-        return res.status(401).json({ message: '입력한 아이디가 일치하지 않습니다. 다시 로그인해주세요.' });
+        return res.status(401).json({ message: '등록된 회원이 없습니다.' });
     }
-
+    
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
     if (!isPasswordMatch) {
-        return res.status(401).json({ message: '입력한 비밀번호가 일치하지 않습니다. 다시 로그인해주세요.' });
+        return res.status(402).json({ message: '아이디 비밀번호가 일치하지 않습니다.' });
     }
 
     const token = createJwtToken(user);
@@ -442,10 +441,9 @@ export async function addInfo(req, res, next) {
 
 // 회원 탈퇴 (사용자)
 export async function withdraw(req, res, next) {
-    console.log('11111111');
     try {
         // Extract user ID from the token
-        const userIdFromToken = req.id;
+        const userIdFromToken = req.id.id;
 
         // Compare user ID from token with the ID in the request parameters
         if (userIdFromToken !== req.params.id) {

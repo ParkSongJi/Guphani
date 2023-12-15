@@ -50,10 +50,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 window.location.href = '../index.html'; 
             } else {
-                if (response.status !== 200) {
-                    makePopup('로그인 정보가 일치하지 않습니다.');
-
-                } else {
+                if (response.status == 401) {
+                    makePopup('등록된 사용자가 없습니다,');
+                }else if (response.status == 402){
+                    makePopup('아이디 비밀번호가 다릅니다.');
+                }else {
                     makePopup('서버에서 오류가 발생했습니다. 새로고침 후 다시 시도해주세요.');
                 }
                 console.log('failed');

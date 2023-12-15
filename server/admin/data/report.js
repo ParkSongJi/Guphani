@@ -8,23 +8,23 @@ export async function generateEmergencyMessage(id) {
 
     if (user) {
       if (user.name) {
-        emergencyMessage += `이름: ${user.name} <br>`;
+        emergencyMessage += `이름: ${user.name} %0A`;
       }
       if (user.birthdate) {
-        emergencyMessage += `생년월일: ${user.birthdate} <br>`;
+        emergencyMessage += `생년월일: ${user.birthdate} %0A`;
       }
       if (user.bloodType) {
-        emergencyMessage += `혈액형: ${user.bloodType}형 <br>`;
+        emergencyMessage += `혈액형: ${user.bloodType}형 %0A`;
       }
       // underlyingDisease가 값이 비어있는데 기저질환: 이 메시지에 포함되는 현상이 나타나서 length 조건 추가
       if (user.underlyingDisease && user.underlyingDisease.length > 0) {
-        emergencyMessage += `기저질환: ${user.underlyingDisease.join(', ')} <br>`;
+        emergencyMessage += `기저질환: ${user.underlyingDisease.join(', ')} %0A`;
       }
       if (user.allergy && user.allergy.length > 0) {
-        emergencyMessage += `알러지: ${user.allergy.join(', ')} <br>`;
+        emergencyMessage += `알러지: ${user.allergy.join(', ')} %0A`;
       }
       if (user.medication && user.medication.length > 0) {
-        emergencyMessage += `복용약: ${user.medication.join(', ')} <br>`;
+        emergencyMessage += `복용약: ${user.medication.join(', ')} %0A`;
       }
     }
     emergencyMessage += '긴급상황입니다.'
