@@ -79,8 +79,10 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
         const originBirth = document.getElementById('birthdate');
         const originHp = document.getElementById('phoneNumber');
         const originGender = document.getElementById('gender');
-        const IsMale = document.getElementById('male');
-        const IsFemale = document.getElementById('female');
+        const IsMale = document.getElementById('m');
+        const IsFemale = document.getElementById('f');
+        const genderRadio = document.getElementsByName('gender')
+
 
         if (originName) originName.textContent = name;
         if (originBirth) originBirth.textContent = birthdate;
@@ -99,11 +101,11 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
         if (originHp) {
             originHp.value = phoneNumber;
         }
-        if (gender && gender === 'female') {
-            IsFemale.checked = true;
-        } else {
-            IsMale.checked = true;
-        }
+        genderRadio.forEach((el)=>{
+            if(el.value == gender){
+                el.checked = true
+            }
+        })
 
         // 이름 받아오기 -> 다음 눌렀을때만 검증해서 팝업에 안내문구 뜨게
         const nameInput = document.getElementById('name');

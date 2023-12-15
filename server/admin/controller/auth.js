@@ -508,6 +508,7 @@ export async function updateMain(req, res, next) {
 
 // 추가 정보 수정 (사용자)
 export async function updateOther(req, res, next) {
+    console.log('추가정보수정 들어옴');
     try {
         const { id, guardianPhoneNumber, guardianRelationship, bloodType, underlyingDisease, allergy, medication } = req.body;
 

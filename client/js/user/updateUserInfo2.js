@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const guard_hp = document.getElementById('guard_hp').value.replace(/\D/g, '');
             const guard_rel = document.getElementById('guard_rel').value.trim();
             const storedUserData = localStorage.getItem('userData');
-            console.log(guard_hp.length);
+            // console.log(guard_hp.length);
             if (guard_hp.length < 11 && guard_hp.length >= 1) {
                 makePopup(`숫자 11자리로 이루어진 유효한 번호를 입력해주세요 `);
                 return;
@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateOther`, {
+                
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

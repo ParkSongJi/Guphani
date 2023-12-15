@@ -242,9 +242,11 @@ function withdrawal() {
         }
 
         txtWrap.innerText = '회원탈퇴가 완료되었습니다.'
-        btnWrap.innerHTML = `<button type="button" class="black-btn" onclick="location='./index.html'">닫기</button>`
+        
+        btnWrap.innerHTML = `<button type="button" class="black-btn" onclick="location.reload()">닫기</button>`
         localStorage.removeItem('token')
         localStorage.removeItem('userId')
+        
     })
 
 }

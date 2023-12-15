@@ -341,8 +341,7 @@ function createInfoFunc(er) {
       </ul>
   </div>
   <p class="time-info txt-point">* 운영시간은 변동될 수 있으니 방문 전 확인 후 이용 부탁드립니다.</p>
-</div>;
-
+</div>
 `
 infoWrap.appendChild(section)
 
