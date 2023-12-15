@@ -68,6 +68,79 @@ function getCurrentLocation() {
 }
 getCurrentLocation();
 
+function makeMarker(map, lat, lng, hpid) {
+  try {
+    var markerPosition = new kakao.maps.LatLng(lat, lng);
+
+    var imageSrc = '../../img/marker/marker2.png',
+      imageSize = new kakao.maps.Size(48, 52),
+      imageOption = { offset: new kakao.maps.Point(20, 52) };
+
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+    var marker = new kakao.maps.Marker({
+      position: markerPosition,
+      image: markerImage,
+    });
+
+    marker.setMap(map);
+
+    // 마커에 클릭 이벤트 리스너 추가
+    kakao.maps.event.addListener(marker, 'click', function () {
+      // 다른 마커를 클릭했을 때 이전에 선택된 마커의 배경색 제거
+      if (selectedMarker) {
+        const prevLi = document.getElementById(selectedMarker);
+        if (prevLi) {
+          prevLi.style.backgroundColor = 'transparent';
+        }
+      }
+    
+      // 클릭한 마커의 위치로 지도 중심 이동
+      map.setCenter(new kakao.maps.LatLng(lat - 0.002, lng));
+    
+      // 해당 마커에 대응하는 리스트 아이템을 찾아서 스크롤
+      const targetLi = document.getElementById(hpid);
+      if (targetLi) {
+        targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // 회색 배경 적용
+        targetLi.style.backgroundColor = '#F5F5F5';
+    
+        // 현재 클릭한 마커를 선택된 마커로 저장
+        selectedMarker = hpid;
+  
+      }
+    });
+
+    return marker;  // 생성한 마커를 반환
+  } catch (error) {
+    console.error('makeMarker 함수에서 오류 발생:', error);
+    return null;  // 오류 발생 시 null 반환
+  }
+}
+
+function makeHomeMarker(map, lat, lng) {
+  try {
+    var markerPosition = new kakao.maps.LatLng(lat, lng);
+
+    var markerImage = new kakao.maps.MarkerImage(
+      '../../img/marker/marker2.png', // 흰색 아이콘 이미지의 URL로 교체
+      new kakao.maps.Size(48, 52),
+      { offset: new kakao.maps.Point(20, 52) }
+    );
+
+    var marker = new kakao.maps.Marker({
+      position: markerPosition,
+      image: markerImage,
+      fillColor: '#FFFF00', // 마커의 배경색을 노란색으로 지정
+    });
+
+    marker.setMap(map);
+  } catch (error) {
+    console.error('홈 마커 생성 오류:', error.message);
+  }
+}
+
+
 detailBack.addEventListener('click', () => {
   try {
     layerOut('emergencyDetail');
@@ -509,77 +582,6 @@ function setKakaoMapDetail(idName, lat, lng) {
 }
 
 
-function makeMarker(map, lat, lng, hpid) {
-  try {
-    var markerPosition = new kakao.maps.LatLng(lat, lng);
-
-    var imageSrc = '../../img/marker/marker2.png',
-      imageSize = new kakao.maps.Size(48, 52),
-      imageOption = { offset: new kakao.maps.Point(20, 52) };
-
-    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
-    var marker = new kakao.maps.Marker({
-      position: markerPosition,
-      image: markerImage,
-    });
-
-    marker.setMap(map);
-
-    // 마커에 클릭 이벤트 리스너 추가
-    kakao.maps.event.addListener(marker, 'click', function () {
-      // 다른 마커를 클릭했을 때 이전에 선택된 마커의 배경색 제거
-      if (selectedMarker) {
-        const prevLi = document.getElementById(selectedMarker);
-        if (prevLi) {
-          prevLi.style.backgroundColor = 'transparent';
-        }
-      }
-    
-      // 클릭한 마커의 위치로 지도 중심 이동
-      map.setCenter(new kakao.maps.LatLng(lat - 0.002, lng));
-    
-      // 해당 마커에 대응하는 리스트 아이템을 찾아서 스크롤
-      const targetLi = document.getElementById(hpid);
-      if (targetLi) {
-        targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // 회색 배경 적용
-        targetLi.style.backgroundColor = '#F5F5F5';
-    
-        // 현재 클릭한 마커를 선택된 마커로 저장
-        selectedMarker = hpid;
-  
-      }
-    });
-
-    return marker;  // 생성한 마커를 반환
-  } catch (error) {
-    console.error('makeMarker 함수에서 오류 발생:', error);
-    return null;  // 오류 발생 시 null 반환
-  }
-}
-
-function makeHomeMarker(map, lat, lng) {
-  try {
-    var markerPosition = new kakao.maps.LatLng(lat, lng);
-
-    var markerImage = new kakao.maps.MarkerImage(
-      '../../img/marker/marker2.png', // 흰색 아이콘 이미지의 URL로 교체
-      new kakao.maps.Size(48, 52),
-      { offset: new kakao.maps.Point(20, 52) }
-    );
-
-    var marker = new kakao.maps.Marker({
-      position: markerPosition,
-      image: markerImage,
-      fillColor: '#FFFF00', // 마커의 배경색을 노란색으로 지정
-    });
-
-    marker.setMap(map);
-  } catch (error) {
-    console.error('홈 마커 생성 오류:', error.message);
-  }
-}
 
 const locationBtn = document.querySelector('.location-btn');
 // 현재위치로 이동

@@ -442,6 +442,7 @@ export async function addInfo(req, res, next) {
 
 // 회원 탈퇴 (사용자)
 export async function withdraw(req, res, next) {
+    console.log('11111111');
     try {
         // Extract user ID from the token
         const userIdFromToken = req.id;

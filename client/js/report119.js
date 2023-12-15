@@ -63,13 +63,13 @@ async function report119() {
                                         const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(cleanedMessage)}`;
                                         window.location.href = smsLink;
                                     } else {
-                                        const message = '실시간 응급의료 안내 어플 '+"'급하니'"+' 사용자 입니다. 긴급한 도움이 필요합니다. 현재위치에서 제일 가까운 119로 도움요청 합니다.';
+                                        const message = '실시간 응급의료 안내 어플 [급하니] 사용자 입니다.%0A긴급한 도움이 필요합니다.%0A현재위치에서 제일 가까운 119로 도움요청 합니다.';
                                         const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
                                         window.location.href = smsLink;
                                     }
                                 } else {
                                     if (response.status !== 200) {
-                                        const message = '실시간 응급의료 안내 어플 '+"'급하니'"+' 사용자 입니다. 긴급한 도움이 필요합니다. 현재위치에서 제일 가까운 119로 도움요청 합니다.';
+                                        const message = '실시간 응급의료 안내 어플 [급하니] 사용자 입니다.%0A긴급한 도움이 필요합니다.%0A현재위치에서 제일 가까운 119로 도움요청 합니다.';
                                         const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
                                         window.location.href = smsLink;
                                     } else {
@@ -81,7 +81,7 @@ async function report119() {
                                 console.error('Error:', error);
                             }
                         } else {
-                            const message = '실시간 응급의료 안내 어플 '+"'급하니'"+' 사용자 입니다. 긴급한 도움이 필요합니다. 현재위치에서 제일 가까운 119로 도움요청 합니다.';
+                            const message = '실시간 응급의료 안내 어플 [급하니] 사용자 입니다.%0A긴급한 도움이 필요합니다.%0A현재위치에서 제일 가까운 119로 도움요청 합니다.';
                             const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
                             window.location.href = smsLink;
                         }

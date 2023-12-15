@@ -42,15 +42,16 @@ async function handleEditor() {
             method: "POST",
             headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ title, contents })
+        }).then((response) =>{return response.json()})
+        .then((data) => {
+            document.getElementById('closeBtn').addEventListener('click', () => {
+                window.location.href = `./view.html?id=${data._id}`;
+            });
         });
 
         if (!data.ok) {
             throw new Error('공지사항을 등록하는 중에 오류가 발생했습니다.');
         }
-
-        document.getElementById('closeBtn').addEventListener('click', () => {
-            window.location.href = `./view.html?id=${data._id}`;
-        });
     } catch (error) {
         console.error('오류가 발생했습니다:', error.message);
         

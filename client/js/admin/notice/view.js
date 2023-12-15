@@ -106,12 +106,3 @@ function handleFetchError(errorMessage) {
     `;
     layerOn('noticeViewDetailLayer');
 }
-
-function handleCatchError(errorMessage) {
-    layerText = errorMessage;
-    textArea.innerHTML = layerText;
-    layerBtnArea.innerHTML = `
-        <button type="button" class="black-btn" onclick="layerOut('noticeViewDetailLayer')">닫기</button>
-    `;
-    layerOn('noticeViewDetailLayer');
-}

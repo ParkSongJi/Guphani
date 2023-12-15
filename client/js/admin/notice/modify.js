@@ -106,11 +106,11 @@ async function handleEditor(blob, callback) {
 
 modifyBtn.addEventListener('click', () => {
     try {
-        layerOn('noticeModifyLayer');
+        handleEditor();
         layerText = `공지사항이<br><strong class="point-txt">수정</strong> 되었습니다.`;
         textArea.innerHTML = layerText;
-        window.location.href = `./view.html?id=${id}`;
-        handleEditor();
+        layerBtnArea.innerHTML = `<button type="button" class="black-btn" onclick="window.location.href = './view.html?id=${id}'">닫기</button>`
+        layerOn('noticeModifyLayer');
         fn_fetch();
     } catch (error) {
         console.error('오류가 발생했습니다:', error.message);
