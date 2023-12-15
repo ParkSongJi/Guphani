@@ -8,57 +8,61 @@ const headers = {
 
 // 데이터패치
 try {
-    const response = await fetch(`http://localhost:8080/inquiry/user/list`, {
-        headers: headers
-    });
-
-    if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        const listWrap = document.querySelector('.list-wrap')
-        let html = ''
-        if (data.length == 0) {
-            html += `
-                <li class="no-data">
-                    <p>등록된 문의가 없습니다.</p>
-                </li>
-            `
-        }
-        data.forEach((el) => {
-            html += `
-            <li onclick="window.location.href='./inquiryDetail.html?id=${el._id}'">
-                <div class="head">
-                    <p class="bo-tit ellip2">[${el.sort}] ${el.title}</p>
-            `
-            if (el.answerStatus == 'N') {
-                html += `<span class="bo-status">답변대기</span>`
-            } else {
-                html += `<span class="bo-status on">답변완료</span>`
-            }
-            html += `
-                    </div>
-                    <div class="body">
-                        <p class="ellip2">${el.contents}</p>
-                    </div>
-                    <div class="foot">
-                        <div class="bo-date">${String(el.createdAt).split('T')[0]}</div>
-                        <div class="util-wrap">
-                            <button type="button" id="delBtn" onclick="del('${el._id}')">삭제</button>
-                    `
-            if (el.answerStatus == 'N') {
-                html += `<button type="button" id="modifyBtn" onclick='location.href="./inquiryModify.html?id=${el._id}"'>수정</button>`
-            }
-            html +=
-                `
-                        </div>
-                    </div>
-                </li>
-            `
+    async function data_fetch (params) {        
+        const response = await fetch(`http://localhost:8080/inquiry/user/list`, {
+            headers: headers
         });
-        listWrap.innerHTML = html;
-    } else {
-                console.error('Failed to fetch data:', response.status, response.statusText);
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            const listWrap = document.querySelector('.list-wrap')
+            let html = ''
+            if (data.length == 0) {
+                html += `
+                    <li class="no-data">
+                        <p>등록된 문의가 없습니다.</p>
+                    </li>
+                `
+            }
+            data.forEach((el) => {
+                html += `
+                <li>
+                    <div class="head" onclick="window.location.href='./inquiryDetail.html?id=${el._id}'">
+                        <p class="bo-tit ellip2">[${el.sort}] ${el.title}</p>
+                `
+                if (el.answerStatus == 'N') {
+                    html += `<span class="bo-status">답변대기</span>`
+                } else {
+                    html += `<span class="bo-status on">답변완료</span>`
+                }
+                html += `
+                        </div>
+                        <div class="body" onclick="window.location.href='./inquiryDetail.html?id=${el._id}'">
+                            <p class="ellip2">${el.contents}</p>
+                        </div>
+                        <div class="foot">
+                            <div class="bo-date">${String(el.createdAt).split('T')[0]}</div>
+                            <div class="util-wrap">
+                                <button type="button" id="delBtn" onclick="del('${el._id}')">삭제</button>
+                        `
+                if (el.answerStatus == 'N') {
+                    html += `<button type="button" id="modifyBtn" onclick='location.href="./inquiryModify.html?id=${el._id}"'>수정</button>`
+                }
+                html +=
+                    `
+                            </div>
+                        </div>
+                    </li>
+                `
+            });
+            listWrap.innerHTML = html;
+        } else {
+                    console.error('Failed to fetch data:', response.status, response.statusText);
+        }
     }
+    data_fetch()
+
 } catch (error) {
     console.error('Error in data fetch:', error);
 }

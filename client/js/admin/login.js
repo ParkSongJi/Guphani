@@ -42,8 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Store the token in localStorage
                 localStorage.setItem('adminToken', data.token);
-                localStorage.removeItem('token')
-                localStorage.removeItem('userId')
 
                 window.location.href = 'list.html';
             }

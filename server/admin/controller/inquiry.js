@@ -64,6 +64,7 @@ export async function getInquirys(req, res) {
 export async function userGetinquirys(req, res) {
     try {
         const id = req.id._id
+        console.log(id);
         const data = await inquiryRepository.userGetByUserId(id);
 
         if (!data) {

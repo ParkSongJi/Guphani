@@ -51,15 +51,14 @@ async function info_fetch() {
     })
     .then((result) => {return result.json()})
     .then((user)=>{
+        let indexInfo = ''
+        let mypageInfo =''
+        const mypageInfoWrap = document.querySelector('.mypage-info')
+
+        const userInfoElement = document.querySelector('.user-info');
+        const userUtilElement = document.querySelector('#index .util-wrap');
+
         if(token){
-            let indexInfo = ''
-            let mypageInfo =''
-    
-            const mypageInfoWrap = document.querySelector('.mypage-info')
-            
-            const userInfoElement = document.querySelector('.user-info');
-            const userUtilElement = document.querySelector('#index .util-wrap');
-            
             if (userInfoElement && userUtilElement) {
               // 두 요소가 모두 존재할 때 실행할 코드
               const userInfoWrap = userInfoElement;
@@ -68,10 +67,10 @@ async function info_fetch() {
               let indexInfo = `
                 <div class="login-on">
                   <div class="name">${user.name ? `${user.name}님` : ''}</div>
-                  <div class="user-sub">
-                    ${user.bloodType ? `<span>${user.bloodType}형</span>` : ''}
-                    ${user.birthdate ? `<span>${calculateAge(user.birthdate)}세</span>` : ''}
-                  </div>
+                    <div class="user-sub">
+                        ${user.bloodType ? `<span>${user.bloodType}형</span>` : ''}
+                        ${user.birthdate ? `<span>${calculateAge(user.birthdate)}세</span>` : ''}
+                    </div>
                   <ul>
                     ${generateListItems('disease', user.underlyingDisease)} 
                     ${generateListItems('allergy', user.allergy)}
@@ -82,9 +81,6 @@ async function info_fetch() {
             
               userUtilWrap.innerHTML = `<button type="button" class="mypageBtn" onclick="mypageOn()">마이페이지</button>
                                         <button type="button" class="logout" id="logoutBtn">로그아웃</button>`;
-            } else {
-              // 두 요소 중 하나라도 존재하지 않을 때 실행할 코드
-              console.log('두 요소 중 하나 이상이 존재하지 않습니다.');
             }
     
             mypageInfo += `
