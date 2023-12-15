@@ -78,7 +78,7 @@ detailBack.addEventListener('click', () => {
 });
 
 //새로운 시도
-const socket = io('http://localhost:8080');
+const socket = io('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app');
 
 socket.on('connect', () => {
   try {

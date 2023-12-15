@@ -1,6 +1,6 @@
 // 데이터패치
 try {
-    fetch(`http://localhost:8080/firstAid/user/list`)
+    fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/firstAid/user/list`)
       .then((response) => {
         return response.json();
       })

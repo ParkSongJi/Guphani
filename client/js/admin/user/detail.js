@@ -11,7 +11,7 @@ function fn_delete() {
     const token = localStorage.getItem('adminToken');
 
     try {
-        fetch(`http://localhost:8080/auth/user/delete/${id}`, {
+        fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/delete/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const headers = {
     'Authorization': `Bearer ${token}`,
 };
 
-fetch(`http://localhost:8080/auth/user/admin/detail/${id}`, {
+fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/admin/detail/${id}`, {
     method: 'GET',
     headers: headers,
 })
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const token = localStorage.getItem('adminToken');
 
         try {
-            const response = await fetch(`http://localhost:8080/auth/user/updateAll/${id}`, {
+            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateAll/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

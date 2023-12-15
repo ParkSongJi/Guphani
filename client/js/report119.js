@@ -14,7 +14,7 @@ async function report119() {
                     console.log(`사용자의 위치 - 위도: ${userLatitude}, 경도: ${userLongitude}`);
                     console.log(id)
 
-                    const ambulanceData = await fetch('http://localhost:8080/ambulance/getRealTime', {
+                    const ambulanceData = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/ambulance/getRealTime', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ async function report119() {
                     smsButton.addEventListener('click', async function () {
                         if (id) {
                             try {
-                                const response = await fetch(`http://localhost:8080/emergency/user/report/${id}`, {
+                                const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/emergency/user/report/${id}`, {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json',

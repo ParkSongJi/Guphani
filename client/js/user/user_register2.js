@@ -10,7 +10,7 @@ const hpCheck = document.getElementById('hpCheck');
 const hpCheckBtn = document.getElementById('hpCheckBtn')
 const submitForm = document.getElementById('submitForm');
 
-let [idBool, pwBool, nameBool, birthBool] = [false, false, false, false]
+let [idBool, pwBool, nameBool, birthBool, hpBool] = [false, false, false, false, false]
 
 // 팝업멘트 만들고 이벤트 발생시키는 코드
 function makePopup(popupMessage) {
@@ -105,7 +105,7 @@ const idInput = document.getElementById('userid')
 idInput.addEventListener('input', () => {
     try {
         const userId = idInput.value.trim()
-        localStorage.setItem('userId', userId);
+        
 
         const idPattern = /^[a-z][a-z0-9]{3,11}$/;
         const isValidId = idPattern.test(userId);
@@ -121,7 +121,7 @@ idInput.addEventListener('input', () => {
     }
 });
 
-
+let isValidPw
 //비밀번호 양식 검증
 pwCheck.addEventListener('input', () => {
     try {
@@ -130,7 +130,7 @@ pwCheck.addEventListener('input', () => {
 
         // 정규표현식을 사용하여 비밀번호 검증
         const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{6,20}$/;
-        const isValidPw = pwPattern.test(userpw);
+        isValidPw = pwPattern.test(userpw);
 
         // 팝업창에 표시될 메시지
         if (!isValidPw) {
@@ -225,6 +225,7 @@ birthCheck.addEventListener('input', () => {
     }
 });
 
+
 // 휴대전화 인증 문자부분
 hpCheck.addEventListener('click', async function (event) {
     try {
@@ -233,7 +234,7 @@ hpCheck.addEventListener('click', async function (event) {
         if (hp.length < 10 || hp.length > 11) {
             makePopup('번호를 확인해주세요')
         } else {
-            const phnumber = document.getElementById('hp').value;
+            const phnumber = document.getElementById('hp').value.trim();
             try {
                 // phnumber로 인증번호 전송
                 const response = await fetch('http://localhost:8080/auth/user/sendVerification', {
@@ -274,8 +275,10 @@ hpCheck.addEventListener('click', async function (event) {
                         // 인증이 성공하면 인증번호 입력칸, 인증버튼 숨김
                         document.getElementById('verification').style.display = 'none';
                         makePopup('인증 성공')
+                        hpBool = true
                     } else {
                         makePopup('인증 실패')
+                        hpBool = false
                     }
                 } catch (error) {
                     makePopup('인증 실패')
@@ -310,41 +313,50 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
 
-                // Display a pop-up if gender is not selected
-                if (!isGenderSelected) {
-                    makePopup('성별을 선택해주세요');
-                    return;
-                }
-
-                // Validate phone number
-                const phoneNumber = document.getElementById('hp').value;
-                const isValidPhoneNumber = validatePhoneNumber(phoneNumber);
-                if (!isValidPhoneNumber) {
-                    makePopup('휴대폰 번호를 확인해주세요');
-                    return;
-                }
-
-                // Check other conditions before sending data to the server
-                if (!idBool) {
-                    makePopup('아이디 중복확인을 해주세요');
-                    return;
-                }
-
-                if (!pwBool) {
-                    makePopup('비밀번호를 확인해주세요');
-                    return;
-                }
-
-                if (!nameBool) {
-                    makePopup('이름을 확인해주세요');
-                    return;
-                }
-
-                if (!birthBool) {
-                    makePopup('생년월일을 확인해주세요');
-                    return;
-                }
-
+                try {
+                    const phoneNumber = document.getElementById('hp').value.trim();
+                    const isValidPhoneNumber = validatePhoneNumber(phoneNumber);
+        
+                    if (userId==='') {
+                        makePopup('아이디를 입력해주세요');
+                        return;
+                    } 
+                    if (!idBool) {
+                        makePopup('아이디 중복확인을 해주세요');
+                        return;
+                    } 
+                    if(!isValidPw){
+                        makePopup('비밀번호를 정확히 입력해주세요');
+                        return;
+                    }
+                    if (!pwBool) {
+                        makePopup('비밀번호를 확인해주세요');
+                        return;
+                    } 
+                    if (username==='') {
+                        makePopup('이름을 입력해주세요');
+                        return;
+                    } 
+                    if (!nameBool) {
+                        makePopup('이름을 확인해주세요');
+                        return;
+                    }
+                    if (!birthBool) {
+                        makePopup('생년월일을 확인해주세요');
+                        return;
+                    }
+                    if (!isValidPhoneNumber) {
+                        makePopup('휴대폰 번호를 확인해주세요');
+                        return;
+                    }
+                    if (!hpBool) {
+                        makePopup('전화번호를 인증해주세요');
+                        return;
+                    }
+                    if (!isGenderSelected) {
+                        makePopup('성별을 선택해주세요');
+                        return;
+                    }
                 // If all conditions are met, send data to the server
                 const response = await fetch('http://localhost:8080/auth/user/signUp', {
                     method: 'POST',
@@ -375,7 +387,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         userGender: genderValue,
                     };
 
-                    console.log(userData);
+                    // console.log(userData);
+                    localStorage.setItem('userId', userId);
                     window.location.href = 'register3.html';
                 } else {
                     // Handle an error response from the server
@@ -384,6 +397,10 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.error('에러:', error.message);
             }
-        });
+        }catch{
+
+        }
+    });
     }
+    
 });

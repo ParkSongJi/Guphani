@@ -137,14 +137,14 @@ detailBack.addEventListener('click', () => {
   }
 })
 
-const socket = io('http://localhost:8080');
+const socket = io('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app');
 
 socket.on('connect', () => {
   try {
     console.log('서버연결성공');
 
     socket.emit('getNearPharmacy', { latitude: latitude, longitude: longitude });
-    setKakaoMap("map", latitude, longitude);
+
   } catch (error) {
     console.error('connect 이벤트 핸들러에서 오류 발생:', error);
   }
@@ -165,6 +165,7 @@ socket.on('updatePharmacy', (newData) => {
   }
 })
 
+let selectedMarker = null
 
 function makeMarker(map, lat, lng, hpid) {
   try {
@@ -185,21 +186,31 @@ function makeMarker(map, lat, lng, hpid) {
 
     // 마커에 클릭 이벤트 리스너 추가
     kakao.maps.event.addListener(marker, 'click', function () {
+      // 다른 마커를 클릭했을 때 이전에 선택된 마커의 배경색 제거
+      if (selectedMarker) {
+        const prevLi = document.getElementById(selectedMarker);
+        if (prevLi) {
+          prevLi.style.backgroundColor = 'transparent';
+        }
+      }
+    
       // 클릭한 마커의 위치로 지도 중심 이동
       map.setCenter(new kakao.maps.LatLng(lat - 0.002, lng));
-
+    
       // 해당 마커에 대응하는 리스트 아이템을 찾아서 스크롤
       const targetLi = document.getElementById(hpid);
       if (targetLi) {
-
         targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
         // 회색 배경 적용
-        targetLi.style.backgroundColor = 'lightgray';
-
+        targetLi.style.backgroundColor = '#DEDEDE';
+    
+        // 현재 클릭한 마커를 선택된 마커로 저장
+        selectedMarker = hpid;
+    
         // 일정 시간이 지난 후 배경 색상 제거
         setTimeout(() => {
-          targetLi.style.backgroundColor = 'transparent'; // 또는 원하는 배경 색상
-        }, 1500); // 1000ms(1초) 후에 배경 색상을 변경합니다. 원하는 시간으로 조절하세요.
+          targetLi.style.backgroundColor = 'transparent';
+        }, 1500);
       }
     });
 
@@ -269,11 +280,12 @@ let markers = {};
 function makeLiElement(list) {
   try {
     const ulElement = document.querySelector('.list-ul');
-    loadingMessage.style.visibility = 'hidden'
+    // loadingMessage.style.visibility = 'hidden'
     // 새로운 리스트의 아이템들이 기존의 리스트에 없으면 추가
     list.forEach((pharmacy, index) => {
       let liElement = document.getElementById(pharmacy.hpid);
       if (!liElement) {
+        console.log('반복문사용');
         liElement = document.createElement('li');
         liElement.id = pharmacy.hpid;  // hpid를 아이디로 설정
         ulElement.appendChild(liElement);
@@ -289,6 +301,7 @@ function makeLiElement(list) {
       <div class="util">
         <span class="bed ${pharmacy.openNow ? 'on' : 'off'}">${pharmacy.openNow ? '영업중' : '영업종료'}</span>
         <span class="call"><i class="xi-call"></i>${pharmacy.dutyTel1}</span>
+        ${pharmacy.dutyTime8Hol !== '-' ? `<span class="holiBox">공휴일</span>` : ''}
       </div>
     `;
       liElement.addEventListener('click', () => {

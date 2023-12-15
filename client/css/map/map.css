@@ -172,6 +172,7 @@ h1.logo.top .st0 {fill: #ff5e5e;}
 #pharmacymap .util span i{color: var(--gray-color);}
 #pharmacymap .util .bed{margin-right: 0.714rem; background: var(--gray-bg);}
 #pharmacymap .util .bed.on{color: var(--point-color); border-color: var(--point-color); background: #FFF4F4;}
+#pharmacymap .util span.holiBox{color: var(--blue-color); border-color: var(--blue-color); background: #fff; margin-left: 0.714rem;}
 
 
 /* 지도 디테일 영역 추가 */

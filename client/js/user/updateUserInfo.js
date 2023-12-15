@@ -47,7 +47,7 @@ let realOriginBirthdate;
 let realOriginGender;
 let realOriginPhoneNumber;
 
-fetch(`http://localhost:8080/auth/user/detail/${userId}`, {
+fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/detail/${userId}`, {
     method: 'GET',
     headers: headers,
 })
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 try {
                     // phnumber로 인증번호 전송
-                    const response = await fetch('http://localhost:8080/auth/user/sendVerification', {
+                    const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/sendVerification', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const inputVerificationCode = `${document.getElementById('verficateCode').value}`;
 
                     try {
-                        const response = await fetch('http://localhost:8080/auth/user/verifyCode', {
+                        const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/verifyCode', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`http://localhost:8080/auth/user/updateMain`, {
+            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateMain`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

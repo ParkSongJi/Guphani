@@ -203,4 +203,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (addInfoForm) {
         addInfoForm.addEventListener('click', handleServerClientConnection);
     }
+
+    const backBtn = document.querySelector('.inner-header')
+    backBtn.addEventListener('click',(event)=>{
+        event.preventDefault()
+        localStorage.removeItem('userId')
+        window.location.href =  '../index.html'
+    })
 });

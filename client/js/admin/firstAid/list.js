@@ -7,7 +7,7 @@ const table = document.querySelector('.list-table-wrap table');
 const tbody = table.querySelector('tbody');
 const pageUl = document.getElementById('pageUl');
 const totalCnt = document.querySelector('.list-table-wrap .total');
-let link = 'http://localhost:8080/admin/firstAid/list';
+let link = 'https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/list';
 let html = '';
 let paging = '';
 let currentSearchQuery = '';
@@ -209,7 +209,7 @@ selectDel.addEventListener('click', () => {
             `;
         }
         // 선택삭제 패치
-        fetch(`http://localhost:8080/admin/firstAid/delete`, {
+        fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/delete`, {
             method: 'delete',
             headers: {
                 'Content-Type': 'application/json',

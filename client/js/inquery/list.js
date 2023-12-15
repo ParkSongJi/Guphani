@@ -9,7 +9,7 @@ const headers = {
 // 데이터패치
 try {
     async function data_fetch (params) {        
-        const response = await fetch(`http://localhost:8080/inquiry/user/list`, {
+        const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/inquiry/user/list`, {
             headers: headers
         });
 
@@ -74,7 +74,7 @@ async function del(id) {
 
     layerDelBtn.addEventListener('click', async () => {
         try {
-            const response = await fetch(`http://localhost:8080/inquiry/delete/${id}`, {
+            const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/inquiry/delete/${id}`, {
                 method: 'DELETE',
                 headers: headers
             });

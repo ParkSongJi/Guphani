@@ -7,7 +7,7 @@ const token = localStorage.getItem('token');
 // 상세보기 내용 출력
 async function fetchData() {
     try {
-        const response = await fetch(`http://localhost:8080/inquiry/user/view?id=${id}`,{
+        const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/inquiry/user/view?id=${id}`,{
             headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${token}`}
         });
 
