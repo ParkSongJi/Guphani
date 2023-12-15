@@ -10,20 +10,40 @@ const hpCheck = document.getElementById('hpCheck');
 const hpCheckBtn = document.getElementById('hpCheckBtn')
 const submitForm = document.getElementById('submitForm');
 
-let [idBool, pwBool, nameBool, birthBool] = [false,false,false,false]
+let [idBool, pwBool, nameBool, birthBool] = [false, false, false, false]
 
 // 팝업멘트 만들고 이벤트 발생시키는 코드
-function makePopup(popupMessage){
-    const message = document.getElementById('message');
-    message.innerText = popupMessage;
+function makePopup(popupMessage) {
+    try {
+        const message = document.getElementById('message');
+        if (!message) {
+            throw new Error('message 엘리먼트를 찾을 수 없습니다.');
+        }
 
-    // 팝업창 열기
-    layerOn('register2Layer');
+        message.innerText = popupMessage;
+
+        // 팝업창 열기
+        layerOn('register2Layer');
+    } catch (error) {
+        console.error('팝업 생성 중 오류가 발생했습니다:', error.message);
+        // 오류를 적절히 처리
+    }
 }
 
 function validatePhoneNumber(phoneNumber) {
-    const sanitizedPhoneNumber = phoneNumber.replace(/[^0-9]/g, '');
-    return sanitizedPhoneNumber.length >= 10 && sanitizedPhoneNumber.length <= 11;
+    try {
+        const sanitizedPhoneNumber = phoneNumber.replace(/[^0-9]/g, '');
+
+        if (sanitizedPhoneNumber.length >= 10 && sanitizedPhoneNumber.length <= 11) {
+            return true;
+        } else {
+            throw new Error('전화번호의 길이가 올바르지 않습니다.');
+        }
+    } catch (error) {
+        console.error('전화번호 유효성 검사 중 오류가 발생했습니다:', error.message);
+        // 오류를 처리하거나 사용자에게 알리는 등의 조치를 취할 수 있습니다.
+        return false;
+    }
 }
 
 idCheck.addEventListener('click', async () => {
@@ -36,7 +56,7 @@ idCheck.addEventListener('click', async () => {
     const isValidId = idPattern.test(userId);
 
     try {
-        const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/duplicateIdTest', {
+        const response = await fetch('http://localhost:8080/auth/duplicateIdTest', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -82,152 +102,189 @@ idCheck.addEventListener('click', async () => {
 //아이디 검증
 const idInput = document.getElementById('userid')
 
-idInput.addEventListener('input',() => {
+idInput.addEventListener('input', () => {
+    try {
+        const userId = idInput.value.trim()
+        localStorage.setItem('userId', userId);
 
-    const userId = idInput.value.trim()
-    localStorage.setItem('userId', userId);
+        const idPattern = /^[a-z][a-z0-9]{3,11}$/;
+        const isValidId = idPattern.test(userId);
 
-    const idPattern = /^[a-z][a-z0-9]{3,11}$/;
-    const isValidId = idPattern.test(userId);
-    if(isValidId){
-        document.getElementById('id_info').style.display = 'none'
-    }else{
-        document.getElementById('id_info').style.display = 'block'
+        if (isValidId) {
+            document.getElementById('id_info').style.display = 'none'
+        } else {
+            document.getElementById('id_info').style.display = 'block'
+        }
+    } catch (error) {
+        console.error('입력 이벤트 처리 중 오류가 발생했습니다:', error.message);
+        // 오류를 처리하거나 사용자에게 알리는 등의 조치를 취할 수 있습니다.
     }
-})
+});
 
 
 //비밀번호 양식 검증
 pwCheck.addEventListener('input', () => {
-    const userpwInput = document.getElementById('userpw');
-    const userpw = userpwInput.value.trim();
+    try {
+        const userpwInput = document.getElementById('userpw');
+        const userpw = userpwInput.value.trim();
 
-    // 정규표현식을 사용하여 비밀번호 검증
-    const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{6,20}$/;
-    const isValidPw = pwPattern.test(userpw);
+        // 정규표현식을 사용하여 비밀번호 검증
+        const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{6,20}$/;
+        const isValidPw = pwPattern.test(userpw);
 
-    // 팝업창에 표시될 메시지
-    if (!isValidPw) {
-        document.getElementById('pw_info').style.visibility = 'visible'
-    } else {
-        document.getElementById('pw_info').style.visibility = 'hidden'
+        // 팝업창에 표시될 메시지
+        if (!isValidPw) {
+            document.getElementById('pw_info').style.visibility = 'visible'
+        } else {
+            document.getElementById('pw_info').style.visibility = 'hidden'
+        }
+    } catch (error) {
+        console.error('입력 이벤트 처리 중 오류가 발생했습니다:', error.message);
+        // 오류를 처리하거나 사용자에게 알리는 등의 조치를 취할 수 있습니다.
     }
 });
 
 // 비밀번호 확인 검증
 pwDoubleCheck.addEventListener('input', () => {
-    const userpwInput = document.getElementById('userpw');
-    const userpwInputAgain = document.getElementById('userpw_check');
-    const checkBox = document.getElementById('xi-check-circle');
-    // const userpwCheckInput = document.getElementById('userpw_check');
-    const userpw = userpwInput.value.trim();
-    const userpwAgain = userpwInputAgain.value.trim();
-    const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{6,20}$/;
-    const isValidPw = pwPattern.test(userpw);
-    const isValidPwCheck = pwPattern.test(userpw);
+    try {
+        const userpwInput = document.getElementById('userpw');
+        const userpwInputAgain = document.getElementById('userpw_check');
+        const checkBox = document.getElementById('xi-check-circle');
+        // const userpwCheckInput = document.getElementById('userpw_check');
+        const userpw = userpwInput.value.trim();
+        const userpwAgain = userpwInputAgain.value.trim();
+        const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{6,20}$/;
+        const isValidPw = pwPattern.test(userpw);
+        const isValidPwCheck = pwPattern.test(userpw);
 
-    // 팝업창에 표시될 메시지
-    if (userpw == userpwAgain && isValidPw && isValidPwCheck ) {
-        document.getElementById('pwCheck_info').style.display = 'none'
-        userpwInput.disabled = true;
-        userpwInputAgain.disabled = true; 
-        checkBox.classList.add('on')
-        pwBool = true
-    } else {
-        document.getElementById('pwCheck_info').style.display = 'block'
+        // 팝업창에 표시될 메시지
+        if (userpw == userpwAgain && isValidPw && isValidPwCheck) {
+            document.getElementById('pwCheck_info').style.display = 'none'
+            userpwInput.disabled = true;
+            userpwInputAgain.disabled = true;
+            checkBox.classList.add('on')
+            pwBool = true
+        } else {
+            document.getElementById('pwCheck_info').style.display = 'block'
+        }
+    } catch (error) {
+        console.error('입력 이벤트 처리 중 오류가 발생했습니다:', error.message);
+        // 오류를 처리하거나 사용자에게 알리는 등의 조치를 취할 수 있습니다.
     }
 });
 
 // 이름 받아오기 -> 다음 눌렀을때만 검증해서 팝업에 안내문구 뜨게
-username.addEventListener('input',()=>{
-    const username = document.getElementById('username').value.trim()
-    const namePattern = /^[가-힣a-zA-Z]+$/;
-    const isValidName = namePattern.test(username);
-    nameBool = isValidName
-
+username.addEventListener('input', () => {
+    try {
+        const username = document.getElementById('username').value.trim()
+        const namePattern = /^[가-힣a-zA-Z]+$/;
+        const isValidName = namePattern.test(username);
+        nameBool = isValidName
+    } catch (error) {
+        console.error('입력 이벤트 처리 중 오류가 발생했습니다:', error.message);
+        // 오류를 처리하거나 사용자에게 알리는 등의 조치를 취할 수 있습니다.
+    }
 })
 
-function birthPatternCheck(){
-    const birthday = document.getElementById('birthday').value.trim()
-    const birthPattern = /^[0-9]{8}$/;
-    let isValidBirth = birthPattern.test(birthday);
-    if(isValidBirth){
-        if(birthday <= 19000000 || birthday >= 20500000 ){
-            isValidBirth = false
-            birthBool = false
+function birthPatternCheck() {
+    try {
+        const birthdayInput = document.getElementById('birthday');
+        const birthday = birthdayInput.value.trim();
+        const birthPattern = /^[0-9]{8}$/;
+        let isValidBirth = birthPattern.test(birthday);
+
+        if (isValidBirth) {
+            if (birthday <= 19000000 || birthday >= 20500000) {
+                isValidBirth = false;
+                birthBool = false;
+            }
         }
-        
+
+        return isValidBirth;
+    } catch (error) {
+        console.error('생년월일 패턴 확인 함수에서 오류가 발생했습니다:', error.message);
+        // 오류를 처리하거나 사용자에게 알리는 등의 조치를 취할 수 있습니다.
     }
-    return isValidBirth
 }
 
 // 생일 받아오기 -> 다음 눌렀을때만 검증해서 팝업에 안내문구 뜨게
-birthCheck.addEventListener('input',()=>{
-    const birthPatternCheckResult = birthPatternCheck()
-    if (!birthPatternCheckResult){
-        document.getElementById('hiddenBirth').style.display ='block'
-        birthBool = false
-    } else{
-        document.getElementById('hiddenBirth').style.display ='none'
-        birthBool = true
+birthCheck.addEventListener('input', () => {
+    try {
+        const birthPatternCheckResult = birthPatternCheck();
+
+        if (!birthPatternCheckResult) {
+            document.getElementById('hiddenBirth').style.display = 'block';
+            birthBool = false;
+        } else {
+            document.getElementById('hiddenBirth').style.display = 'none';
+            birthBool = true;
+        }
+    } catch (error) {
+        console.error('생년월일 입력 체크 함수에서 오류가 발생했습니다:', error.message);
+        // 오류를 처리하거나 사용자에게 알리는 등의 조치를 취할 수 있습니다.
     }
-})
+});
 
 // 휴대전화 인증 문자부분
-hpCheck.addEventListener('click', async function(event) {
-    event.preventDefault()
-    const hp = document.getElementById('hp').value.replace(/[^0-9]/g, '')
-    if(hp.length < 10 || hp.length > 11){
-        makePopup('번호를 확인해주세요')
-    }else{
-        const phnumber = document.getElementById('hp').value;
-        try {
-            // phnumber로 인증번호 전송
-            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/sendVerification', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',  
-                },
-                body: JSON.stringify({ phnumber: phnumber})
-            });
-            if (response.status === 200) {
-                document.querySelector('.hp-check').style.display ='flex'
-                document.getElementById('hp').disabled = 'true'
-                makePopup('인증번호 전송 되었습니다. 최대 5분 정도 걸릴 수 있습니다..')
-            }else{
+hpCheck.addEventListener('click', async function (event) {
+    try {
+        event.preventDefault()
+        const hp = document.getElementById('hp').value.replace(/[^0-9]/g, '')
+        if (hp.length < 10 || hp.length > 11) {
+            makePopup('번호를 확인해주세요')
+        } else {
+            const phnumber = document.getElementById('hp').value;
+            try {
+                // phnumber로 인증번호 전송
+                const response = await fetch('http://localhost:8080/auth/user/sendVerification', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ phnumber: phnumber })
+                });
+                if (response.status === 200) {
+                    document.querySelector('.hp-check').style.display = 'flex'
+                    document.getElementById('hp').disabled = 'true'
+                    makePopup('인증번호 전송 되었습니다. 최대 5분 정도 걸릴 수 있습니다..')
+                } else {
+                    makePopup('인증번호 전송에 실패했습니다.')
+                }
+            } catch (error) {
                 makePopup('인증번호 전송에 실패했습니다.')
-            }  
-        }catch(error){
-            makePopup('인증번호 전송에 실패했습니다.')
-}
-        
-hpCheckNumber.addEventListener('click',async function(event) {
-    event.preventDefault();
-    const phnumber = `${document.getElementById('hp').value}`;
-    const inputVerificationCode = `${document.getElementById('verficateCode').value}`;
-    
-    try{
-        const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/verifyCode', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ phnumber, verificationCode: inputVerificationCode})
-        });
-        if (response.status === 200) {
-            // 인증이 성공하면 인증받기 -> 인증완료로 바뀌고 버튼 기능 사라짐
-            hpCheck.textContent = '인증완료';
-            hpCheck.disabled = true;
-            // 인증이 성공하면 인증번호 입력칸, 인증버튼 숨김
-            document.getElementById('verification').style.display='none'; 
-            makePopup('인증 성공')
-        }else{
-            makePopup('인증 실패')
+            }
+
+            hpCheckNumber.addEventListener('click', async function (event) {
+                event.preventDefault();
+                const phnumber = `${document.getElementById('hp').value}`;
+                const inputVerificationCode = `${document.getElementById('verficateCode').value}`;
+
+                try {
+                    const response = await fetch('http://localhost:8080/auth/user/verifyCode', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ phnumber, verificationCode: inputVerificationCode })
+                    });
+                    if (response.status === 200) {
+                        // 인증이 성공하면 인증받기 -> 인증완료로 바뀌고 버튼 기능 사라짐
+                        hpCheck.textContent = '인증완료';
+                        hpCheck.disabled = true;
+                        // 인증이 성공하면 인증번호 입력칸, 인증버튼 숨김
+                        document.getElementById('verification').style.display = 'none';
+                        makePopup('인증 성공')
+                    } else {
+                        makePopup('인증 실패')
+                    }
+                } catch (error) {
+                    makePopup('인증 실패')
+                }
+            })
         }
-    }catch (error) {
-        makePopup('인증 실패')
-    }
-        })
+    } catch (error) {
+        console.error('hpCheck 이벤트 처리 중 에러 발생:', error.message);
+        // 오류를 처리하거나 사용자에게 알리는 등의 조치를 취할 수 있습니다.
     }
 });
 
@@ -236,29 +293,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (signUpForm) {
         signUpForm.addEventListener('click', async () => {
-            const userId = document.getElementById('userid').value;
-            const userPw = document.getElementById('userpw').value;
-            const userName = document.getElementById('username').value;
-            const birthday = document.getElementById('birthday').value;
-            const genderInputs = document.querySelectorAll('input[name="gender"]');
-            let genderValue = '';
-            
-            // Check if a gender option is selected
-            let isGenderSelected = false;
-            genderInputs.forEach((el) => {
-                if (el.checked) {
-                    genderValue = el.value;
-                    isGenderSelected = true;
-                }
-            });
-
-            // Display a pop-up if gender is not selected
-            if (!isGenderSelected) {
-                makePopup('성별을 선택해주세요');
-                return;
-            }
-
             try {
+                const userId = document.getElementById('userid').value;
+                const userPw = document.getElementById('userpw').value;
+                const userName = document.getElementById('username').value;
+                const birthday = document.getElementById('birthday').value;
+                const genderInputs = document.querySelectorAll('input[name="gender"]');
+                let genderValue = '';
+
+                // Check if a gender option is selected
+                let isGenderSelected = false;
+                genderInputs.forEach((el) => {
+                    if (el.checked) {
+                        genderValue = el.value;
+                        isGenderSelected = true;
+                    }
+                });
+
+                // Display a pop-up if gender is not selected
+                if (!isGenderSelected) {
+                    makePopup('성별을 선택해주세요');
+                    return;
+                }
+
                 // Validate phone number
                 const phoneNumber = document.getElementById('hp').value;
                 const isValidPhoneNumber = validatePhoneNumber(phoneNumber);
@@ -289,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 // If all conditions are met, send data to the server
-                const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/signUp', {
+                const response = await fetch('http://localhost:8080/auth/user/signUp', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -325,9 +382,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     makePopup('서버에서 오류가 발생했습니다.');
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('에러:', error.message);
             }
         });
     }
-
 });

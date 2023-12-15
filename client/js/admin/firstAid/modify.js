@@ -1,6 +1,6 @@
 var herf = window.location.search;
 var id = herf.split('=')[1];
-let link = `https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/modify?id=${id}`;
+let link = `http://localhost:8080/admin/firstAid/modify?id=${id}`;
 const modifyBtn = document.getElementById('modifyBtn');
 const textArea = document.querySelector('.layer-pop .inner-text');
 const layerBtnArea = document.querySelector('.layer-pop .btn-wrap');
@@ -28,7 +28,7 @@ const editor = new toastui.Editor({
             formData.append('file', blob);
 
             try {
-                const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/modify/imgUpload', {
+                const response = await fetch('http://localhost:8080/admin/firstAid/modify/imgUpload', {
                     method: 'POST',
                     body: formData,
                     headers: headers,
@@ -98,7 +98,7 @@ async function handleEditor(blob, callback) {
         const youtube = document.getElementById('youtube').value;
 
         // fetch를 할 때, body에 JSON으로 불러온 데이터를 보낸다.
-        const data = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/modify/${id}`, {
+        const data = await fetch(`http://localhost:8080/admin/firstAid/modify/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ title, contents, youtube }),

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return false;
             }
 
-            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/admin/login', {
+            const response = await fetch('http://localhost:8080/auth/admin/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,8 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             console.error('Error in fn_login function:', error);
-            // 추가적인 예외 처리 로직을 여기에 추가할 수 있습니다.
-            makePopup('로그인 중 오류가 발생했습니다.'); // 사용자에게 보여줄 메시지
+                        makePopup('로그인 중 오류가 발생했습니다.'); // 사용자에게 보여줄 메시지
         }
     }
 });
@@ -76,8 +75,7 @@ function layerOn(el) {
         layer.classList.remove('fadeOut');
     } catch (error) {
         console.error('Error in layerOn function:', error);
-        // 추가적인 예외 처리 로직을 여기에 추가할 수 있습니다.
-    }
+            }
 }
 
 function layerOut(el) {
@@ -87,8 +85,7 @@ function layerOut(el) {
         layer.classList.remove('fadeIn');
     } catch (error) {
         console.error('Error in layerOut function:', error);
-        // 추가적인 예외 처리 로직을 여기에 추가할 수 있습니다.
-    }
+            }
 }
 
 function makePopup(popupMessage) {
@@ -100,6 +97,5 @@ function makePopup(popupMessage) {
         layerOn('loginLayer');
     } catch (error) {
         console.error('Error in makePopup function:', error);
-        // 추가적인 예외 처리 로직을 여기에 추가할 수 있습니다.
-    }
+            }
 }

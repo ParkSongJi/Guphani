@@ -26,7 +26,7 @@ const editor = new toastui.Editor({
 // 뷰 상세보기
 async function viewFetch() {
     try {
-        const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/inquiry/view?id=${id}`,{
+        const response = await fetch(`http://localhost:8080/admin/inquiry/view?id=${id}`,{
             headers: headers
         });
 
@@ -55,7 +55,7 @@ async function handleEditor() {
     try {
         const answerContents = editor.getMarkdown();
         const answerDate = new Date();
-        const data = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/inquiry/answer`, {
+        const data = await fetch(`http://localhost:8080/admin/inquiry/answer`, {
             method: "PUT",
             headers: headers,
             body: JSON.stringify({id,answerContents, answerDate})
@@ -106,7 +106,7 @@ delBtn.addEventListener('click', () => {
 async function delFetch(id) {
     console.log(id);
     try {
-        const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/inquiry/delete/${id}`,{
+        const response = await fetch(`http://localhost:8080/admin/inquiry/delete/${id}`,{
             method:'DELETE',
             headers:headers
         });
