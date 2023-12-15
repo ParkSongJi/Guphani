@@ -234,7 +234,6 @@ function setKakaoMap(idName, lat, lng) {
 let markers = {};
 function makeLiElement(list) {
   const ulElement = document.querySelector('.list-ul');
-  loadingMessage.style.visibility = 'hidden'
   // 새로운 리스트의 아이템들이 기존의 리스트에 없으면 추가
   list.forEach((pharmacy, index) => {
     let liElement = document.getElementById(pharmacy.hpid);
