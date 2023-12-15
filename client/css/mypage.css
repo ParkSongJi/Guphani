@@ -12,6 +12,8 @@
 #mypage .info-list {display: flex; height: 1.929rem; padding-top: 0.714rem;}
 #mypage .info-firstlist {border-right: 1px solid  #FFFFFF; padding-right: 0.8rem; }
 #mypage .info-secondlist {padding-left: 0.8rem;}
+#mypage .info-firstlist span {font-size: 1.334rem; color: var(--white-color);}
+#mypage .info-secondlist span { font-size: 1.334rem; color: var(--white-color);}
 
 /*문의하기*/
 #inquiryList .point-btn{border-radius: 0.714rem 0.714rem 0 0 ; position: fixed; bottom: 0;}

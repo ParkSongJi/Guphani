@@ -40,29 +40,16 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 const data = await response.json();
 
-                // Save the login ID in localStorage
-                // localStorage.setItem('userId', userid.value);
-
                 // Store the token in localStorage
-                localStorage.setItem('token', data.token);
-
-                const userData = {
-                    userId: userid.value,
-                    userPw: userpw.value,
-                };
+                localStorage.setItem('adminToken', data.token);
+                localStorage.removeItem('token')
+                localStorage.removeItem('userId')
 
                 window.location.href = 'list.html';
-            } else {
-                if (response.status !== 200) {
-                    makePopup('로그인 정보가 일치하지 않습니다.');
-                } else {
-                    makePopup('서버에서 오류가 발생했습니다.');
-                }
-                console.log('failed');
             }
         } catch (error) {
             console.error('Error in fn_login function:', error);
-                        makePopup('로그인 중 오류가 발생했습니다.'); // 사용자에게 보여줄 메시지
+            makePopup('로그인 정보를 확인해주세요'); // 사용자에게 보여줄 메시지
         }
     }
 });

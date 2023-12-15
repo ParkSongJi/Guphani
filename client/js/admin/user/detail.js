@@ -8,7 +8,7 @@ var id = herf.split('=')[1];
 
 function fn_delete() {
     const deleteButton = document.getElementById('delBtn');
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('adminToken');
 
     try {
         fetch(`http://localhost:8080/auth/user/delete/${id}`, {
@@ -51,8 +51,7 @@ document.addEventListener('click', (e) => {
 });
 
 // 각 회원 기존의 데이터 불러오기 
-const userId = localStorage.getItem('userId');
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('adminToken');
 const headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
@@ -188,8 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const isAdminNo = document.getElementById('admin2').checked;
         const isAdmin = isAdminYes ? 'Y' : (isAdminNo ? 'N' : '');
         
-        const userId = localStorage.getItem('userId');
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('adminToken');
 
         try {
             const response = await fetch(`http://localhost:8080/auth/user/updateAll/${id}`, {

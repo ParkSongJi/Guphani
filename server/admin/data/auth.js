@@ -65,7 +65,7 @@ export async function getAll(query, page, limit) {
     }
 }
 
-// 문의사항 전체조회
+// 회원 전체조회
 export async function getAllUsers(query, page, limit) {
     try {
         const skip = (page - 1) * limit;
@@ -84,7 +84,7 @@ export async function getAllUsers(query, page, limit) {
     }
 }
 
-// 문의사항 수 조회
+// 회원 수 조회
 export async function countUsers(query) {
     try {
         const total = await User.countDocuments(query);

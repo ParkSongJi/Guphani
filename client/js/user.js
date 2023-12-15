@@ -41,12 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 // Save the login ID in localStorage
                 localStorage.setItem('userId', userid.value);
-
                 // Store the token in localStorage
                 localStorage.setItem('token', data.token);
-
-                localStorage.setItem('user', JSON.stringify(data.user));
-                // console.log(data.user);
                 const userData = {  
                     userId: userid.value,
                     userPw: userpw.value,

@@ -46,9 +46,7 @@ function layerOut(el) {
 
 function logout() {
     try {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('user');
+        localStorage.removeItem('adminToken');
         window.location.href = '../user/login.html';
     } catch (error) {
         console.error('Error during logout:', error.message);

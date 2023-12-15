@@ -342,6 +342,15 @@ export async function deleteUsers(req, res) {
     const del = await userRepository.removes(datas.ids);
     res.sendStatus(200);
 }
+
+// 회원인포출력 *유저 아이디로 찾는거
+export async function findByUserId(req, res) {
+    const id = req.params.id;
+    const user = await User.findOne({id});
+
+    return res.status(200).json(user);
+}
+
 // ----------------------------------------------------------------------
 
 // 회원가입 (사용자/관리자)

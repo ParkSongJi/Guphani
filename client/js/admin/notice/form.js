@@ -3,7 +3,7 @@ const textArea = document.querySelector('.layer-pop .inner-text');
 const layerBtnArea = document.querySelector('.layer-pop .btn-wrap');
 
 // 로컬스토리지에서 토큰을 받아옴
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('adminToken');
 
 // 헤더에 토큰을 넣음
 const headers = {

@@ -1,3 +1,106 @@
+// Function to calculate age from birthdate
+function calculateAge(birthdate) {
+    try {
+        // Parse the birthdate string into a Date object
+        const birthDateObject = new Date(
+            parseInt(birthdate.substr(0, 4)),
+            parseInt(birthdate.substr(4, 2)) - 1,
+            parseInt(birthdate.substr(6, 2))
+        );
+
+        // Get the current date
+        const currentDate = new Date();
+
+        // Calculate the difference in years
+        let age = currentDate.getFullYear() - birthDateObject.getFullYear();
+
+        // Adjust age if the birthday hasn't occurred yet this year
+        if (
+            currentDate.getMonth() < birthDateObject.getMonth() ||
+            (currentDate.getMonth() === birthDateObject.getMonth() &&
+                currentDate.getDate() < birthDateObject.getDate())
+        ) {
+            age--;
+        }
+
+        return age;
+    } catch (error) {
+        console.error('나이 계산 중 오류 발생:', error.message);
+        return null; // 또는 오류 처리에 맞게 값을 반환
+    }
+}
+
+// Function to generate list items for diseases and allergies
+function generateListItems(className, items) {
+    try {
+        if (items[0] !== '') {
+            return items.map(item => `<li class="${className}"><span>${item}</span></li>`).join('');
+        }
+        return ''
+    } catch (error) {
+        console.error('리스트 아이템 생성 중 오류 발생:', error.message);
+        return ''; // 또는 오류 처리에 맞게 값을 반환
+    }
+}
+
+async function info_fetch() {
+    const id = localStorage.getItem('userId')
+    const token = localStorage.getItem('token')
+    const response = await fetch(`http://localhost:8080/auth/user/info/${id}`,{
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+    })
+    .then((result) => {return result.json()})
+    .then((user)=>{
+        if(token){
+            let indexInfo = ''
+            let mypageInfo =''
+    
+            const mypageInfoWrap = document.querySelector('.mypage-info')
+            
+            const userInfoElement = document.querySelector('.user-info');
+            const userUtilElement = document.querySelector('#index .util-wrap');
+            
+            if (userInfoElement && userUtilElement) {
+              // 두 요소가 모두 존재할 때 실행할 코드
+              const userInfoWrap = userInfoElement;
+              const userUtilWrap = userUtilElement;
+            
+              let indexInfo = `
+                <div class="login-on">
+                  <div class="name">${user.name ? `${user.name}님` : ''}</div>
+                  <div class="user-sub">
+                    ${user.bloodType ? `<span>${user.bloodType}형</span>` : ''}
+                    ${user.birthdate ? `<span>${calculateAge(user.birthdate)}세</span>` : ''}
+                  </div>
+                  <ul>
+                    ${generateListItems('disease', user.underlyingDisease)} 
+                    ${generateListItems('allergy', user.allergy)}
+                  </ul>
+                </div>`;
+            
+              userInfoWrap.innerHTML = indexInfo;
+            
+              userUtilWrap.innerHTML = `<button type="button" class="mypageBtn" onclick="mypageOn()">마이페이지</button>
+                                        <button type="button" class="logout" id="logoutBtn">로그아웃</button>`;
+            } else {
+              // 두 요소 중 하나라도 존재하지 않을 때 실행할 코드
+              console.log('두 요소 중 하나 이상이 존재하지 않습니다.');
+            }
+    
+            mypageInfo += `
+                <p class="mypagename">${user.name} 님</p>
+                <ul class="info-list">
+                <li class="info-firstlist">${user.birthdate ? `<span>${calculateAge(user.birthdate)}세</span>` : ''}</li>
+                <li class="info-secondlist">${user.bloodType ? `<span>${user.bloodType}형</span>` : ''}</li>
+                </ul>
+            `     
+            mypageInfoWrap.innerHTML = mypageInfo 
+        }
+    })
+}
+
+info_fetch()
+
 const loginUserData = JSON.parse(localStorage.getItem('user'));
 (function () {
     try {

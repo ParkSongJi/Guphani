@@ -100,6 +100,9 @@ router.delete('/user/delete/:id', authController.deleteUser);
 // 회원 정보 상세 조회 
 router.get('/user/admin/detail/:id',  authController.searchUser);
 
+// 회원 인포 조회
+router.get('/user/info/:id', isAuth, authController.findByUserId);
+
 // 회원 정보 전체 조회 
 router.get('/users', authController.searchAll);
 
