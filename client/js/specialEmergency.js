@@ -526,7 +526,7 @@ function createInfoFunc(er) {
         ? (er.hvec > 0 ? '응급실 병상 있음' : '응급실 병상 없음')
         : '실시간 정보 없음'
       }</span>
-      <a href="${er.dutyTel3}"><span class="call"><i class="xi-call"></i>${er.dutyTel3}</span></a>
+      <a href="tel:${er.dutyTel3}"><span class="call"><i class="xi-call"></i>${er.dutyTel3}</span></a>
   </div>
   <div class="sec-tit">진료시간</div>
   <div class="time-wrap">
@@ -759,8 +759,5 @@ function createInfoFunc(er) {
     console.error('updateErList 함수 실행 중 오류가 발생했습니다:', error.message);
     // 추가적인 예외 처리 로직을 여기에 추가
   }
-
-  //createInfoFunc 끝
 }
-
 

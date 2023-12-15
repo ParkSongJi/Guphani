@@ -52,9 +52,9 @@ function fetchUsers(queryString = '', page = 1) {
                                 <td>${el.id}</td>
                                 <td>${el.name}</td>
                                 `
-                                if(el.gender == 'male'){
+                                if(el.gender == "m"){
                                     html += `<td>남자</td>`
-                                }else if(el.gender == 'female'){
+                                }else if(el.gender == "w"){
                                     html += `<td>여자</td>`
                                 }
                                 html +=`

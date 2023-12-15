@@ -190,7 +190,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             // 인증이 성공하면 인증번호 입력칸, 인증버튼 숨김
                             document.getElementById('verification').style.display = 'none';
                             makePopup('인증 성공');
-                            location.reload();
 
                         } else {
                             makePopup('인증 실패');
@@ -199,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.error('휴대폰 번호 인증 도중 오류가 발생했습니다:', error.message);
                         // 휴대폰 번호 인증 도중 오류가 발생하면 해당 오류 메시지를 콘솔에 출력
                         makePopup('인증 실패');
+                        location.reload();
                     }
                 });
             }
@@ -300,7 +300,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
-
-        
-   

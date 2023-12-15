@@ -22,19 +22,19 @@
                     <h3 class="sub-tit" id="title"></h3>
                     <div class="date" id="date"></div>
                     <div class="content">
-                        <div class="youtube" id="player">
-                        </div>
+                        <div class="youtube" id="player"></div>
                         <div class="txt-wrap">
-                            <div id="editorWrap">
-                            </div>
+                            <div id="editorWrap"></div>
                         </div>
                     </div>
                 </main>
+                <div class="btn-wrap">
+                  <button type="button" class="black-btn" onclick="window.location.href='./inquiryList.html'">목록가기</button>
+                </div>
             </div>
         </div>
     </div>
     <!-- mypage모달 -->
-        <!-- mypage모달 -->
     <div id="mypage">
       <div class="inner-wrap">
         <header class="header-box">
@@ -265,7 +265,6 @@ let code; // 전역 변수로 선언
 async function fetchData() {
     const response = await fetch(link);
     const data = await response.json();
-    console.log(data);
     document.getElementById('title').innerText = data.title;
     document.getElementById('date').innerText = (data.createdAt).split('T')[0];
     const viewer = toastui.Editor.factory({

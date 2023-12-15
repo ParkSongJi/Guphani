@@ -1,6 +1,6 @@
 var herf = window.location.search
 var id = herf.split('=')[1]
-let link = `https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/view?id=${id}`;
+let link = `https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/view?id=${id}`
 
 // 수정버튼 링크 변경
 const modifyBtn = document.getElementById('modifyBtn')
@@ -17,6 +17,16 @@ const headers = {
 };
 
 try {
+    // 삭제
+    function fn_del() {
+        fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/admin/firstAid/delete/${id}`,{
+            method: 'delete',
+            headers: headers
+        })
+        .then((response) => {return response.json()})
+        .then((data) => {console.log(data)})
+    }
+
     // 상세보기 내용 출력
     fetch(link, { headers: headers })
         .then((response) => {
@@ -60,6 +70,8 @@ try {
         `;
     });
 
+
+
     document.addEventListener('click', (e) => {
         if (e.target.matches('.layer-pop .point-btn.del')) {
             layerText = `응급처치가 <strong class="point-txt">삭제</strong><br>되었습니다.`;
@@ -69,6 +81,7 @@ try {
             `;
         }
     });
+
 } catch (error) {
     console.error('응급처치 삭제 중에 오류가 발생했습니다:', error.message);
 }

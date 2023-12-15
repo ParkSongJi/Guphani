@@ -13,7 +13,7 @@
 
 /* 공통 레이아웃 */
 .inner-header{width: 100%; max-width: 768px; margin: 0 auto;}
-.inner-wrap{width: 100%; max-width: 768px; margin: 0 auto; height: 100%; max-height: 100vh;}
+.inner-wrap{width: 100%; max-width: 768px; margin: 0 auto; height: 100%; /*max-height: 100vh;*/}
 .emergency{background: url('../img/icon1.png') no-repeat 50%/cover;}
 .pharmacy{background: url('../img/icon2.png') no-repeat 50%/cover;}
 .first-aid{background: url('../img/icon3.png') no-repeat 50%/cover;}

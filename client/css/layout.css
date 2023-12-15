@@ -230,7 +230,7 @@
 #firstAidList .point-btn{border-radius: 0.714rem 0.714rem 0 0 ; position: fixed; bottom: 0; left: 0;}
 
 /* 응급처치 디테일페이지 */
-#firstAidView .inner-wrap{padding: 0 2.857rem; box-sizing: border-box;}
+#firstAidView .inner-wrap{padding: 2.857rem; box-sizing: border-box;}
 #firstAidView .page-tit{margin-bottom: 1.428rem;}
 #firstAidView .sub-tit{font-size: 1.428rem; border-bottom: 1px solid var(--gray-color); padding-bottom: 0.714rem;}
 #firstAidView .date{margin: 10px 0; font-size: 1rem; color: var(--gray-color);}

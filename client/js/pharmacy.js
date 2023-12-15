@@ -202,15 +202,11 @@ function makeMarker(map, lat, lng, hpid) {
       if (targetLi) {
         targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
         // 회색 배경 적용
-        targetLi.style.backgroundColor = '#DEDEDE';
+        targetLi.style.backgroundColor = '#F5F5F5';
     
         // 현재 클릭한 마커를 선택된 마커로 저장
         selectedMarker = hpid;
-    
-        // 일정 시간이 지난 후 배경 색상 제거
-        setTimeout(() => {
-          targetLi.style.backgroundColor = 'transparent';
-        }, 1500);
+  
       }
     });
 

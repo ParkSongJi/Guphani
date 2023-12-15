@@ -54,11 +54,11 @@ findIdBtn.addEventListener('click', async () => {
                     document.getElementById('findid-userhp').value = '';
                 }
             } else {
-                makePopup('서버 오류가 발생했습니다');
+                makePopup('일치하는 사용자가 없습니다');
             }
         } catch (error) {
             console.error('Error:', error);
-            makePopup('오류가 발생했습니다');
+            makePopup('일치하는 사용자가 없습니다');
         }
     }
 });
@@ -232,11 +232,11 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
                     makePopup(`일치하는 사용자가 없습니다`);
                 }
             } else {
-                makePopup('서버 오류가 발생했습니다');
+                makePopup('일치하는 사용자가 없습니다');
             }
         } catch (error) {
             console.error('Error:', error);
-            makePopup('오류가 발생했습니다');
+            makePopup('일치하는 사용자가 없습니다');
         }
     }
 });

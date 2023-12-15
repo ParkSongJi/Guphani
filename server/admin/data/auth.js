@@ -46,7 +46,6 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
 export async function getAll(query, page, limit) {
     try {
         const skip = (page - 1) * limit;
-
         // MongoDB에서 검색 후 정렬 및 페이징 적용
         const data = await User.find(query)
             .sort({ createdAt: -1 })
