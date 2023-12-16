@@ -516,10 +516,10 @@ export async function updateOther(req, res, next) {
         const userIdFromToken = req.id;
 
         // Compare user ID from token with the ID in the request parameters
-        // if (userIdFromToken !== req.params.id) {
-        //     res.status(403).json({ result: '실패', message: ' 본인 정보만 수정 가능합니다.' });
-        //     return;
-        // }
+        if (userIdFromToken !== req.params.id) {
+            res.status(403).json({ result: '실패', message: ' 본인 정보만 수정 가능합니다.' });
+            return;
+        }
 
         const updatedOtherUser = await User.findOneAndUpdate(
             { id: id },
