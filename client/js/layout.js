@@ -207,7 +207,7 @@ window.addEventListener('click', (e) => {
             localStorage.removeItem('token')
             localStorage.removeItem('user')
             localStorage.removeItem('userId')
-            location.reload()
+            window.location.href = '../index.html'
         }
     } catch (error) {
         console.error('로그아웃 중 오류 발생:', error.message);
@@ -217,7 +217,6 @@ window.addEventListener('click', (e) => {
 
 function withdrawal() {
     const userId = localStorage.getItem('userId')
-    console.log(userId);
     layerOn('withdrawalLayer')
     const withdrawalBtn = document.querySelector('.withdrawalBtn')
     const txtWrap = document.querySelector('.txt-wrap')
