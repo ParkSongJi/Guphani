@@ -517,13 +517,11 @@ function makeMarker(map, lat, lng, hpid) {
   
       // 현재 클릭된 마커 저장
       selectedMarker = { marker, li: targetLi };
-      
     }
   });
 
   return marker;  // 생성한 마커를 반환
 }
-
 
 function makeHomeMarker(map, lat, lng) {
   var markerPosition = new kakao.maps.LatLng(lat, lng);
