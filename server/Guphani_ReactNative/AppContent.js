@@ -28,6 +28,13 @@ const AppContent = () => {
       <WebView
         ref={webviewRef}
         source={{ uri: 'https://www.guphani.com/html/index.html'}}
+        onShouldStartLoadWithRequest={(event) => {
+          if (event.url.startsWith('tel:')) {
+            Linking.openURL(event.url);
+            return false;
+          }
+          return true;
+        }}
         onError={(syntheticEvent) => {
           const { nativeEvent } = syntheticEvent;
           console.warn('WebView error: ', nativeEvent);
@@ -44,6 +51,12 @@ const AppContent = () => {
         startInLoadingState={true}
         javaScriptEnabledAndroid={true}
         onMessage={m => this.onMessage(m)} 
+        onMessage={(event) => {
+          const message = event.nativeEvent.data;
+          if (message.startsWith('tel:')) {
+            Linking.openURL(message);
+          }
+        }}
         domStorageEnabled
         cacheEnabled
       />

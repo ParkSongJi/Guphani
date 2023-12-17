@@ -137,7 +137,7 @@ function updateErList(data) {
               : '실시간 정보 없음'
             }
           </span>
-          <a href="#"><span class="call"><i class="xi-call"></i>${er.dutyTel3}</span></a>
+          <a href="javascript:void(0)"><span class="call"><i class="xi-call"></i>${er.dutyTel3}</span></a>
         </div>
       `;
 
@@ -165,7 +165,7 @@ function updateErList(data) {
               : '실시간 정보 없음'
             }
           </span>
-          <a href="${er.dutyTel3}"><span class="call"><i class="xi-call"></i>${er.dutyTel3}</span></a>
+          <a href="javascript:void(0)"><span class="call"><i class="xi-call"></i>${er.dutyTel3}</span></a>
         </div>
       `
   
