@@ -32,6 +32,9 @@ const AppContent = () => {
           if (event.url.startsWith('tel:')) {
             Linking.openURL(event.url);
             return false;
+          } else if (event.url.startsWith('sms:')) {
+            Linking.openURL(event.url);
+            return false;
           }
           return true;
         }}
@@ -54,6 +57,8 @@ const AppContent = () => {
         onMessage={(event) => {
           const message = event.nativeEvent.data;
           if (message.startsWith('tel:')) {
+            Linking.openURL(message);
+          } else if (message.startsWith('sms:')) {
             Linking.openURL(message);
           }
         }}

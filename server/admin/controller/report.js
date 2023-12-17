@@ -2,6 +2,7 @@ import { User } from '../data/auth.js';
 import { generateEmergencyMessage } from '../data/report.js';
 
 export async function createSMS(req, res, next) {
+    console.log('report 접속');
     try {
         const { id } = await User.findOne({ id: req.params.id });
         const emergencyMessage = await generateEmergencyMessage(id);
