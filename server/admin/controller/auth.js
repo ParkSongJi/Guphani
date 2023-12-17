@@ -599,9 +599,8 @@ export async function updatePassword(req, res, next) {
 
 
         const updatedPassword = await User.findOneAndUpdate(
-            { id, phoneNumber },
-            { $set: { password: hashed } }, // Update the password field
-            { new: true }
+            { id },
+            { $set: { password: hashed } }
         );
 
         if (!updatedPassword) {
