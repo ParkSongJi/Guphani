@@ -501,8 +501,7 @@ function makeMarker(map, lat, lng, hpid) {
   kakao.maps.event.addListener(marker, 'click', function () {
     // 이전에 클릭된 마커의 상태 초기화
     if (selectedMarker) {
-      selectedMarker.marker.setMap(map); // 이전에 선택된 마커를 다시 지도에 표시
-      selectedMarker.li.style.backgroundColor = 'transparent';
+      selectedMarker.li.style.backgroundColor = 'white';
     }
 
     // 클릭한 마커의 위치로 지도 중심 이동
@@ -511,7 +510,7 @@ function makeMarker(map, lat, lng, hpid) {
     // 해당 마커에 대응하는 리스트 아이템을 찾아서 스크롤
     const targetLi = erListBox.querySelector(`[data-id="${hpid}"]`);
     if (targetLi) {
-      targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      targetLi.scrollIntoView({ behavior: 'auto', block: 'start' });
   
       // 회색 배경 적용
       targetLi.style.backgroundColor = '#F5F5F5';
@@ -519,8 +518,6 @@ function makeMarker(map, lat, lng, hpid) {
       // 현재 클릭된 마커 저장
       selectedMarker = { marker, li: targetLi };
       
-      // 선택된 마커를 지도에서 숨김
-      marker.setMap(null);
     }
   });
 
