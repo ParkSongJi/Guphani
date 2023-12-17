@@ -2,7 +2,6 @@
   "expo": {
     "name": "Guphani",
     "slug": "Guphani",
-    "description": "Guphani app provides information about nearby emergency rooms, specialized emergency facilities, and pharmacies in case of emergency situations", 
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/loading.png", 
@@ -26,11 +25,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "02484dba-cb1e-4ce6-bc71-40d90619184a"
-      }
     }
   }
 }

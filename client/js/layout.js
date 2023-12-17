@@ -46,42 +46,43 @@ function generateListItems(className, items) {
 async function info_fetch() {
     const id = localStorage.getItem('userId')
     const token = localStorage.getItem('token')
-    const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/info/${id}`,{
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-    })
-    .then((result) => {return result.json()})
-    .then((user)=>{
-        let indexInfo = ''
-        let mypageInfo =''
-        let list = ''
-        const mypageInfoWrap = document.querySelector('.mypage-info')
-
-        const userInfoElement = document.querySelector('.user-info');
-        const userUtilElement = document.querySelector('#index .util-wrap');
-        const mypageList = document.querySelector('.mypage-list');
-
-        if(token){
+    if(token){
+        const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/info/${id}`,{
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        })
+        .then((result) => {return result.json()})
+        .then((user)=>{
+            let indexInfo = ''
+            let mypageInfo =''
+            let list = ''
+            const mypageInfoWrap = document.querySelector('.mypage-info')
+    
+            const userInfoElement = document.querySelector('.user-info');
+            const userUtilElement = document.querySelector('#index .util-wrap');
+            const mypageList = document.querySelector('.mypage-list');
+    
+        
             if (userInfoElement && userUtilElement) {
-              // 두 요소가 모두 존재할 때 실행할 코드
-              const userInfoWrap = userInfoElement;
-              const userUtilWrap = userUtilElement;
+                // 두 요소가 모두 존재할 때 실행할 코드
+                const userInfoWrap = userInfoElement;
+                const userUtilWrap = userUtilElement;
             
-              let indexInfo = `
+                let indexInfo = `
                 <div class="login-on">
-                  <div class="name">${user.name ? `${user.name}님` : ''}</div>
+                    <div class="name">${user.name ? `${user.name}님` : ''}</div>
                     <div class="user-sub">
                         ${user.bloodType ? `<span>${user.bloodType}형</span>` : ''}
                         ${user.birthdate ? `<span>${calculateAge(user.birthdate)}세</span>` : ''}
                     </div>
-                  <ul>
+                    <ul>
                     ${generateListItems('disease', user.underlyingDisease)} 
                     ${generateListItems('allergy', user.allergy)}
-                  </ul>
+                    </ul>
                 </div>`;
             
-              userInfoWrap.innerHTML = indexInfo;
+                userInfoWrap.innerHTML = indexInfo;
             
-              userUtilWrap.innerHTML = `<button type="button" class="mypageBtn" onclick="mypageOn()">마이페이지</button>
+                userUtilWrap.innerHTML = `<button type="button" class="mypageBtn" onclick="mypageOn()">마이페이지</button>
                                         <button type="button" class="logout" id="logoutBtn">로그아웃</button>`;
             }
     
@@ -117,8 +118,8 @@ async function info_fetch() {
             }
 
             mypageList.innerHTML = list
-        }
-    })
+        })
+    }
 }
 
 info_fetch()
