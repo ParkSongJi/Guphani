@@ -65,51 +65,56 @@ detailBack.addEventListener('click',()=>{
   bodyTag.style.overflow = 'unset'
 })
 
+//새로운 시도
 const socket = io('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app');
-let markers = {};
-let selectedMarker = null;
 
 socket.on('connect', () => {
   console.log('서버연결성공');
   const listContainer = document.querySelector('.list-ul');
   const loadingMessageId = 'loadingMessage';
-
+  
   // 이미 로딩 메시지가 있는지 확인
   if (!document.getElementById(loadingMessageId)) {
     const loadingMessage = document.createElement('li');
-    loadingMessage.innerHTML = '<i class="xi-spinner-3 xi-spin"></i>';
+    loadingMessage.innerHTML = '<i class="xi-spinner-3  xi-spin"></i>';
     loadingMessage.style.textAlign = 'center';
     loadingMessage.id = loadingMessageId;
     loadingMessage.classList.add('name');
     listContainer.appendChild(loadingMessage);
   }
   socket.emit('getErWithRealTime', { latitude: userLat, longitude: userLon });
-  setKakaoMapMain('map', userLat, userLon);
+  setKakaoMapMain("map", userLat, userLon)
 });
 
 let previousData = []; // 이전 데이터 저장
 
+let i = 0
+let markers = {}
 socket.on('updateData', (newData) => {
+
   if (previousData.length > 0) {
     // 맨 처음에는 전체 데이터를 사용하여 updateErList 호출
-    newData = newData.filter((newItem) => newItem.hvoc !== undefined);
+    newData = newData.filter(newItem => newItem.hvoc !== undefined);
+    
   }
-  if (i === 0) {
+  if (i===0) {
     ;
-    newData.forEach((er) => {
-      markers[er.hpid] = makeMarker(map, er.wgs84Lat, er.wgs84Lon, er.hpid);
-    });
+    newData.map((er)=> {
+      markers[er.hpid] = makeMarker(map,er.wgs84Lat,er.wgs84Lon, er.hpid)
+    })
     const loadingMessage = document.getElementById('loadingMessage');
     if (loadingMessage) {
       loadingMessage.remove();
     }
   }
   updateErList(newData);
+  
 
   // 이전 데이터 갱신
   previousData = newData.slice();
   console.log('소켓성공');
-  i++;
+  i++
+  
 });
 
 function updateErList(data) {
@@ -474,18 +479,21 @@ function setKakaoMapDetail(idName, lat, lng) {
   marker.setMap(map);
 }
 
+// 모든 마커 정보를 저장하는 배열
+let selectedMarker = null;
+
 function makeMarker(map, lat, lng, hpid) {
   var markerPosition = new kakao.maps.LatLng(lat, lng);
-
+  
   var imageSrc = '../../img/marker/marker2.png',
-    imageSize = new kakao.maps.Size(48, 52),
-    imageOption = { offset: new kakao.maps.Point(20, 52) };
-
+      imageSize = new kakao.maps.Size(48, 52),
+      imageOption = { offset: new kakao.maps.Point(20, 52) };
+  
   var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
   var marker = new kakao.maps.Marker({
     position: markerPosition,
-    image: markerImage,
+    image: markerImage
   });
 
   marker.setMap(map);
@@ -498,22 +506,22 @@ function makeMarker(map, lat, lng, hpid) {
 
     // 클릭한 마커의 위치로 지도 중심 이동
     map.setCenter(new kakao.maps.LatLng(lat - 0.01, lng));
-
-    // 클릭된 마커에 대응하는 리스트 아이템을 찾아서 스크롤
-    const clickedLiId = hpid;
-    const clickedLi = document.getElementById(clickedLiId);
-    if (clickedLi) {
-      clickedLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
+  
+    // 해당 마커에 대응하는 리스트 아이템을 찾아서 스크롤
+    const targetLi = erListBox.querySelector(`[data-id="${hpid}"]`);
+    if (targetLi) {
+      targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  
       // 회색 배경 적용
-      clickedLi.style.backgroundColor = '#F5F5F5';
-
+      targetLi.style.backgroundColor = '#F5F5F5';
+  
       // 현재 클릭된 마커 저장
-      selectedMarker = { marker, li: clickedLi };
+      selectedMarker = { marker, li: targetLi };
+      
     }
   });
 
-  return marker; // 생성한 마커를 반환
+  return marker;  // 생성한 마커를 반환
 }
 
 
