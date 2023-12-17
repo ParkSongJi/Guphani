@@ -479,6 +479,8 @@ function setKakaoMapDetail(idName, lat, lng) {
   marker.setMap(map);
 }
 
+// 모든 마커 정보를 저장하는 배열
+let markersArray = [];
 
 function makeMarker(map, lat, lng, hpid) {
   var markerPosition = new kakao.maps.LatLng(lat, lng);
@@ -495,14 +497,13 @@ function makeMarker(map, lat, lng, hpid) {
   });
 
   marker.setMap(map);
-
-  let selectedMarker = null;
+  markersArray.push(marker);  // 생성한 마커를 배열에 저장
 
   kakao.maps.event.addListener(marker, 'click', function () {
-    // 이전에 클릭된 마커의 상태 초기화
-    if (selectedMarker) {
-      selectedMarker.li.style.backgroundColor = 'white';
-    }
+    // 이전에 클릭된 모든 마커의 상태 초기화
+    markersArray.forEach((m) => {
+      m.li.style.backgroundColor = 'white';
+    });
 
     // 클릭한 마커의 위치로 지도 중심 이동
     map.setCenter(new kakao.maps.LatLng(lat - 0.01, lng));
@@ -510,20 +511,15 @@ function makeMarker(map, lat, lng, hpid) {
     // 해당 마커에 대응하는 리스트 아이템을 찾아서 스크롤
     const targetLi = erListBox.querySelector(`[data-id="${hpid}"]`);
     if (targetLi) {
-      targetLi.scrollIntoView({ behavior: 'auto', block: 'start' });
+      targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
   
       // 회색 배경 적용
       targetLi.style.backgroundColor = '#F5F5F5';
-  
-      // 현재 클릭된 마커 저장
-      selectedMarker = { marker, li: targetLi };
-      
     }
   });
 
   return marker;  // 생성한 마커를 반환
 }
-
 
 function makeHomeMarker(map, lat, lng) {
   var markerPosition = new kakao.maps.LatLng(lat, lng);
