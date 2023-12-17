@@ -148,6 +148,7 @@ socket.on('updatePharmacy', (newData) => {
   makeLiElement(newData)
 })
 
+let markers = {};
 let selectedMarker = null;
 
 function makeMarker(map, lat, lng, hpid) {
@@ -175,22 +176,23 @@ function makeMarker(map, lat, lng, hpid) {
     // 클릭한 마커의 위치로 지도 중심 이동
     map.setCenter(new kakao.maps.LatLng(lat - 0.01, lng));
   
-    // 해당 마커에 대응하는 리스트 아이템을 찾아서 스크롤
-    const targetLi = erListBox.querySelector(`[data-id="${hpid}"]`);
-    if (targetLi) {
-      targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // 클릭된 마커에 대응하는 리스트 아이템을 찾아서 스크롤
+    const clickedLiId = hpid;
+    const clickedLi = document.getElementById(clickedLiId);
+    if (clickedLi) {
+      clickedLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
   
       // 회색 배경 적용
-      targetLi.style.backgroundColor = '#F5F5F5';
+      clickedLi.style.backgroundColor = '#F5F5F5';
   
       // 현재 클릭된 마커 저장
-      selectedMarker = { marker, li: targetLi };
-      
+      selectedMarker = { marker, li: clickedLi };
     }
   });
 
   return marker;  // 생성한 마커를 반환
 }
+
 
 
 
@@ -235,8 +237,6 @@ function setKakaoMap(idName, lat, lng) {
 }
 
 
-
-let markers = {};
 function makeLiElement(list) {
   const ulElement = document.querySelector('.list-ul');
   // 새로운 리스트의 아이템들이 기존의 리스트에 없으면 추가
