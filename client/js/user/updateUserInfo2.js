@@ -1,4 +1,3 @@
-// JSON 데이터 받아와주세요 여기서는 가라데이터를 쓰겠어요
 const userId = localStorage.getItem('userId')
 const token = localStorage.getItem('token')
 
@@ -64,7 +63,10 @@ function updateList(listClassName, items) {
     list.innerHTML = ""; // Clear existing content
 
     items.forEach((el) => {
-        list.innerHTML += `<li><span>${el}</span><button type="button" class="xi-close del-btn"></button></li>`;
+        if (el !== '') {
+            list.innerHTML += `<li><span>${el}</span><button type="button" class="xi-close del-btn"></button></li>`;
+        }
+        
     });
 }
 
@@ -79,12 +81,11 @@ function addList(btn, input, list) {
         let innerList = listUl.innerHTML
         let addVal = ''
         
-        const val = inputArea.value
+        const val = inputArea.value.trim()
 
         const elements = listUl.querySelectorAll('li span');
-        if (elements.length === 0) {
+        if (elements.length === 0 ) {
             // el이 없을 때 val을 addVal에 추가
-            console.log(val);
             addVal = val;
         } else {
             elements.forEach((el) => {
@@ -131,9 +132,17 @@ infoFetch()
 let sickListValues = []
 let allergyListValues = []
 let medicineListValues = []
+let bloodValue = ''
 
 async function setData() {
     try {
+        const guardHpInput = guardHp.value.replace(/[^0-9]/g, '')
+        const guardRelInput = guardRel.value.trim()
+        if (guardHpInput.length > 0 && guardHpInput.length < 9 || guardHpInput.length > 11) {
+            return makePopup('보호자 전화번호를 다시 입력해주세요')
+        } else if(guardHpInput.length >= 9 && guardRelInput === ''){
+            return makePopup('보호자와의 관계를 입력해주세요')
+        }
         const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateOther`, {
             method: 'PUT',
             headers: {
@@ -142,8 +151,8 @@ async function setData() {
             },
             body: JSON.stringify({
                 id: userId,
-                guardianPhoneNumber: guardHp.value.replace(/[^0-9]/g, ''),
-                guardianRelationship: guardRel.value,
+                guardianPhoneNumber: guardHpInput,
+                guardianRelationship: guardRelInput,
                 underlyingDisease: sickListValues,
                 allergy: allergyListValues,
                 medication: medicineListValues,
@@ -153,21 +162,19 @@ async function setData() {
 
         if (response.ok) {
             const data = await response.json();
-            console.log('Server Response:', data);
+            makePopup('추가정보가 수정되었습니다.') 
             location.reload();
         } else {
             const errorMessage = await response.text();
             console.error('Server Error:', errorMessage);
+            makePopup('오류가 발생했습니다.') 
         }
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
-function makePopup(popupMessage) {
-    document.getElementById('message').innerText = popupMessage;
-    layerOn('register3Layer');
-}
+
 
 function makePopup(popupMessage){
     const message = document.getElementById('message');
@@ -191,14 +198,12 @@ submitFormButton.addEventListener('click',()=>{
         medicineListValues.push(el.innerText)
     })
 
-    let bloodValue = ''
+    
     bloodType.forEach((el)=>{
         if(el.checked){
             bloodValue = el.value
         }
     })
     setData()
-    makePopup('추가정보가 수정되었습니다.')       
 })
-
 infoFetch()

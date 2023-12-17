@@ -133,6 +133,8 @@ h1.logo.top .st0 {fill: #ff5e5e;}
 #pharmacymap .quick-ul li{background: var(--white-color); border-radius:3.571rem; box-shadow: 0 0 0.357rem #0001; padding: 0.428rem 1.071rem; border: 1px solid var(--light-gray); cursor: pointer;}
 #pharmacymap .quick-ul li.on{border:1px solid var(--point-color);}
 #pharmacymap .quick-ul li.on button{color: var(--point-color);}
+#pharmacymap .quick-ul li.holiday.on{border:1px solid var(--blue-color) !important;}
+#pharmacymap .quick-ul li.holiday.on button{color: var(--blue-color) !important;}
 #pharmacymap .quick-ul li button{font-size: 0.928rem; color: var(--gray-color); display: block;}
 #pharmacymap .quick-ul li + li{margin-left: 1.071rem;}
 
@@ -223,4 +225,3 @@ h1.logo.top .st0 {fill: #ff5e5e;}
 
 #pharmacymap .list-ul li#loadingMessage i,
 #emergencymap .list-ul li#loadingMessage i{font-size: 5rem; text-align: center; padding: 5rem 0; color: var(--point-color);}
-

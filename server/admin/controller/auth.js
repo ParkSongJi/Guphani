@@ -508,15 +508,13 @@ export async function updateMain(req, res, next) {
 
 // 추가 정보 수정 (사용자)
 export async function updateOther(req, res, next) {
-    console.log('추가정보수정 들어옴');
     try {
         const { id, guardianPhoneNumber, guardianRelationship, bloodType, underlyingDisease, allergy, medication } = req.body;
 
         // Extract user ID from the token
-        const userIdFromToken = req.id;
-
+        const userIdFromToken = req.id.id;
         // Compare user ID from token with the ID in the request parameters
-        if (userIdFromToken !== req.params.id) {
+        if (userIdFromToken !== id) {
             res.status(403).json({ result: '실패', message: ' 본인 정보만 수정 가능합니다.' });
             return;
         }

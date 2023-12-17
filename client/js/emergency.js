@@ -484,8 +484,8 @@ function makeMarker(map, lat, lng, hpid) {
   var markerPosition = new kakao.maps.LatLng(lat, lng);
   
   var imageSrc = '../../img/marker/marker2.png',
-  imageSize = new kakao.maps.Size(48, 52),
-  imageOption = { offset: new kakao.maps.Point(20, 52) };
+      imageSize = new kakao.maps.Size(48, 52),
+      imageOption = { offset: new kakao.maps.Point(20, 52) };
   
   var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
@@ -495,7 +495,16 @@ function makeMarker(map, lat, lng, hpid) {
   });
 
   marker.setMap(map);
+
+  let selectedMarker = null;
+
   kakao.maps.event.addListener(marker, 'click', function () {
+    // 이전에 클릭된 마커의 상태 초기화
+    if (selectedMarker) {
+      selectedMarker.marker.setMap(map); // 이전에 선택된 마커를 다시 지도에 표시
+      selectedMarker.li.style.backgroundColor = 'transparent';
+    }
+
     // 클릭한 마커의 위치로 지도 중심 이동
     map.setCenter(new kakao.maps.LatLng(lat - 0.01, lng));
   
@@ -505,23 +514,19 @@ function makeMarker(map, lat, lng, hpid) {
       targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
   
       // 회색 배경 적용
-      targetLi.style.backgroundColor = 'lightgray';
+      targetLi.style.backgroundColor = '#F5F5F5';
   
-      // 대기 시간 계산 (스크롤이 완료되는데 걸리는 시간 + 추가로 대기할 시간)
-      const scrollDuration = 500; // 실제 스무스 스크롤이 걸리는 시간에 맞게 조절하세요.
-      const additionalWaitTime = 1000;
-  
-      // 일정 시간이 지난 후 배경 색상 제거
-      setTimeout(() => {
-        targetLi.style.backgroundColor = 'transparent'; // 또는 원하는 배경 색상
-      }, scrollDuration + additionalWaitTime);
+      // 현재 클릭된 마커 저장
+      selectedMarker = { marker, li: targetLi };
+      
+      // 선택된 마커를 지도에서 숨김
+      marker.setMap(null);
     }
   });
-  
 
   return marker;  // 생성한 마커를 반환
-
 }
+
 
 function makeHomeMarker(map, lat, lng) {
   var markerPosition = new kakao.maps.LatLng(lat, lng);
@@ -561,4 +566,3 @@ locationBtn.addEventListener('click', () => {
 // locationBtn.addEventListener('click', () => {
 //   map.panTo(new kakao.maps.LatLng(userLat, userLon));
 // });
-

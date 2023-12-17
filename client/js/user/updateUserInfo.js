@@ -137,7 +137,9 @@ document.addEventListener('DOMContentLoaded', function () {
         hpCheck.addEventListener('click', async function (event) {
             event.preventDefault();
             const hp = document.getElementById('phoneNumber').value.replace(/[^0-9]/g, '');
-
+            if(hp === realOriginPhoneNumber ){
+                return makePopup('이미 사용하고 계신 번호입니다.')
+            }
             if (hp.length < 10 || hp.length > 11) {
                 makePopup('번호를 확인해주세요');
             } else {
@@ -257,8 +259,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('Server Response:', data);
+                // console.log('Server Response:', data);
                 makePopup('업데이트 되었습니다');
+                location.reload()
             } else {
                 const errorMessage = await response.text();
                 console.error('Server Error:', errorMessage);

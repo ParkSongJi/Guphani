@@ -2,6 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, BackHandler } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Linking } from 'react-native';
+import { History } from 'history';
+
+
 
 
 const AppContent = () => {
@@ -13,11 +16,6 @@ const AppContent = () => {
         if (!webviewRef.current) {
           // 웹뷰가 아닐 경우 처리를 해주세요. 
           return false; 
-        }
-        if (isModalDisplayed) {
-          // 만약 모달창이면 모달창을 닫아주세요, 뒤로 가기 버튼은 작동하지 않게 해주세요. 
-          closeModal(); // closeModal 함수를 만들어주세요. 
-          return true;
         }
         // 만약 모달창이 아닐 경우에는 뒤로 가기를 해주세요. 
         webviewRef.current.goBack();
@@ -63,5 +61,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+window.history.pushState(null, "", window.location.href);
+useEffect(() => {
+  const event = history.listen((listener) => {
+    if (listener.action === "POP") {
+      history.back();
+      toggleModal();
+    }
+  });
+  return event;
+}, [history]);
 
 export default AppContent;
