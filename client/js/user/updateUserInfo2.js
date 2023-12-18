@@ -99,7 +99,7 @@ function addList(btn, input, list) {
         if(val == ''){
             if(listUl != ''){
                 listUl.innerHTML = innerList;
-                val = ''
+                inputArea.value = ''
             }
         }else{
             innerList += `
@@ -107,7 +107,7 @@ function addList(btn, input, list) {
             `
             listUl.innerHTML = innerList
             innerList = ''
-            val = ''
+            inputArea.value = ''
         }    
     })    
 }
