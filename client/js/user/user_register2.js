@@ -56,7 +56,7 @@ idCheck.addEventListener('click', async () => {
     const isValidId = idPattern.test(userId);
 
     try {
-        const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/duplicateIdTest', {
+        const response = await fetch('http://localhost:8080/auth/duplicateIdTest', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -124,6 +124,8 @@ idInput.addEventListener('input', () => {
 let isValidPw
 //비밀번호 양식 검증
 pwCheck.addEventListener('input', () => {
+    const userpwInputAgain = document.getElementById('userpw_check')
+    const userpwAgain = userpwInputAgain.value.trim();
     try {
         const userpwInput = document.getElementById('userpw');
         const userpw = userpwInput.value.trim();
@@ -137,6 +139,11 @@ pwCheck.addEventListener('input', () => {
             document.getElementById('pw_info').style.visibility = 'visible'
         } else {
             document.getElementById('pw_info').style.visibility = 'hidden'
+        }
+        if (userpwAgain == userpw) {
+            document.getElementById('pwCheck_info').style.display = 'none'
+        }else{
+            document.getElementById('pwCheck_info').style.display = 'block'
         }
     } catch (error) {
         console.error('입력 이벤트 처리 중 오류가 발생했습니다:', error.message);
@@ -158,14 +165,16 @@ pwDoubleCheck.addEventListener('input', () => {
         const isValidPwCheck = pwPattern.test(userpw);
 
         // 팝업창에 표시될 메시지
-        if (userpw == userpwAgain) {
+        if(userpw == userpwAgain && isValidPw && isValidPwCheck){
             document.getElementById('pwCheck_info').style.display = 'none'
-        } else if(userpw == userpwAgain && isValidPw && isValidPwCheck){
-            document.getElementById('pwCheck_info').style.display = 'none'
+            console.log('막혀제발!!!!!!!');
             userpwInput.disabled = true;
             userpwInputAgain.disabled = true;
             checkBox.classList.add('on')
             pwBool = true
+        }if(userpw == userpwAgain) {
+            document.getElementById('pwCheck_info').style.display = 'none'
+            console.log('일치함일치함');
         }else {
             document.getElementById('pwCheck_info').style.display = 'block'
         }
@@ -239,7 +248,7 @@ hpCheck.addEventListener('click', async function (event) {
             const phnumber = document.getElementById('hp').value.trim();
             try {
                 // phnumber로 인증번호 전송
-                const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/sendVerification', {
+                const response = await fetch('http://localhost:8080/auth/user/sendVerification', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -263,7 +272,7 @@ hpCheck.addEventListener('click', async function (event) {
                 const inputVerificationCode = `${document.getElementById('verficateCode').value}`;
 
                 try {
-                    const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/verifyCode', {
+                    const response = await fetch('http://localhost:8080/auth/user/verifyCode', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -301,11 +310,15 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 const userId = document.getElementById('userid').value;
                 const userPw = document.getElementById('userpw').value;
+                const pwDoubleCheck = document.getElementById('userpw_check').value;
                 const userName = document.getElementById('username').value;
                 const birthday = document.getElementById('birthday').value;
                 const genderInputs = document.querySelectorAll('input[name="gender"]');
                 let genderValue = '';
 
+                if(userpw_check == userPw){
+                    pwBool = true
+                }
                 // Check if a gender option is selected
                 let isGenderSelected = false;
                 genderInputs.forEach((el) => {
@@ -360,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         return;
                     }
                 // If all conditions are met, send data to the server
-                const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/signUp', {
+                const response = await fetch('http://localhost:8080/auth/user/signUp', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
