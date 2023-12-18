@@ -254,52 +254,54 @@
 </body>
 <script src="https://www.youtube.com/iframe_api?key=AIzaSyCXufmkwEfXMnHPxoazenWiDdQ_WEW0qIA"></script>
 <script>
-var herf = window.location.search
-var id = herf.split('=')[1]
-let link = `https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/firstAid/user/detail?id=${id}`;
-// 상세보기 내용 출력
-let code; // 전역 변수로 선언
-async function fetchData() {
-    const response = await fetch(link);
-    const data = await response.json();
-    document.getElementById('title').innerText = data.title;
-    document.getElementById('date').innerText = (data.createdAt).split('T')[0];
-    const viewer = toastui.Editor.factory({
-        el: document.querySelector('#editorWrap'),
-        viewer: true,
-        initialValue: data.contents
-    });
-
-    if (data.youtube != undefined) {
-        code = data.youtube.split('=')[1]; // 전역 변수에 할당
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-
-        function onYouTubePlayerAPIReady() {
-            player = new YT.Player('player', {
-                videoId: code, // 재생할 유튜브 영상 ID
-                playerVars: {
-                autoplay: false, // 자동 재생 유무
-                loop: true, // 반복 재생 유무
-                playlist: code // 반복 재생할 유튜브 영상 ID 목록
-                },
-                events: {
-                    // 영상이 준비되었을 때,
-                    onReady: function (event) {
-                        event.target.mute(); // 음소거!
-                    }
-                }
-            });
-        }
-        onYouTubePlayerAPIReady()
-    } else {
-        const youtube = document.querySelector('#player');
-        youtube.style.display = 'none';
-    }
+window.onload() = function (params) {
+  var herf = window.location.search
+  var id = herf.split('=')[1]
+  let link = `https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/firstAid/user/detail?id=${id}`;
+  // 상세보기 내용 출력
+  let code; // 전역 변수로 선언
+  async function fetchData() {
+      const response = await fetch(link);
+      const data = await response.json();
+      document.getElementById('title').innerText = data.title;
+      document.getElementById('date').innerText = (data.createdAt).split('T')[0];
+      const viewer = toastui.Editor.factory({
+          el: document.querySelector('#editorWrap'),
+          viewer: true,
+          initialValue: data.contents
+      });
+  
+      if (data.youtube != undefined) {
+          code = data.youtube.split('=')[1]; // 전역 변수에 할당
+          var tag = document.createElement('script');
+          tag.src = "https://www.youtube.com/iframe_api";
+          var firstScriptTag = document.getElementsByTagName('script')[0];
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  
+  
+          function onYouTubePlayerAPIReady() {
+              player = new YT.Player('player', {
+                  videoId: code, // 재생할 유튜브 영상 ID
+                  playerVars: {
+                  autoplay: false, // 자동 재생 유무
+                  loop: true, // 반복 재생 유무
+                  playlist: code // 반복 재생할 유튜브 영상 ID 목록
+                  },
+                  events: {
+                      // 영상이 준비되었을 때,
+                      onReady: function (event) {
+                          event.target.mute(); // 음소거!
+                      }
+                  }
+              });
+          }
+          onYouTubePlayerAPIReady()
+      } else {
+          const youtube = document.querySelector('#player');
+          youtube.style.display = 'none';
+      }
+  }
+  fetchData();
 }
-fetchData();
 </script>
 </html>
