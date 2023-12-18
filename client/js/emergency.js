@@ -92,7 +92,7 @@ socket.on('updateData', (newData) => {
 
   if (previousData.length > 0) {
     // 맨 처음에는 전체 데이터를 사용하여 updateErList 호출
-    newData = newData.filter(newItem => newItem.hvoc !== undefined);
+    newData = previousData.concat(newData);
     
   }
   if (i===0) {
