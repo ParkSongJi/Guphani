@@ -20,11 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
 
-                if(quickBtnText == ''){
-                    exists = false
-                    inputElement.value = '';
-                }
-
                 if (!exists) {
                     const createLi = document.createElement('li');
                     createLi.innerHTML = `<span>${quickBtnText}</span><button type="button" class="xi-close del-btn"></button>`;
