@@ -542,9 +542,9 @@ export async function updateOther(req, res, next) {
 export async function searchId(req, res, next) {
     try {
         const { name, phoneNumber } = req.body;
-        const foundUser = await User.findOne({ phoneNumber }); // Use findOne instead of find
+        const foundUser = await User.find({ name,phoneNumber }); // Use findOne instead of find
         if (foundUser) {
-            res.json({ id: foundUser.id,isUser: foundUser.isUser, message: '회원을 찾음'}); 
+            res.json({ foundUser}); 
         } else {
             res.status(404).json({ message: '회원을 찾을 수 없음' });
         }

@@ -11,6 +11,7 @@ function makePopup(popupMessage) {
     layerOn('register2Layer');
 }
 
+
 function maskUserId(userId) {
     const maskLength = Math.floor(userId.length / 3) + 1;
     const startIndex = Math.ceil((userId.length - maskLength) / 2);
@@ -45,6 +46,37 @@ findIdBtn.addEventListener('click', async () => {
 
             if (response.ok) {
                 const result = await response.json();
+                if (result) {
+                    let html = ''
+                    cnt = 0
+                    result.foundUser.forEach((el)=>{
+                        if (el.isUser == 'Y') {
+                            html += `<p>아이디는 <strong class="txt-point">${maskUserId(el.id)} </strong>입니다.</p>`
+                        }else{
+                            cnt += 1
+                        }                        
+                    })
+                    if (html === '' && cnt > 0) {
+                        makePopup(`탈퇴한 회원입니다`);
+                        document.getElementById('username').value = '';
+                        document.getElementById('findid-userhp').value = '';
+                    }else{
+                    const message = document.getElementById('message');
+                    message.innerHTML = html;     
+                    // 팝업창 열기
+                    layerOn('register2Layer');                   
+                    }
+                    
+                }else{
+                     makePopup(`일치하는 사용자가 없습니다`);
+                    document.getElementById('username').value = '';
+                    document.getElementById('findid-userhp').value = '';
+                }
+
+
+
+
+
                 if (result.isUser == 'N') {
                     makePopup(`탈퇴한 회원입니다`);
                     document.getElementById('username').value = '';
@@ -52,11 +84,10 @@ findIdBtn.addEventListener('click', async () => {
                 } else if (result.id) {
                     const maskedUserId = maskUserId(result.id);
                     makePopup(`아이디는 ${maskedUserId}입니다`);
-                } else {
-                    makePopup(`일치하는 사용자가 없습니다`);
-                    document.getElementById('username').value = '';
-                    document.getElementById('findid-userhp').value = '';
-                }
+                } 
+
+
+
             } else {
                 makePopup('일치하는 사용자가 없습니다');
             }
@@ -93,7 +124,6 @@ pwDoubleCheck.addEventListener('input', () => {
         document.getElementById('pwCheck_info').style.display = 'block';
         document.getElementById('resetPwBtn').style.marginBottom = '0';
     } else {
-        console.log('Match');
         document.getElementById('pwCheck_info').style.display = 'none';
     }
     if (userpwInputAgain === '') {
@@ -106,7 +136,6 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
     // 입력된 아이디와 전화번호 가져오기
     const inputId = document.getElementById('userid').value.trim();
     const inputHp = document.getElementById('findpw-onetwostep').value.replace(/[^0-9]/g, '');
-    console.log(inputId,inputHp);
     if (inputId === '' || inputHp === '') {
         makePopup('이름과 전화번호를 모두 입력해주세요');
     } else {
@@ -125,12 +154,10 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
             if (response.ok) {
                 const result = await response.json();
                 if (result) {
-                    console.log(result,'ddddddddddddddddd');
                     const inputHp = document.getElementById('findpw-onetwostep').value.trim()
                     
                     
                     if(result.user.isUser =='N'){
-                        console.log('sssssssss');
                         makePopup(`탈퇴한 회원입니다`);
                         document.getElementById('findpw-onetwostep').value = ''
                         document.getElementById('userid').value=''
@@ -153,15 +180,12 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
                                 },
                                 body: JSON.stringify({ phnumber: inputHp }),
                             });
-                            console.log(response.ok);
-                            console.log(response.status);
                             if (response.status == 200) {
                                 makePopup('인증번호 전송 되었습니다. 최대 5분 정도 걸릴 수 있습니다.');
                             } else {
                                 makePopup('인증번호 전송에 실패했습니다.');
                             }
                         } catch (error) {
-                            console.log(error);
                             makePopup('인증번호 전송에 실패했습니다. 새로고침 후에 다시 시도해주세요');
                         }
 
@@ -221,7 +245,6 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
 
                                                 if (response.ok) {
                                                     const data = await response.json();
-                                                    // console.log(data.message);
                                                     window.location.href = './finishChangePw.html';
                                                 } else {
                                                     const errorData = await response.json();
