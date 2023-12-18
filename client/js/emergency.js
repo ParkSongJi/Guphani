@@ -456,44 +456,48 @@ let selectedMarker = null;
 
 function makeMarker(map, lat, lng, hpid) {
   var markerPosition = new kakao.maps.LatLng(lat, lng);
-  
+
   var imageSrc = '../../img/marker/marker2.png',
       imageSize = new kakao.maps.Size(48, 52),
       imageOption = { offset: new kakao.maps.Point(20, 52) };
-  
+
   var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
   var marker = new kakao.maps.Marker({
-    position: markerPosition,
-    image: markerImage
+      position: markerPosition,
+      image: markerImage
   });
 
   marker.setMap(map);
 
   kakao.maps.event.addListener(marker, 'click', function () {
-    // 이전에 클릭된 마커의 상태 초기화
-    if (selectedMarker) {
-      selectedMarker.li.style.backgroundColor = 'white';
-    }
+      // 이전에 클릭된 마커의 상태 초기화
+      if (selectedMarker) {
+          selectedMarker.li.style.backgroundColor = 'white';
+      }
 
-    // 클릭한 마커의 위치로 지도 중심 이동
-    map.setCenter(new kakao.maps.LatLng(lat - 0.01, lng));
-  
-    // 해당 마커에 대응하는 리스트 아이템을 찾아서 스크롤
-    const targetLi = erListBox.querySelector(`[data-id="${hpid}"]`);
-    if (targetLi) {
-      targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  
-      // 회색 배경 적용
-      targetLi.style.backgroundColor = '#F5F5F5';
-  
-      // 현재 클릭된 마커 저장
-      selectedMarker = { marker, li: targetLi };
-    }
+      // 클릭한 마커의 위치로 지도 중심 이동
+      map.setCenter(new kakao.maps.LatLng(lat - 0.01, lng));
+
+      // 해당 마커에 대응하는 리스트 아이템을 찾아서 스크롤
+      const targetLi = erListBox.querySelector(`[data-id="${hpid}"]`);
+      if (targetLi) {
+          targetLi.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          // 회색 배경 적용
+          targetLi.style.backgroundColor = '#F5F5F5';
+
+          // 현재 클릭된 마커 저장
+          selectedMarker = { marker, li: targetLi };
+      }
+
+      // 클릭한 마커의 배경색 초기화
+      marker.li.style.backgroundColor = '';
   });
 
   return marker;  // 생성한 마커를 반환
 }
+
 
 function makeHomeMarker(map, lat, lng) {
   var markerPosition = new kakao.maps.LatLng(lat, lng);

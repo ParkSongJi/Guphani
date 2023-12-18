@@ -193,11 +193,6 @@ function makeMarker(map, lat, lng, hpid) {
   return marker;  // 생성한 마커를 반환
 }
 
-
-
-
-
-
 schList.forEach((el)=>{
   el.addEventListener('click',()=>{
     layerOn('pharmacyDetail')
@@ -217,7 +212,7 @@ function setKakaoMap(idName, lat, lng) {
   var mapContainer = document.getElementById(idName),
       mapOption = {
         center: new kakao.maps.LatLng(lat-0.0015, lng),
-        level: 3,
+        level: 6,
       };
   map = new kakao.maps.Map(mapContainer, mapOption);
 
@@ -365,7 +360,8 @@ locationBtn.addEventListener('click', () => {
   navigator.geolocation.getCurrentPosition(
     ({ coords }) => {
       const { latitude: latitude, longitude: longitude } = coords;
-      map.panTo(new kakao.maps.LatLng(latitude, longitude));
+      map.setLevel(6);
+      map.panTo(new kakao.maps.LatLng(latitude - 0.01, longitude));
     },
     (error) => {
       console.error('Geolocation 오류:', error);

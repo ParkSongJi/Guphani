@@ -2,6 +2,7 @@
 @import url('../admin/common.css'); /*공통 css*/
 
 /* 화면 2분할 */
+#adminLogin{width: 100%; max-width: 1440px;}
 #adminLogin .flex{display: flex; height: 100vh;}
 
 /* 왼쪽 */
