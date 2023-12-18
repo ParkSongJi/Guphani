@@ -135,6 +135,8 @@ let sickListValues = []
 let allergyListValues = []
 let medicineListValues = []
 let bloodValue = ''
+let guardHpInput = guardHp.value.replace(/[^0-9]/g, '')
+let guardRelInput = guardRel.value.trim()
 
 async function setData() {
     try {
@@ -184,32 +186,32 @@ function makePopup(popupMessage){
 const submitFormButton = document.getElementById('submitForm');
 submitFormButton.addEventListener('click',()=>{
 
-    const guardHpInput = guardHp.value.replace(/[^0-9]/g, '')
-    const guardRelInput = guardRel.value.trim()
+    guardHpInput = guardHp.value.replace(/[^0-9]/g, '')
+    guardRelInput = guardRel.value.trim()
+
     if (guardHpInput.length > 0 && guardHpInput.length < 9 || guardHpInput.length > 11) {
         makePopup('보호자 전화번호를 다시 입력해주세요')
-        return false
     } else if(guardHpInput.length >= 9 && guardRelInput === ''){
         makePopup('보호자와의 관계를 입력해주세요')
-        return false
+    }else{
+        sickList.querySelectorAll('li').forEach((el)=>{
+            sickListValues.push(el.innerText)
+        })
+        allergyList.querySelectorAll('li').forEach((el)=>{
+            allergyListValues.push(el.innerText)
+        })
+        medicineList.querySelectorAll('li').forEach((el)=>{
+            medicineListValues.push(el.innerText)
+        })
+    
+        
+        bloodType.forEach((el)=>{
+            if(el.checked){
+                bloodValue = el.value
+            }
+        })
+        setData()
     }
-    
-    sickList.querySelectorAll('li').forEach((el)=>{
-        sickListValues.push(el.innerText)
-    })
-    allergyList.querySelectorAll('li').forEach((el)=>{
-        allergyListValues.push(el.innerText)
-    })
-    medicineList.querySelectorAll('li').forEach((el)=>{
-        medicineListValues.push(el.innerText)
-    })
 
-    
-    bloodType.forEach((el)=>{
-        if(el.checked){
-            bloodValue = el.value
-        }
-    })
-    setData()
 })
 infoFetch()
