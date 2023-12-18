@@ -158,13 +158,15 @@ pwDoubleCheck.addEventListener('input', () => {
         const isValidPwCheck = pwPattern.test(userpw);
 
         // 팝업창에 표시될 메시지
-        if (userpw == userpwAgain && isValidPw && isValidPwCheck) {
+        if (userpw == userpwAgain) {
+            document.getElementById('pwCheck_info').style.display = 'none'
+        } else if(userpw == userpwAgain && isValidPw && isValidPwCheck){
             document.getElementById('pwCheck_info').style.display = 'none'
             userpwInput.disabled = true;
             userpwInputAgain.disabled = true;
             checkBox.classList.add('on')
             pwBool = true
-        } else {
+        }else {
             document.getElementById('pwCheck_info').style.display = 'block'
         }
     } catch (error) {
