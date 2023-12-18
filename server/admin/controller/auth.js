@@ -572,6 +572,7 @@ export async function searchPw(req, res, next) {
 
 // 아이디 찾기 위해서 mongodb에 있는 userid 들 불러오기 
 export async function duplicateIdTest(req, res, next) {
+
     try {
         // Fetch all user IDs from the User collection in MongoDB, selecting only the 'id' field
         const allUserIds = await User.find({}, 'id');
