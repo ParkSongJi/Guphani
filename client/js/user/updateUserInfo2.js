@@ -136,13 +136,6 @@ let bloodValue = ''
 
 async function setData() {
     try {
-        const guardHpInput = guardHp.value.replace(/[^0-9]/g, '')
-        const guardRelInput = guardRel.value.trim()
-        if (guardHpInput.length > 0 && guardHpInput.length < 9 || guardHpInput.length > 11) {
-            return makePopup('보호자 전화번호를 다시 입력해주세요')
-        } else if(guardHpInput.length >= 9 && guardRelInput === ''){
-            return makePopup('보호자와의 관계를 입력해주세요')
-        }
         const response = await fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/updateOther`, {
             method: 'PUT',
             headers: {
@@ -188,6 +181,17 @@ function makePopup(popupMessage){
 // 업데이트 버튼
 const submitFormButton = document.getElementById('submitForm');
 submitFormButton.addEventListener('click',()=>{
+
+    const guardHpInput = guardHp.value.replace(/[^0-9]/g, '')
+    const guardRelInput = guardRel.value.trim()
+    if (guardHpInput.length > 0 && guardHpInput.length < 9 || guardHpInput.length > 11) {
+        makePopup('보호자 전화번호를 다시 입력해주세요')
+        return false
+    } else if(guardHpInput.length >= 9 && guardRelInput === ''){
+        makePopup('보호자와의 관계를 입력해주세요')
+        return false
+    }
+    
     sickList.querySelectorAll('li').forEach((el)=>{
         sickListValues.push(el.innerText)
     })
