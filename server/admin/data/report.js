@@ -4,7 +4,7 @@ export async function generateEmergencyMessage(id) {
   try {
     // MongoDB에서 id를 사용하여 유저 정보를 찾음.
     const user = await User.findOne({ id: id });
-    let emergencyMessage = '';
+    let emergencyMessage = '실시간 응급의료 안내 어플 [급하니] 사용자 입니다';
 
     if (user) {
       if (user.name) {
@@ -27,7 +27,7 @@ export async function generateEmergencyMessage(id) {
         emergencyMessage += `복용약: ${user.medication.join(', ')} %0A`;
       }
     }
-    emergencyMessage += '긴급상황입니다.'
+    emergencyMessage += '긴급상황입니다. 현재위치에서 제일 가까운 119로 도움요청 합니다.'
 
     // 생성한 메시지 반환
     return emergencyMessage;

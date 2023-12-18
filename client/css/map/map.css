@@ -58,6 +58,7 @@ h1.logo.top .st0 {fill: #ff5e5e;}
 #emergencymap .list-ul{height: calc(90vh - 47px); overflow-y: scroll;}
 #emergencymap .list-ul .no-data p{color: var(--gray-color); text-align: center; padding: 14.285rem;}
 #emergencymap .list-ul li{padding: 1.428rem; box-sizing: border-box;}
+#emergencymap .list-ul li.on{background: #f5f5f5 !important;}
 #emergencymap .list-ul li + li{border-top: 1px solid var(--dark-gray);}
 
 #emergencymap .name{font-size: 1.428rem; font-weight: bold; margin-bottom: 0.714rem;}

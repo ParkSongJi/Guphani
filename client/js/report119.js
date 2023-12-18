@@ -58,19 +58,19 @@ async function report119() {
 
                                 if (response.ok) {
                                     if (checkbox.checked) {
-                                        const message = await response.text();
+                                        const message = await response.emergencyMessage
                                         const cleanedMessage = message.replace(/{|}/g, '');
-                                        const smsLink = `sms:${phoneNumber}?body=${cleanedMessage}`;
+                                        const smsLink = `sms:119?body=${cleanedMessage}`;
                                         window.location.href = smsLink;
                                     } else {
                                         const message = '실시간 응급의료 안내 어플 [급하니] 사용자 입니다.%0A긴급한 도움이 필요합니다.%0A현재위치에서 제일 가까운 119로 도움요청 합니다.';
-                                        const smsLink = `sms:${phoneNumber}?body=${message}`;
+                                        const smsLink = `sms:119?body=${message}`;
                                         window.location.href = smsLink;
                                     }
                                 } else {
                                     if (response.status !== 200) {
                                         const message = '실시간 응급의료 안내 어플 [급하니] 사용자 입니다.%0A긴급한 도움이 필요합니다.%0A현재위치에서 제일 가까운 119로 도움요청 합니다.';
-                                        const smsLink = `sms:${phoneNumber}?body=${message}`;
+                                        const smsLink = `sms:119?body=${message}`;
                                         window.location.href = smsLink;
                                     } else {
                                         makePopup('서버에서 오류가 발생했습니다.');
@@ -82,7 +82,7 @@ async function report119() {
                             }
                         } else {
                             const message = '실시간 응급의료 안내 어플 [급하니] 사용자 입니다.%0A긴급한 도움이 필요합니다.%0A현재위치에서 제일 가까운 119로 도움요청 합니다.';
-                            const smsLink = `sms:${phoneNumber}?body=${message}`;
+                            const smsLink = `sms:119?body=${message}`;
                             window.location.href = smsLink;
                         }
                     });

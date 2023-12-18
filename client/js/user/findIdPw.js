@@ -45,7 +45,11 @@ findIdBtn.addEventListener('click', async () => {
 
             if (response.ok) {
                 const result = await response.json();
-                if (result.id) {
+                if (result.isUser == 'N') {
+                    makePopup(`탈퇴한 회원입니다`);
+                    document.getElementById('username').value = '';
+                    document.getElementById('findid-userhp').value = '';
+                } else if (result.id) {
                     const maskedUserId = maskUserId(result.id);
                     makePopup(`아이디는 ${maskedUserId}입니다`);
                 } else {

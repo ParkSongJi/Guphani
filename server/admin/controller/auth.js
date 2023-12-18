@@ -544,7 +544,7 @@ export async function searchId(req, res, next) {
         const { name, phoneNumber } = req.body;
         const foundUser = await User.findOne({ phoneNumber }); // Use findOne instead of find
         if (foundUser) {
-            res.json({ id: foundUser.id, message: '회원을 찾음'}); 
+            res.json({ id: foundUser.id,isUser: foundUser.isUser, message: '회원을 찾음'}); 
         } else {
             res.status(404).json({ message: '회원을 찾을 수 없음' });
         }

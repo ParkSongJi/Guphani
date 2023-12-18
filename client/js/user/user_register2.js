@@ -86,7 +86,7 @@ idCheck.addEventListener('click', async () => {
     if (userId === '') {
         popupMessage = '아이디를 입력해주세요.';
     } else if (isDuplicate) {
-        popupMessage = '중복된 아이디입니다.';
+        popupMessage = '사용 불가능한 아이디입니다.';
         useridInput.value = '';
     } else if (!isValidId) {
         popupMessage = '아이디 형식에 맞지 않습니다';
