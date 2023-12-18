@@ -27,12 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const inquiryType = document.querySelector('.inquiry-type')
             sort.value = inquiryType.innerText
 
-            if (sort.value == '문의 분류를 선택해주세요') {
+            if (sort.value == '문의 분류를 선택하세요') {
                 sort.value == ''
+                layerText.innerText = '문의 분류를 선택해주세요.'
+                layerOn('inquireFormLayer')
+                return false
             }
 
             if (sort.value == '') {
-                layerText.innerText = '문의 분류를 선택해주세요.'
+                layerText.innerText = '문의 분류를 선택하세요.'
                 layerOn('inquireFormLayer')
                 return false
             }

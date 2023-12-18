@@ -361,7 +361,7 @@ locationBtn.addEventListener('click', () => {
     ({ coords }) => {
       const { latitude: latitude, longitude: longitude } = coords;
       map.setLevel(4);
-      map.panTo(new kakao.maps.LatLng(latitude - 0.0015, longitude));
+      map.panTo(new kakao.maps.LatLng(latitude - 0.05, longitude));
     },
     (error) => {
       console.error('Geolocation 오류:', error);
