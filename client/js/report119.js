@@ -59,7 +59,8 @@ async function report119() {
 
                                 if (response.ok) {
                                     if (checkbox.checked) {
-                                        const message = await response.emergencyMessage
+                                        const responseData = await response.json(); // Assuming the response is in JSON format
+                                        const message = responseData.emergencyMessage;
                                         const cleanedMessage = message.replace(/{|}/g, '');
                                         const smsLink = `sms:${call119}?body=${cleanedMessage}`;
                                         window.location.href = smsLink;

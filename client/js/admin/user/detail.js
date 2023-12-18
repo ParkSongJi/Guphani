@@ -151,10 +151,10 @@ fetch(`https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/use
                 <tr>
                     <th>보호자 연락처</th>
                     <td><div class="input-area">
-                    <input type="text" name="guardianPhoneNumber" id="guardianPhoneNumber" class="txt-box" value="${user.user.guardianPhoneNumber == "undefined" ? '' : user.user.guardianPhoneNumber}"></td>
+                    <input type="text" name="guardianPhoneNumber" id="guardianPhoneNumber" class="txt-box" value="${user.user.guardianPhoneNumber == undefined ? '' : user.user.guardianPhoneNumber}"></td>
                     <th>보호자관계</th>
                     <td><div class="input-area">
-                    <input type="text" name="guardianRelationship" id="guardianRelationship" class="txt-box" value="${user.user.guardianRelationship == "undefined" ? '' : user.user.guardianRelationship}"></td>
+                    <input type="text" name="guardianRelationship" id="guardianRelationship" class="txt-box" value="${user.user.guardianRelationship == undefined ? '' : user.user.guardianRelationship}"></td>
                 </tr>
             `;
         } else {
