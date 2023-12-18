@@ -25,7 +25,7 @@ function maskUserId(userId) {
 
 // 아이디 찾기
 findIdBtn.addEventListener('click', async () => {
-    const inputName = document.getElementById('username').value;
+    const inputName = document.getElementById('username').value.trim();
     const inputHp = document.getElementById('findid-userhp').value.replace(/[^0-9]/g, '');
 
     if (inputName === '' || inputHp === '') {
@@ -97,11 +97,12 @@ pwDoubleCheck.addEventListener('input', () => {
     }
 });
 
+//비밀번호 찾기
 document.getElementById('findpw-onestepBtn').addEventListener('click', async function () {
     // 입력된 아이디와 전화번호 가져오기
-    const inputId = document.getElementById('userid').value;
+    const inputId = document.getElementById('userid').value.trim();
     const inputHp = document.getElementById('findpw-onetwostep').value.replace(/[^0-9]/g, '');
-
+    console.log(inputId,inputHp);
     if (inputId === '' || inputHp === '') {
         makePopup('이름과 전화번호를 모두 입력해주세요');
     } else {
@@ -120,114 +121,123 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
             if (response.ok) {
                 const result = await response.json();
                 if (result) {
-                    document.getElementById('findpw-onetwostep').value = inputHp;
-                    document.getElementById('findpw-onetwostep').disabled = true;
+                    console.log(result,'ddddddddddddddddd');
+                    const inputHp = document.getElementById('findpw-onetwostep').value.trim()
+                    
+                    
+                    if(result.user.isUser =='N'){
+                        console.log('sssssssss');
+                        makePopup(`탈퇴한 회원입니다`);
+                        document.getElementById('findpw-onetwostep').value = ''
+                        document.getElementById('userid').value=''
 
-                    Array.from(document.getElementsByClassName('findpw-onestep')).forEach(function (element) {
-                        element.style.display = 'none';
-                    });
-
-                    Array.from(document.getElementsByClassName('findpw-twostep')).forEach(function (element) {
-                        element.style.display = 'block';
-                    });
-
-                    try {
-                        // inputHp로 인증번호 전송
-                        const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/sendVerification', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ phnumber: inputHp }),
+                    }else{
+                        document.getElementById('findpw-onetwostep').disabled = true;
+                        Array.from(document.getElementsByClassName('findpw-onestep')).forEach(function (element) {
+                            element.style.display = 'none';
                         });
-                        console.log(response.ok);
-                        console.log(response.status);
-                        if (response.status == 200) {
-                            makePopup('인증번호 전송 되었습니다. 최대 5분 정도 걸릴 수 있습니다.');
-                        } else {
-                            makePopup('인증번호 전송에 실패했습니다.');
-                        }
-                    } catch (error) {
-                        console.log(error);
-                        makePopup('인증번호 전송에 실패했습니다. 새로고침 후에 다시 시도해주세요');
-                    }
-
-                    document.getElementById('findpw-twostepBtn').addEventListener('click', async function (event) {
-                        event.preventDefault();
-                        const phnumber = inputHp;
-                        const inputVerificationCode = `${document.getElementById('findpw-twostep').value}`;
+                        Array.from(document.getElementsByClassName('findpw-twostep')).forEach(function (element) {
+                            element.style.display = 'block';
+                        });
 
                         try {
-                            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/verifyCode', {
+                            // inputHp로 인증번호 전송
+                            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/sendVerification', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
                                 },
-                                body: JSON.stringify({
-                                    phnumber,
-                                    verificationCode: inputVerificationCode,
-                                }),
+                                body: JSON.stringify({ phnumber: inputHp }),
                             });
-
-                            if (response.status === 200) {
-                                Array.from(document.getElementsByClassName('findpw-onetwostep')).forEach(function (element) {
-                                    element.style.display = 'none';
-                                });
-                                Array.from(document.getElementsByClassName('findpw-twostep')).forEach(function (element) {
-                                    element.style.display = 'none';
-                                });
-                                Array.from(document.getElementsByClassName('findpw-threestep')).forEach(function (element) {
-                                    element.style.display = 'block';
-                                });
-
-                                makePopup('인증 성공');
-
-                                document.getElementById('resetPwBtn').addEventListener('click', async () => {
-                                    const userpwInput = document.getElementById('newPw').value.trim();
-                                    const userpwInputAgain = document.getElementById('newPwCheck').value.trim();
-                                    const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{6,20}$/;
-                                    const isValidPw = pwPattern.test(userpwInput);
-
-                                    if (!isValidPw) {
-                                        makePopup('비밀번호 양식을 확인해주세요');
-                                    } else if (userpwInput !== userpwInputAgain) {
-                                        makePopup('비밀번호가 일치하지 않습니다');
-                                    } else {
-                                        try {
-                                            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/updatePassword', {
-                                                method: 'PUT',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                },
-                                                body: JSON.stringify({
-                                                    id: inputId,
-                                                    phoneNumber: inputHp,
-                                                    newPassword: userpwInputAgain,
-                                                }),
-                                            });
-
-                                            if (response.ok) {
-                                                const data = await response.json();
-                                                // console.log(data.message);
-                                                window.location.href = './finishChangePw.html';
-                                            } else {
-                                                const errorData = await response.json();
-                                                console.error(errorData.error); 
-                                                makePopup('비밀번호 업데이트 실패');
-                                            }
-                                        } catch (error) {
-                                            console.error('Error during password update:', error);
-                                            makePopup('서버 연결 오류');
-                                        }
-                                    }
-                                });
+                            console.log(response.ok);
+                            console.log(response.status);
+                            if (response.status == 200) {
+                                makePopup('인증번호 전송 되었습니다. 최대 5분 정도 걸릴 수 있습니다.');
                             } else {
-                                makePopup('인증 실패');
+                                makePopup('인증번호 전송에 실패했습니다.');
                             }
                         } catch (error) {
-                            makePopup('인증 실패');
+                            console.log(error);
+                            makePopup('인증번호 전송에 실패했습니다. 새로고침 후에 다시 시도해주세요');
                         }
-                    });
+
+                        document.getElementById('findpw-twostepBtn').addEventListener('click', async function (event) {
+                            event.preventDefault();
+                            const phnumber = inputHp;
+                            const inputVerificationCode = `${document.getElementById('findpw-twostep').value.trim()}`;
+
+                            try {
+                                const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/verifyCode', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        phnumber,
+                                        verificationCode: inputVerificationCode,
+                                    }),
+                                });
+
+                                if (response.status === 200) {
+                                    Array.from(document.getElementsByClassName('findpw-onetwostep')).forEach(function (element) {
+                                        element.style.display = 'none';
+                                    });
+                                    Array.from(document.getElementsByClassName('findpw-twostep')).forEach(function (element) {
+                                        element.style.display = 'none';
+                                    });
+                                    Array.from(document.getElementsByClassName('findpw-threestep')).forEach(function (element) {
+                                        element.style.display = 'block';
+                                    });
+
+                                    makePopup('인증 성공');
+
+                                    document.getElementById('resetPwBtn').addEventListener('click', async () => {
+                                        const userpwInput = document.getElementById('newPw').value.trim();
+                                        const userpwInputAgain = document.getElementById('newPwCheck').value.trim();
+                                        const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{6,20}$/;
+                                        const isValidPw = pwPattern.test(userpwInput);
+
+                                        if (!isValidPw) {
+                                            makePopup('비밀번호 양식을 확인해주세요');
+                                        } else if (userpwInput !== userpwInputAgain) {
+                                            makePopup('비밀번호가 일치하지 않습니다');
+                                        } else {
+                                            try {
+                                                const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/updatePassword', {
+                                                    method: 'PUT',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                    },
+                                                    body: JSON.stringify({
+                                                        id: inputId,
+                                                        phoneNumber: inputHp,
+                                                        newPassword: userpwInputAgain,
+                                                    }),
+                                                });
+
+                                                if (response.ok) {
+                                                    const data = await response.json();
+                                                    // console.log(data.message);
+                                                    window.location.href = './finishChangePw.html';
+                                                } else {
+                                                    const errorData = await response.json();
+                                                    console.error(errorData.error); 
+                                                    makePopup('비밀번호 업데이트 실패');
+                                                }
+                                            } catch (error) {
+                                                console.error('Error during password update:', error);
+                                                makePopup('서버 연결 오류');
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    makePopup('인증 실패');
+                                }
+                            } catch (error) {
+                                makePopup('인증 실패');
+                            }
+                        });
+                    }
                 } else {
                     makePopup(`일치하는 사용자가 없습니다`);
                 }

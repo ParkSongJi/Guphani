@@ -559,13 +559,13 @@ export async function searchPw(req, res, next) {
     try {
         const { id, phoneNumber } = req.body;
         const foundUser = await User.findOne({ id }); // Use findOne instead of find
-        if (foundUser.phoneNumber.replace(/-/g, '') === phoneNumber) {
-            res.json({ id: foundUser.id, message: '회원을 찾음'}); 
+        if (parseInt(foundUser.phoneNumber.replace(/[^0-9]/g, '')) === parseInt(phoneNumber)) {
+            res.json({ user:foundUser, message: '회원을 찾음'}); 
         } else {
             res.status(404).json({ message: '회원을 찾을 수 없음' });
         }
     } catch (error) {
-        console.error('Error in searchId:', error);
+        console.error('Error in searchPw:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }

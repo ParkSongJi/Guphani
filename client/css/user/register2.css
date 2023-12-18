@@ -42,8 +42,12 @@
 /* 휴대폰번호 인증 */
 #register2 .hp-check{ margin-top: 0.714rem; display: none;}
 
+
 /* 모든 인증 버튼 */
 #register2 .check_btn{display: inline-block; background: var(--light-gray); width: 7.214rem; height:3.571rem ; flex-basis: 8.517rem; border-radius: 0.714rem; color: var(--dark-gray); line-height: 3.571rem;  box-sizing: border-box; font-size: 1.071rem; font-weight: bold; text-align: center;margin-left: 0.714rem; }
 /* 다음 버튼 */
 #register2 .point-btn1 {display: inline-block;background: var(--point-color); width: 100%; border-radius: 3.571rem; color: var(--white-color); line-height: 5rem; height: 5rem; box-sizing: border-box; font-size: 1.428rem; font-weight: bold; text-align: center;
 }
+
+#register2 .hpCheckResend{display: none;}
+#register2 .hpCheckCountDown{display: none;}

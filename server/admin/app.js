@@ -32,22 +32,22 @@ app.use(
 
 app.use(express.json());
 app.use(morgan("dev"));
-// app.use(cors());
+app.use(cors());
 // 허용되는 출처 설정
 const allowedOrigins = ['https://www.guphani.com'];
 
 // cors 미들웨어 사용
-app.use(cors({
-  origin: function (origin, callback) {
-    // 허용되는 출처인지 확인
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('CORS 오류: 허용되지 않는 출처'));
-    }
-  },
-  // 다른 CORS 관련 옵션도 필요할 경우 추가
-}));
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     // 허용되는 출처인지 확인
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('CORS 오류: 허용되지 않는 출처'));
+//     }
+//   },
+//   // 다른 CORS 관련 옵션도 필요할 경우 추가
+// }));
 
 // user
 app.use('/auth', authRouter);
