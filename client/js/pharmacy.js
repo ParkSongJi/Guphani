@@ -211,7 +211,7 @@ detailBack.addEventListener('click',()=>{
 function setKakaoMap(idName, lat, lng) {
   var mapContainer = document.getElementById(idName),
       mapOption = {
-        center: new kakao.maps.LatLng(lat-0.005, lng),
+        center: new kakao.maps.LatLng(lat-0.0030, lng),
         level: 4,
       };
   map = new kakao.maps.Map(mapContainer, mapOption);
@@ -361,7 +361,7 @@ locationBtn.addEventListener('click', () => {
     ({ coords }) => {
       const { latitude: latitude, longitude: longitude } = coords;
       map.setLevel(4);
-      map.panTo(new kakao.maps.LatLng(latitude - 0.005, longitude));
+      map.panTo(new kakao.maps.LatLng(latitude - 0.0030, longitude));
     },
     (error) => {
       console.error('Geolocation 오류:', error);
