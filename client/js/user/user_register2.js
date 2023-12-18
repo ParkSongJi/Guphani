@@ -56,7 +56,7 @@ idCheck.addEventListener('click', async () => {
     const isValidId = idPattern.test(userId);
 
     try {
-        const response = await fetch('final-1gksli2alpullmg3.sel4.cloudtype.app/auth/duplicateIdTest', {
+        const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/duplicateIdTest', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
