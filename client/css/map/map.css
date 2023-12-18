@@ -11,7 +11,7 @@ h1.logo.top .st0 {fill: #ff5e5e;}
 
 /* 헤더 영역 추가 */
 #emergencymap header{position: fixed;top:0;width: 100%; background: var(--white-color);}
-#emergencymap header .inner-header{height: 100%; display: flex;align-items: center;padding: 4rem 2.14rem 2.14rem;box-sizing: border-box;}
+#emergencymap header .inner-header{height: 100%; display: flex;align-items: center;padding: 2.14rem 2.14rem;box-sizing: border-box;}
 #emergencymap header h1.logo{width: 4.375rem;}
 #emergencymap header .map-header-menu{margin-left:auto;}
 #emergencymap header .map-header-menu button.home{font-size: 2.142rem;color: var(--dark-gray-text);}
@@ -115,7 +115,7 @@ h1.logo.top .st0 {fill: #ff5e5e;}
 
 /* 헤더 영역 추가 */
 #pharmacymap header{position: fixed;top:0;width: 100%; background: var(--white-color);}
-#pharmacymap header .inner-header{height: 100%; display: flex;align-items: center;padding: 4rem 2.14rem 2.14rem;box-sizing: border-box;}
+#pharmacymap header .inner-header{height: 100%; display: flex;align-items: center;padding: 2.14rem 2.14rem;box-sizing: border-box;}
 #pharmacymap header h1.logo{width: 4.375rem;}
 #pharmacymap header .map-header-menu{margin-left:auto;}
 #pharmacymap header .map-header-menu button.home{font-size: 2.142rem;color: var(--dark-gray-text);}

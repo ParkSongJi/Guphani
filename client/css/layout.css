@@ -15,7 +15,7 @@
 #index .user-wrap{width: 100%; box-sizing: border-box; background: url('../img/main_bg.jpg') no-repeat 50%/cover; overflow: hidden; border-radius: 0 0 0 3.57rem; position: relative;}
 #index .user-wrap::after{width: 100%; height: 100%; content: ''; background: #0005; position: absolute; display: block; top: 0; left: 0;}
 #index .user-wrap .inner-con{padding: 0 2.857rem 3.857rem; box-sizing: border-box; position: relative; z-index: 1;}
-#index header{padding: 4rem 0 2.14rem; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;}
+#index header{padding: 2.14rem 0 2.14rem; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;}
 #index header h1{max-width: 6.92rem; width: 30%;}
 #index header button, #index header a{color: #fff; font-size: 1rem;}
 #index header button:nth-child(1),

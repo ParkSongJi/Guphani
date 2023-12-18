@@ -47,8 +47,6 @@ function getCurrentLocation() {
         console.log('위도:', userLat);
         console.log('경도:', userLon);
 
-        // 지도 중심을 현재 위치로 이동
-        // map.setCenter(new kakao.maps.LatLng(userLat, userLon));
          },
       error => {
         console.error('Geolocation 오류:', error);
@@ -98,10 +96,6 @@ socket.on('updateData', (newData) => {
     
   }
   if (i===0) {
-    ;
-    newData.map((er)=> {
-      markers[er.hpid] = makeMarker(map,er.wgs84Lat,er.wgs84Lon, er.hpid)
-    })
     const loadingMessage = document.getElementById('loadingMessage');
     if (loadingMessage) {
       loadingMessage.remove();
@@ -153,6 +147,7 @@ function updateErList(data) {
 
     } else {
       // 존재하지 않는 항목인 경우 새로 추가
+      markers[er.hpid] = makeMarker(map,er.wgs84Lat,er.wgs84Lon, er.hpid)
       const li = document.createElement('li');
       li.setAttribute('data-id', er.hpid); // 각 항목에 고유한 ID를 부여하여 식별
       li.innerHTML = `
@@ -434,29 +429,6 @@ infoWrap.innerHTML += `
 }
 
 
-
-// 카카오맵
-// function setKakaoMapMain(idName, lat, lng) {
-//   var mapContainer = document.getElementById(idName),
-//       mapOption = {
-//         center: new kakao.maps.LatLng(lat-0.0015, lng),
-//         level: 3,
-//       };
-//   var map = new kakao.maps.Map(mapContainer, mapOption);
-//   var markerPosition = new kakao.maps.LatLng(lat, lng);
-    
-//   var imageSrc = '../../img/marker/marker2.png',
-//   imageSize = new kakao.maps.Size(48, 52),
-//   imageOption = {offset: new kakao.maps.Point(20, 52)};
-//   var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
-//   var marker = new kakao.maps.Marker({
-//     position: markerPosition,
-//     image: markerImage
-//   });
-
-//   marker.setMap(map);
-// }
 function setKakaoMapDetail(idName, lat, lng) {
   var mapContainer = document.getElementById(idName),
       mapOption = {

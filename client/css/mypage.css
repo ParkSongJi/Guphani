@@ -4,7 +4,7 @@
 /*헤더 부분*/
 #mypage{height: 100%; background: var(--gray-bg); position: fixed; left: 0; top: 0; width: 100%; z-index: 200; display: none; overflow-y: scroll;}
 #mypage .header-box {background-color: #ff5e5e; color: #FFFFFF; padding-bottom: 2.857rem;}
-#mypage .inner-bar {display: flex; justify-content: space-between; padding-top: 4rem; padding-left: 2.286rem; padding-bottom: 1.429rem; padding-right: 2.238rem;}
+#mypage .inner-bar {display: flex; justify-content: space-between; padding-top: 2.14rem; padding-left: 2.286rem; padding-bottom: 1.429rem; padding-right: 2.238rem;}
 #mypage .xi-close {font-size: 1.334rem; color: #FFFFFF; font-weight:bolder;}
 #mypage .mypage-info {color: #FFFFFF; width: 100%; height: auto; padding-left: 2.286rem; padding-top: 2.857rem; box-sizing: border-box;}
 #mypage .mypagename {color:  #FFFFFF; font-size: 2rem; font-family: 'yg-jalnan', 'Pretendard' !important;}

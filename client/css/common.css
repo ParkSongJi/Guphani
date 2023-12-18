@@ -22,7 +22,7 @@
 
 /* 공통 헤더 */
 header.basic{background: #fff;position: sticky; left: 0; top: 0; z-index: 5;}
-header.basic .inner-header{padding: 4rem 2.14rem 2.14rem; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;}
+header.basic .inner-header{padding: 2.14rem 2.14rem; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;}
 header.basic a{display: flex; align-items: center;}
 header.basic a i{font-size: 2.142rem; margin-right: 0.714rem; color: var(--dark-gray-text);}
 header.basic a span, header.basic a strong{font-size: 1rem}
