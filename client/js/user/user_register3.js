@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
 
-                if (!exists) {
+                if (!exists && liSpanText == '') {
                     const createLi = document.createElement('li');
                     createLi.innerHTML = `<span>${quickBtnText}</span><button type="button" class="xi-close del-btn"></button>`;
                     insertBox.appendChild(createLi);
