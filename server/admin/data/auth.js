@@ -48,7 +48,7 @@ export async function getAll(query, page, limit) {
         const skip = (page - 1) * limit;
         // MongoDB에서 검색 후 정렬 및 페이징 적용
         const data = await User.find(query)
-            .sort({ createdAt: -1 })
+            .sort({ joinDate: -1 })
             .skip(skip)
             .limit(limit);
 
@@ -71,6 +71,7 @@ export async function getAllUsers(query, page, limit) {
 
         // MongoDB에서 검색 후 페이징 적용
         const data = await User.find(query)
+            .sort({ joinDate: -1 })
             .skip(skip)
             .limit(limit);
 

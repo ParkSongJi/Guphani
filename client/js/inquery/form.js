@@ -34,18 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 return false
             }
 
-            if (sort.value == '') {
+            if (sort.value.trim() == '') {
                 layerText.innerText = '문의 분류를 선택하세요.'
                 layerOn('inquireFormLayer')
                 return false
             }
-            if (title.value == '') {
+            if (title.value.trim() == '') {
                 layerText.innerText = '제목을 입력해주세요.'
                 layerOn('inquireFormLayer')
                 title.focus()
                 return false
             }
-            if (contents.value == '') {
+            if (contents.value.trim() == '') {
                 layerText.innerText = '내용을 입력해주세요.'
                 layerOn('inquireFormLayer')
                 return false
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button type="button" class="black-btn" onclick="window.location.href = './inquiryList.html'">닫기</button>
                 `
             } else {
-                                layerText.innerText = '등록에 실패했습니다. 서버 오류가 발생했습니다.';
+                layerText.innerText = '등록에 실패했습니다. 서버 오류가 발생했습니다.';
                 layerOn('inquireFormLayer');
             }
         } catch (error) {

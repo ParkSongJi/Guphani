@@ -107,12 +107,21 @@ input[type='checkbox'].type1:checked::after{background-image: url('../img/agree-
     html, body{font-size: 65%;}
 }
 @media screen and (max-width:360px) {
-    html, body{font-size: 65%;}
+    html, body{font-size: 60%;}
+}
+@media screen and (max-width:344px) {
+    html, body{font-size: 58%;}
+}
+@media screen and (max-width:330px) {
+    html, body{font-size: 56%;}
 }
 @media screen and (max-width:319px) {
     html, body{font-size: 55%;}
 }
 @media screen and (max-width:276px) {
     html, body{font-size: 50%;}
+}
+@media screen and (max-width:259px) {
+    html, body{font-size: 45%;}
 }
 

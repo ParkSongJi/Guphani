@@ -46,9 +46,10 @@ function fetchUsers(queryString = '', page = 1) {
                     html += `<tr class="no-data"><td colspan="10">데이터가 없습니다</td></tr>`;
                 } else {
                     data.users.data.forEach((el, idx) => {
+                        const postNumber = (page - 1) * 10 + idx + 1;
                         html += `
                             <tr>
-                                <td>${idx + 1}</td>
+                                <td>${postNumber}</td>      
                                 <td>${el.id}</td>
                                 <td>${el.name}</td>
                                 `

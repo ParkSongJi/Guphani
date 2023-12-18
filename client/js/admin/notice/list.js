@@ -78,10 +78,11 @@ function fetchUsers(queryString = '', page = 1) {
                 html += `<tr><td colspan="6">데이터가 없습니다</td></tr>`;
             } else {
                 data.notices.data.forEach((el, idx) => {
+                    const postNumber = (page - 1) * 10 + idx + 1;
                     html += `
                     <tr>
                         <td><input type="checkbox" name="" id="check${idx + 1}" class="type1" value='${el._id}'></td>
-                        <td>${idx + 1}</td>
+                        <td>${postNumber}</td>
                         <td>${el.title}</td>
                         <td><p class='ellip2'>${el.contents}</p></td>
                         <td>${String(el.createdAt).split('T')[0]}</td>

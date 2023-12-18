@@ -75,10 +75,11 @@ function fetchInquirys(queryString = '', page = 1) {
                     html += `<tr><td colspan="10">데이터가 없습니다</td></tr>`;
                 } else {
                     data.inquirys.data.forEach((el, idx) => {
+                        const postNumber = (page - 1) * 10 + idx + 1;
                         html += `
                         <tr>
                             <td><input type="checkbox" name="agree" id="agree${idx}" value="${el._id}" class="type1"></td>
-                            <td>${idx + 1}</td>
+                            <td>${postNumber}</td>
                             <td>${el.name}</td>
                             <td>${el.sort}</td>
                             <td><p class="ellip1">${el.title}</p></td>
