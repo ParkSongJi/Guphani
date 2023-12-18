@@ -56,7 +56,7 @@ idCheck.addEventListener('click', async () => {
     const isValidId = idPattern.test(userId);
 
     try {
-        const response = await fetch('http://localhost:8080/auth/duplicateIdTest', {
+        const response = await fetch('final-1gksli2alpullmg3.sel4.cloudtype.app/auth/duplicateIdTest', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -248,7 +248,7 @@ hpCheck.addEventListener('click', async function (event) {
             const phnumber = document.getElementById('hp').value.trim();
             try {
                 // phnumber로 인증번호 전송
-                const response = await fetch('http://localhost:8080/auth/user/sendVerification', {
+                const response = await fetch('final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/sendVerification', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -272,7 +272,7 @@ hpCheck.addEventListener('click', async function (event) {
                 const inputVerificationCode = `${document.getElementById('verficateCode').value}`;
 
                 try {
-                    const response = await fetch('http://localhost:8080/auth/user/verifyCode', {
+                    const response = await fetch('final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/verifyCode', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         return;
                     }
                 // If all conditions are met, send data to the server
-                const response = await fetch('http://localhost:8080/auth/user/signUp', {
+                const response = await fetch('final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/signUp', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
