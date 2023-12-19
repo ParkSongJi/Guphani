@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
 import * as Location from 'expo-location';
 import { BackHandler, Alert, Linking} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -11,8 +10,7 @@ const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     console.log(status);
     if (status !== 'granted') {
-      AsyncStorage.clear();
-      Alert.alert("위치 권한 동의가 거절되었습니다.", "앱을 종료합니다.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
+      Alert.alert("위치 권한 동의가 거절되었습니다.", "설정에서 위치정보를 허용해주세요.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
       return;
     }
 
@@ -25,10 +23,7 @@ const getLocation = async () => {
       webViewRef.current.reload();
     }
   } catch (error) {
-    console.error(error);
-    AsyncStorage.clear();
-    Alert.alert("위치 권한 동의가 거절되었습니다.", "앱을 종료합니다.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
-    
+    Alert.alert("위치 권한 동의가 거절되었습니다.", "설정에서 위치정보를 허용해주세요.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
   }
 };
 getLocation()
