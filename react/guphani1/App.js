@@ -1,56 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
 import * as Location from 'expo-location';
-import { BackHandler, Alert, Linking } from 'react-native';
+import { BackHandler, Alert, Linking} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const YourComponent = () => {
-  const webViewRef = useRef(null);
 
-  const getLocation = async () => {
-    try {
-      const { status } = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-
-      console.log(status);
-
-      if (status !== RESULTS.GRANTED) {
-        Alert.alert(
-          "위치 권한 동의가 거절되었습니다.",
-          "앱을 종료합니다.",
-          [{ text: '확인', onPress: () => BackHandler.exitApp() }]
-        );
-        return;
-      }
-
-      const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync();
-      console.log(latitude, longitude);
-      setIsLoading(false);
-
-      // WebView를 새로고침하는 로직 추가
-      if (webViewRef.current) {
-        webViewRef.current.reload();
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert(
-        "위치 권한 동의가 거절되었습니다.",
-        "앱을 종료합니다.",
-        [{ text: '확인', onPress: () => BackHandler.exitApp() }]
-      );
+const getLocation = async () => {
+  try {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    console.log(status);
+    if (status !== 'granted') {
+      AsyncStorage.clear();
+      Alert.alert("위치 권한 동의가 거절되었습니다.", "앱을 종료합니다.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
+      return;
     }
-  };
 
-  const reloadApp = () => {
-    // Add any additional logic you need before reloading the app
-    getLocation();
-  };
+    const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync();
+    console.log(latitude, longitude);
+    setIsLoading(false);
 
-  useEffect(() => {
-    getLocation();
-  }, []);
-
+    // WebView를 새로고침하는 로직 추가
+    if (webViewRef.current) {
+      webViewRef.current.reload();
+    }
+  } catch (error) {
+    console.error(error);
+    AsyncStorage.clear();
+    Alert.alert("위치 권한 동의가 거절되었습니다.", "앱을 종료합니다.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
+    
+  }
 };
-
+getLocation()
 
 // 종료 창
 function close() {

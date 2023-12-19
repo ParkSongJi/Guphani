@@ -1,6 +1,6 @@
 {
   "name": "guphani1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.21.0",
     "expo": "~49.0.15",
     "expo-location": "~16.1.0",
     "expo-status-bar": "~1.6.0",
