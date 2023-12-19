@@ -6,15 +6,7 @@ const selectUl = document.querySelector('.select-ul');
 const checkbox = modal.querySelectorAll('input[type="checkbox"]')
 const schList = document.querySelectorAll('#specialEmergencySh .list li')
 
-const liElements = document.querySelectorAll('.quick-ul button');
-liElements.forEach(li => {
-  li.setAttribute('disabled','');
-});
 
-const inputAreaInput = document.querySelector('.input-area input')
-const inputAreaBtn = document.querySelector('.input-area button')
-inputAreaInput.setAttribute('disabled','')
-inputAreaBtn.setAttribute('disabled','')
 
 // 모달 외부 클릭 시 모달 닫기
 window.addEventListener('click', (event) => {
@@ -382,6 +374,15 @@ socket.on('connect', () => {
       loadingMessage.classList.add('name');
       listContainer.appendChild(loadingMessage);
     }
+    const liElements = document.querySelectorAll('.quick-ul button');
+    liElements.forEach(li => {
+      li.setAttribute('disabled',true);
+    });
+
+    const inputAreaInput = document.querySelector('.input-area input')
+    const inputAreaBtn = document.querySelector('.input-area button')
+    inputAreaInput.setAttribute('disabled',true)
+    inputAreaBtn.setAttribute('disabled',true)
     socket.emit('getErWithRealTime', { latitude: userLat, longitude: userLon });
   } catch (error) {
     console.error('서버 연결 이벤트 처리 중 오류가 발생했습니다:', error.message);

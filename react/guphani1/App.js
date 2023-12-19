@@ -79,12 +79,10 @@ export default function App() {
         }
       }}
       // 현재 페이지 URL을 업데이트하는 이벤트
-      onNavigationStateChange={(navState) => setCurrentUrl(navState.url)}
-      // 특정 URL일 때 뒤로가기 버튼이 눌리면 앱 종료
-      // 예제에서는 'https://www.guphani.com/html/index.html'이라는 URL이라고 가정
-      // 실제로 사용하는 URL에 맞게 수정하세요.
-      onShouldStartLoadWithRequest={(event) => {
-        if (event.url === 'https://www.guphani.com/html/index.html' && event.canGoBack) {
+      onNavigationStateChange={(navState) => {
+        setCurrentUrl(navState.url);
+        // 특정 URL일 때 뒤로가기 버튼이 눌리면 앱 종료
+        if (navState.url === 'https://www.guphani.com/html/index.html' && navState.canGoBack) {
           Alert.alert(
             '앱 종료',
             '앱을 종료하시겠습니까?',
@@ -94,9 +92,7 @@ export default function App() {
             ],
             { cancelable: false }
           );
-          return false;
         }
-        return true;
       }}
     />
   );
