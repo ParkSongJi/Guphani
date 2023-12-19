@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
                 
                 // Save the login ID in localStorage
-                localStorage.setItem('userId', userid.value);
+                localStorage.setItem('userId', userid.value.trim());
                 // Store the token in localStorage
                 localStorage.setItem('token', data.token);
                 const userData = {  
