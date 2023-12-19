@@ -47,10 +47,10 @@ async function infoFetch() {
         updateList('medicineList', user.medication);
 
         // 보호자번호
-        guardHp.value = user.guardianPhoneNumber;
+        guardHp.value = user.guardianPhoneNumber ===undefined ? '' : user.guardianPhoneNumber;
 
         // 보호자관계
-        guardRel.value = user.guardianRelationship;
+        guardRel.value = user.guardianRelationship ===undefined ? '' : user.guardianRelationship;
 
     } catch (error) {
         console.error('Fetch Error:', error);

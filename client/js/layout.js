@@ -102,7 +102,7 @@ async function info_fetch() {
                 <li><a href="./mypage/notice.html">공지사항</a></li>
                 <li><a href="./mypage/service.html">서비스이용약관</a></li>
                 <li><a href="./mypage/personal.html">개인정보 처리방침</a></li>
-                <li><a href="#" id="logoutBtn2">로그아웃</a></li>
+                <li><a href="#" id="logoutBtn">로그아웃</a></li>
                 <li onclick="withdrawal()"><a>회원탈퇴</a></li>
                 `
             }else{

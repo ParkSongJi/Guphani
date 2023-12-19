@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "급하니",
-    "slug": "guphani-app",
+    "slug": "guphani1",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,14 +22,24 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FF5E5E"
       },
-      "package": "com.aram.guphani.app"
+      "package": "com.aram.guphani1"
+    },
+    "expo": {
+      "plugins": [
+        [
+          "expo-location",
+          {
+            "locationAlwaysAndWhenInUsePermission": "Allow $(guphani1) to use your location."
+          }
+        ]
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "3dd89ffe-aea9-4652-a605-e3b67797ce18"
+        "projectId": "a54cb170-429f-486b-94f6-d26fda9f2690"
       }
     }
   }
