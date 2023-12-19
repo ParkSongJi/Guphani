@@ -150,17 +150,19 @@ async function setData() {
                 id: userId,
                 guardianPhoneNumber: guardHpInput,
                 guardianRelationship: guardRelInput,
-                underlyingDisease: sickListValues,
-                allergy: allergyListValues,
-                medication: medicineListValues,
+                underlyingDisease: [...new Set(sickListValues)],
+                allergy: [...new Set(allergyListValues)],
+                medication: [...new Set(medicineListValues)],
                 bloodType: bloodValue,
             }),
         });
 
         if (response.ok) {
             const data = await response.json();
+            document.getElementById('sick').value = ''
+            document.getElementById('allergy').value = ''
+            document.getElementById('medicine').value = ''
             makePopup('추가정보가 수정되었습니다.') 
-            location.reload();
         } else {
             const errorMessage = await response.text();
             console.error('Server Error:', errorMessage);

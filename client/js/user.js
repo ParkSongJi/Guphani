@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/signIn', {
+            const response = await fetch('http://localhost:8080/auth/user/signIn', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 window.location.href = '../index.html'; 
             } else {
                 if (response.status == 401) {
-                    makePopup('등록된 사용자가 없습니다,');
+                    makePopup('등록된 사용자가 없습니다.');
                 }else if (response.status == 402){
                     makePopup('아이디 비밀번호가 다릅니다.');
                 }else {
