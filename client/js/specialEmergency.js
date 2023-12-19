@@ -382,6 +382,7 @@ socket.on('connect', () => {
     const inputAreaInput = document.querySelector('.input-area input')
     const inputAreaBtn = document.querySelector('.input-area button')
     inputAreaInput.setAttribute('disabled',true)
+    inputAreaInput.style.backgroundColor = 'white'
     inputAreaBtn.setAttribute('disabled',true)
     socket.emit('getErWithRealTime', { latitude: userLat, longitude: userLon });
   } catch (error) {

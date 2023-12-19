@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
 import * as Location from 'expo-location';
-import { BackHandler, Alert } from 'react-native';
+import { BackHandler, Alert, Linking } from 'react-native';
+
+
+function close() {
+  Alert.alert("종료하시겠어요?", "확인을 누르면 종료합니다.", [
+    {
+      text: "취소",
+      onPress: () => {},
+      style: "cancel",
+    },
+    { text: "확인", onPress: () => BackHandler.exitApp() },
+  ]);
+}
+
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
+  // 위치정보
   const getLocation = async () => {
     try {
       await Location.requestForegroundPermissionsAsync();
@@ -19,29 +33,26 @@ export default function App() {
       }
     } catch (error) {
       console.error(error);
-      Alert.alert("위치정보 권한이 거절되었습니다.");
+      Alert.alert("위치정보 권한이 거절되었습니다.", "앱을 종료합니다.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
     }
   };
+  const webViewRef = React.useRef(null);
 
   useEffect(() => {
     getLocation();
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      console.log();
+      if (webViewRef.url === "https://www.guphani.com/html/index.html") {
+        close();
+      }
       if (webViewRef.current) {
         // WebView에서 뒤로가기 가능하면 처리하고 true 반환
         webViewRef.current.goBack();
         return true;
       } else {
         // WebView가 없거나 뒤로가기 불가능하면 종료 여부 확인 후 처리
-        Alert.alert(
-          '앱 종료',
-          '앱을 종료하시겠습니까?',
-          [
-            { text: '아니오', onPress: () => false, style: 'cancel' },
-            { text: '예', onPress: () => BackHandler.exitApp() },
-          ],
-          { cancelable: false }
-        );
+        close()
         return true;
       }
     });
@@ -51,7 +62,7 @@ export default function App() {
     };
   }, []);
 
-  const webViewRef = React.useRef(null);
+
 
   return (
     <WebView
