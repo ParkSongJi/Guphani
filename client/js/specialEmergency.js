@@ -6,6 +6,16 @@ const selectUl = document.querySelector('.select-ul');
 const checkbox = modal.querySelectorAll('input[type="checkbox"]')
 const schList = document.querySelectorAll('#specialEmergencySh .list li')
 
+const liElements = document.querySelectorAll('.quick-ul button');
+liElements.forEach(li => {
+  li.setAttribute('disabled','');
+});
+
+const inputAreaInput = document.querySelector('.input-area input')
+const inputAreaBtn = document.querySelector('.input-area button')
+inputAreaInput.setAttribute('disabled','')
+inputAreaBtn.setAttribute('disabled','')
+
 // 모달 외부 클릭 시 모달 닫기
 window.addEventListener('click', (event) => {
   if (
@@ -353,7 +363,7 @@ function getCurrentLocation() {
 }
 getCurrentLocation();
 // 소켓연결
-const socket = io('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app');
+const socket = io('http://localhost:8080');
 
 socket.on('connect', () => {
   try {
@@ -361,11 +371,7 @@ socket.on('connect', () => {
     // 로딩 메시지 추가
     const listContainer = document.querySelector('.list-ul');
     const loadingMessageId = 'loadingMessage';
-    const liElements = document.querySelectorAll('.quick-ul li');
 
-    liElements.forEach(li => {
-      li.setAttribute('disabled', true);
-    });
 
     // 이미 로딩 메시지가 있는지 확인
     if (!document.getElementById(loadingMessageId)) {
@@ -397,13 +403,16 @@ socket.on('updateData', (newData) => {
       const loadingMessage = document.getElementById('loadingMessage');
       if (loadingMessage) {
         loadingMessage.remove();
-        const liElements = document.querySelectorAll('.quick-ul li');
-
-        liElements.forEach(li => {
-          li.setAttribute('disabled', false);
-        });
-
       }
+      const liElements = document.querySelectorAll('.quick-ul button');
+      liElements.forEach(li => {
+        li.removeAttribute('disabled');
+      });
+
+      const inputAreaInput = document.querySelector('.input-area input')
+      const inputAreaBtn = document.querySelector('.input-area button')
+      inputAreaInput.removeAttribute('disabled')
+      inputAreaBtn.removeAttribute('disabled')
 
     }
 
