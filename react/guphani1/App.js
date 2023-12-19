@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
 import * as Location from 'expo-location';
 import { BackHandler, Alert, Linking } from 'react-native';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 
 const getLocation = async () => {
   try {
     const { status } = await Location.requestPermissionsAsync();
-
-    if (status !== 'granted') {
+    console.log(status);
+    if (status !== 'denied') {
       Alert.alert("위치 권한 동의가 거절되었습니다.", "앱을 종료합니다.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
       return;
     }
@@ -26,6 +27,7 @@ const getLocation = async () => {
     Alert.alert("위치 권한 동의가 거절되었습니다.", "앱을 종료합니다.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
   }
 };
+getLocation()
 
 
 // 종료 창
