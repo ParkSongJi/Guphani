@@ -158,7 +158,7 @@ document.getElementById('findpw-onestepBtn').addEventListener('click', async fun
             if (response.ok) {
                 const result = await response.json();
                 if (result) {
-                    const inputHp = document.getElementById('findpw-onetwostep').value.trim()
+                    const inputHp = document.getElementById('findpw-onetwostep').value.replace(/[^0-9]/g, '');
                     
                     
                     if(result.user.isUser =='N'){
