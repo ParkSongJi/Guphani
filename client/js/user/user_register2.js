@@ -360,11 +360,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (signUpForm) {
         signUpForm.addEventListener('click', async () => {
             try {
-                const userId = document.getElementById('userid').value;
-                const userPw = document.getElementById('userpw').value;
-                const pwDoubleCheck = document.getElementById('userpw_check').value;
-                const userName = document.getElementById('username').value;
-                const birthday = document.getElementById('birthday').value;
+                const userId = document.getElementById('userid').value.trim();
+                const userPw = document.getElementById('userpw').value.trim();
+                const pwDoubleCheck = document.getElementById('userpw_check').value.trim();
+                const userName = document.getElementById('username').value.trim();
+                const birthday = document.getElementById('birthday').value.trim();
                 const genderInputs = document.querySelectorAll('input[name="gender"]');
                 let genderValue = '';
 

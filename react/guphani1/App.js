@@ -2,32 +2,54 @@ import React, { useState, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
 import * as Location from 'expo-location';
 import { BackHandler, Alert, Linking } from 'react-native';
-import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 
-const getLocation = async () => {
-  try {
-    const { status } = await Location.requestPermissionsAsync();
-    console.log(status);
-    if (status !== 'denied') {
-      Alert.alert("위치 권한 동의가 거절되었습니다.", "앱을 종료합니다.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
-      return;
+const YourComponent = () => {
+  const webViewRef = useRef(null);
+
+  const getLocation = async () => {
+    try {
+      const { status } = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+
+      console.log(status);
+
+      if (status !== RESULTS.GRANTED) {
+        Alert.alert(
+          "위치 권한 동의가 거절되었습니다.",
+          "앱을 종료합니다.",
+          [{ text: '확인', onPress: () => BackHandler.exitApp() }]
+        );
+        return;
+      }
+
+      const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync();
+      console.log(latitude, longitude);
+      setIsLoading(false);
+
+      // WebView를 새로고침하는 로직 추가
+      if (webViewRef.current) {
+        webViewRef.current.reload();
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert(
+        "위치 권한 동의가 거절되었습니다.",
+        "앱을 종료합니다.",
+        [{ text: '확인', onPress: () => BackHandler.exitApp() }]
+      );
     }
+  };
 
-    const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync();
-    console.log(latitude, longitude);
-    setIsLoading(false);
+  const reloadApp = () => {
+    // Add any additional logic you need before reloading the app
+    getLocation();
+  };
 
-    // WebView를 새로고침하는 로직 추가
-    if (webViewRef.current) {
-      webViewRef.current.reload();
-    }
-  } catch (error) {
-    console.error(error);
-    Alert.alert("위치 권한 동의가 거절되었습니다.", "앱을 종료합니다.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
-  }
+  useEffect(() => {
+    getLocation();
+  }, []);
+
 };
-getLocation()
 
 
 // 종료 창
