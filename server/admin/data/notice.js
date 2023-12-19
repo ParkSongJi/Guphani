@@ -1,16 +1,24 @@
 import Mongoose from "mongoose";
 import { noticeVirtualId } from "../db/database.js";
+import moment from 'moment-timezone';
 
 const noticeSchema = new Mongoose.Schema({
     title: { type: String, required: true },
     contents: { type: String, required: true }
-},
+    },
     { timestamps: true }
 );
 
 noticeVirtualId(noticeSchema);
 
-const notice = Mongoose.model('notice', noticeSchema)
+noticeSchema.pre('save', function (next) {
+  // moment 객체를 생성하고 format()을 호출하여 문자열로 변환합니다.
+    this.createdAt = moment.utc().tz('Asia/Seoul').format();
+    this.updatedAt = moment.utc().tz('Asia/Seoul').format();
+    next();
+});
+
+const notice = Mongoose.model('notice', noticeSchema);
 
 // 사용자 공지사항
 export async function userGetAll() {

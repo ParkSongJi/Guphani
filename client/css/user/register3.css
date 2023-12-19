@@ -36,8 +36,8 @@
     background: var(--blue-color);
   }
 
-#register3 .del-btn{margin-left: 0.714rem; color: var(--white-color) }
-#register3 li span{color: var(--white-color)}
+#register3 .del-btn{margin-left: 0.714rem; color: var(--white-color); font-size: 1rem;}
+#register3 li span{color: var(--white-color); font-size: 1rem;}
 
 /* 공통 라디오 박스 - 혈액형 */
 #register3 .blood-radio label{margin-right: 0.714rem;}

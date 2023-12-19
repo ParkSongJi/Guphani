@@ -240,11 +240,11 @@ birthCheck.addEventListener('input', () => {
 function clickHandler() {
     // 30초 동안의 카운트다운 시작
     let seconds = 180;
-    hpCheckCountDown.innerText = `${seconds}초`;
+    hpCheckCountDown.innerHTML = `재전송 ${seconds}초`;
 
     countdownInterval = setInterval(() => {
         // 카운트다운 갱신
-        hpCheckCountDown.innerText = `${seconds}초`
+        hpCheckCountDown.innerHTML = `재전송 ${seconds}초`
 
         // 1초 감소
         seconds--;
@@ -315,8 +315,6 @@ hpCheck.addEventListener('click', async function (event) {
             } catch (error) {
                 makePopup('인증번호 전송에 실패했습니다.')
             }
-
-
         }
     } catch (error) {
         console.error('hpCheck 이벤트 처리 중 에러 발생:', error.message);
@@ -326,8 +324,8 @@ hpCheck.addEventListener('click', async function (event) {
 
 hpCheckNumber.addEventListener('click', async function (event) {
     event.preventDefault();
-    const phnumber = `${document.getElementById('hp').value}`;
-    const inputVerificationCode = `${document.getElementById('verficateCode').value}`;
+    const phnumber = document.getElementById('hp').value.replace(/[^0-9]/g, '');
+    const inputVerificationCode = document.getElementById('verficateCode').value.trim();
 
     try {
         const response = await fetch('https://port-0-guphani-final-1gksli2alpullmg3.sel4.cloudtype.app/auth/user/verifyCode', {
@@ -343,8 +341,8 @@ hpCheckNumber.addEventListener('click', async function (event) {
             // 인증이 성공하면 인증번호 입력칸, 인증버튼 숨김
             document.getElementById('verification').style.display = 'none';
             hpCheckResend.style.display = 'none';
-            hpCheckCountDown.style.display = 'block'
             hpCheckCountDown.textContent = '인증완료';
+            hpCheckCountDown.style.display = 'block'
             makePopup('인증 성공')
             hpBool = true
         } else {

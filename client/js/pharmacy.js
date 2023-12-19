@@ -174,7 +174,7 @@ function makeMarker(map, lat, lng, hpid) {
     }
 
     // 클릭한 마커의 위치로 지도 중심 이동
-    map.setCenter(new kakao.maps.LatLng(lat - 0.01, lng));
+    map.setCenter(new kakao.maps.LatLng(lat - 0.003, lng));
   
     // 클릭된 마커에 대응하는 리스트 아이템을 찾아서 스크롤
     const clickedLiId = hpid;

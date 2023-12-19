@@ -60,6 +60,10 @@ findIdBtn.addEventListener('click', async () => {
                         makePopup(`탈퇴한 회원입니다`);
                         document.getElementById('username').value = '';
                         document.getElementById('findid-userhp').value = '';
+                    }else if(html === ''){
+                        makePopup(`일치하는 사용자가 없습니다`);
+                        document.getElementById('username').value = '';
+                        document.getElementById('findid-userhp').value = '';
                     }else{
                     const message = document.getElementById('message');
                     message.innerHTML = html;     
@@ -68,13 +72,10 @@ findIdBtn.addEventListener('click', async () => {
                     }
                     
                 }else{
-                     makePopup(`일치하는 사용자가 없습니다`);
+                    makePopup(`일치하는 사용자가 없습니다`);
                     document.getElementById('username').value = '';
                     document.getElementById('findid-userhp').value = '';
                 }
-
-
-
 
 
                 if (result.isUser == 'N') {
