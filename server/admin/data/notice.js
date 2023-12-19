@@ -9,14 +9,13 @@ const noticeSchema = new Mongoose.Schema({
     { timestamps: true }
 );
 
-noticeVirtualId(noticeSchema);
+// 시간 설정
+const newDate = new Date(Date.now())
+const utcMoment = moment.utc(newDate);
+const kstMoment = utcMoment.add(9, 'hours');
+const dateInKST = kstMoment.toISOString();
 
-noticeSchema.pre('save', function (next) {
-  // moment 객체를 생성하고 format()을 호출하여 문자열로 변환합니다.
-    this.createdAt = moment.utc().tz('Asia/Seoul').format();
-    this.updatedAt = moment.utc().tz('Asia/Seoul').format();
-    next();
-});
+noticeVirtualId(noticeSchema);
 
 const notice = Mongoose.model('notice', noticeSchema);
 
@@ -31,11 +30,13 @@ export async function userGetAll() {
     }
 }
 
+
 // 공지사항작성
 export async function createNotice(noticeData) {
     try {
         const { title, contents } = noticeData;
-        const newNotice = new notice({ title, contents });
+
+        const newNotice = new notice({ title, contents, createdAt:dateInKST });
         return newNotice.save().then((data) => { return data });
     } catch (error) {
         console.error(error)
@@ -100,7 +101,7 @@ export async function update(id, noticeData) {
         console.log(contents, '공지사항 수정');
         return notice.findByIdAndUpdate(
             id,
-            { title, contents },
+            { title, contents, updatedAt:dateInKST },
             {
                 returnDocument: 'after'
             }

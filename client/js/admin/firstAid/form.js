@@ -11,6 +11,8 @@ const headers = {
     'Content-Type': 'application/json',
 };
 
+editor.removeToolbarItem('image');
+
 // 상세보기 내용 출력
 function fn_fetch(link) {
     fetch(link)

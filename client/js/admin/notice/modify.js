@@ -49,6 +49,8 @@ const editor = new toastui.Editor({
     },
 });
 
+editor.removeToolbarItem('image');
+
 // 상세보기 내용 출력
 function fn_fetch() {
     try {

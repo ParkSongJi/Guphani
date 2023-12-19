@@ -33,6 +33,9 @@ function fn_fetch(link) {
     }
 }
 
+
+editor.removeToolbarItem('image');
+
 // 에디터 내용 및 타이틀 내용 서버로 전송
 async function handleEditor() {
     try {
@@ -63,6 +66,7 @@ postBtn.addEventListener('click', () => {
         const title = document.getElementById('title');
         const contents = editor.getMarkdown();
 
+
         if (title.value === '') {
             layerText = '제목을 입력해주세요.';
             textArea.innerHTML = layerText;
@@ -71,7 +75,7 @@ postBtn.addEventListener('click', () => {
             return false;
         }
 
-        if (contents.value === '') {
+        if (contents === '') {
             layerText = '내용을 입력해주세요.';
             textArea.innerHTML = layerText;
             layerOn('noticePostLayer');

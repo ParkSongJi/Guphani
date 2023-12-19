@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
     medication: { type: Array, required: false },
 });
 
+
 const User = mongoose.model('User', userSchema);
 // 비교 
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
@@ -42,7 +43,7 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
 };
 
 
-// 문의사항 조회
+// 회원 조회
 export async function getAll(query, page, limit) {
     try {
         const skip = (page - 1) * limit;

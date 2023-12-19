@@ -47,10 +47,12 @@ findIdBtn.addEventListener('click', async () => {
             if (response.ok) {
                 const result = await response.json();
                 if (result) {
+                    console.log(result.foundUser);
                     let html = ''
                     cnt = 0
                     result.foundUser.forEach((el)=>{
-                        if (el.isUser == 'Y') {
+                        if (el.isUser === 'Y') {
+                            console.log('dd');
                             html += `<p>아이디는 <strong class="txt-point">${maskUserId(el.id)} </strong>입니다.</p>`
                         }else{
                             cnt += 1
@@ -61,6 +63,7 @@ findIdBtn.addEventListener('click', async () => {
                         document.getElementById('username').value = '';
                         document.getElementById('findid-userhp').value = '';
                     }else if(html === ''){
+                        console.log(html);
                         makePopup(`일치하는 사용자가 없습니다`);
                         document.getElementById('username').value = '';
                         document.getElementById('findid-userhp').value = '';

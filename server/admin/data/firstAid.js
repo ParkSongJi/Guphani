@@ -1,5 +1,6 @@
 import Mongoose from "mongoose";
 import { firstAidVirtualId } from "../db/database.js";
+import moment from 'moment-timezone';
 
 const firstAidSchema = new Mongoose.Schema({
     title: {type:String, required: true },
@@ -8,6 +9,12 @@ const firstAidSchema = new Mongoose.Schema({
 },
 { timestamps: true }
 );
+
+// 시간 설정
+const newDate = new Date(Date.now())
+const utcMoment = moment.utc(newDate);
+const kstMoment = utcMoment.add(9, 'hours');
+const dateInKST = kstMoment.toISOString();
 
 firstAidVirtualId(firstAidSchema);
 
@@ -28,7 +35,7 @@ export async function userGetAll() {
 export async function createfirstAid(firstAidData) {
     try {
       const { title, contents, youtube } = firstAidData;
-      const newfirstAid = new firstAid({ title, contents, youtube });
+      const newfirstAid = new firstAid({ title, contents, youtube, createdAt:dateInKST });
       return await newfirstAid.save();
     } catch (error) {
       console.error('응급처치 정보 생성 중 에러 발생:', error.message);
@@ -92,7 +99,7 @@ export async function update(id, firstAidDatas) {
       const { title, contents, youtube } = firstAidDatas;
       return await firstAid.findByIdAndUpdate(
         id,
-        { title, contents, youtube },
+        { title, contents, youtube, updatedAt:dateInKST },
         {
           returnDocument: 'after',
         }

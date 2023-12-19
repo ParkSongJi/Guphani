@@ -341,8 +341,8 @@ hpCheckNumber.addEventListener('click', async function (event) {
             // 인증이 성공하면 인증번호 입력칸, 인증버튼 숨김
             document.getElementById('verification').style.display = 'none';
             hpCheckResend.style.display = 'none';
-            hpCheckCountDown.textContent = '인증완료';
-            hpCheckCountDown.style.display = 'block'
+            hpCheckCountDown.style.display = 'none';
+            document.getElementById('hpCheckDone').style.display = 'block'
             makePopup('인증 성공')
             hpBool = true
         } else {
@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 try {
-                    const phoneNumber = document.getElementById('hp').value.trim();
+                    const phoneNumber = document.getElementById('hp').value.replace(/[^0-9]/g, '');
                     const isValidPhoneNumber = validatePhoneNumber(phoneNumber);
         
                     if (userId==='') {

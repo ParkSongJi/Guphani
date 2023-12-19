@@ -7,6 +7,7 @@ import { User } from '../data/auth.js';
 import * as userRepository from '../data/auth.js';
 import { config } from '../config.js';
 import coolsms from 'coolsms-node-sdk';
+import moment from 'moment-timezone';
 
 // 인증번호
 const apiKey = config.sms.sms_api;
@@ -353,9 +354,16 @@ export async function findByUserId(req, res) {
 
 // ----------------------------------------------------------------------
 
+
 // 회원가입 (사용자/관리자)
 export async function signUp(req, res) {
     const { id, password, name, birthdate, gender, phoneNumber } = req.body;
+
+    // 시간 설정
+    const newDate = new Date(Date.now())
+    const utcMoment = moment.utc(newDate);
+    const kstMoment = utcMoment.add(9, 'hours');
+    const dateInKST = kstMoment.toISOString();
 
     const found = await User.findOne({ id: id });
     if (found) {
@@ -371,10 +379,11 @@ export async function signUp(req, res) {
         gender, 
         phoneNumber, 
         isAdmin: "N", // Set default value as "N"
-        isUser: "Y"   // Set default value as "Y"
+        isUser: "Y",   // Set default value as "Y"
+        joinDate: dateInKST
     });
     await newUser.save(); 
-    
+    console.log(newUser);
     res.status(201).json( { id });
 }
 

@@ -1,5 +1,6 @@
 import Mongoose from "mongoose";
 import MongoDb from 'mongodb';
+import moment from 'moment-timezone';
 const ObjectId = MongoDb.ObjectId;
 
 const inquirySchema = new Mongoose.Schema({
@@ -14,6 +15,12 @@ const inquirySchema = new Mongoose.Schema({
 },
 { timestamps: true }
 );
+
+// 시간 설정
+const newDate = new Date(Date.now())
+const utcMoment = moment.utc(newDate);
+const kstMoment = utcMoment.add(9, 'hours');
+const dateInKST = kstMoment.toISOString();
 
 
 const inquiry = Mongoose.model('inquiry', inquirySchema)
@@ -33,7 +40,7 @@ export async function createInquiry(inquiryData) {
     try{
     const {userId ,title, contents, sort, name} = inquiryData;
     console.log(userId ,title, contents, sort, name);
-    const newInquiry = new inquiry({userId, name, title, contents, sort, answerStatus:'N', answerContents: ''});
+    const newInquiry = new inquiry({userId, name, title, contents, sort, answerStatus:'N', answerContents: '', createdAt:dateInKST});
     return newInquiry.save().then((data) => { return data});
     }catch(error){
         console.error(error)
@@ -112,7 +119,7 @@ export async function update(id, inquiryData) {
         console.log(contents, '문의사항 수정');
         return inquiry.findByIdAndUpdate(
             id,
-            { title, contents, sort },
+            { title, contents, sort, createdAt:dateInKST },
             {
                 returnDocument: 'after'
             }

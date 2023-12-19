@@ -361,6 +361,11 @@ socket.on('connect', () => {
     // 로딩 메시지 추가
     const listContainer = document.querySelector('.list-ul');
     const loadingMessageId = 'loadingMessage';
+    const liElements = document.querySelectorAll('.quick-ul li');
+
+    liElements.forEach(li => {
+      li.setAttribute('disabled', true);
+    });
 
     // 이미 로딩 메시지가 있는지 확인
     if (!document.getElementById(loadingMessageId)) {
@@ -392,6 +397,12 @@ socket.on('updateData', (newData) => {
       const loadingMessage = document.getElementById('loadingMessage');
       if (loadingMessage) {
         loadingMessage.remove();
+        const liElements = document.querySelectorAll('.quick-ul li');
+
+        liElements.forEach(li => {
+          li.setAttribute('disabled', false);
+        });
+
       }
 
     }
@@ -760,4 +771,3 @@ function createInfoFunc(er) {
     // 추가적인 예외 처리 로직을 여기에 추가
   }
 }
-
