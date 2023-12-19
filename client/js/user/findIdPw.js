@@ -105,6 +105,7 @@ findIdBtn.addEventListener('click', async () => {
 // 비밀번호 양식 검증
 pwCheck.addEventListener('input', () => {
     const userpwInput = document.getElementById('newPw').value.trim();
+    const userpwInputAgain = document.getElementById('newPwCheck').value.trim();
 
     // 정규표현식을 사용하여 비밀번호 검증
     const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d$@$!%*#?&]{6,20}$/;
@@ -115,6 +116,15 @@ pwCheck.addEventListener('input', () => {
         document.getElementById('pw_info').style.display = 'block';
     } else {
         document.getElementById('pw_info').style.display = 'none';
+    }
+    if (userpwInput !== userpwInputAgain) {
+        document.getElementById('pwCheck_info').style.display = 'block';
+        document.getElementById('resetPwBtn').style.marginBottom = '0';
+    } else {
+        document.getElementById('pwCheck_info').style.display = 'none';
+    }
+    if (userpwInputAgain === '') {
+        document.getElementById('pwCheck_info').style.display = 'none';
     }
 });
 
