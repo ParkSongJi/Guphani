@@ -8,7 +8,7 @@ import { BackHandler, Alert, Linking} from 'react-native';
 const getLocation = async () => {
   try {
     const { status } = await Location.requestForegroundPermissionsAsync();
-    console.log(status);
+
     if (status !== 'granted') {
       Alert.alert("위치 권한 동의가 거절되었습니다.", "설정에서 위치정보를 허용해주세요.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
       return;
