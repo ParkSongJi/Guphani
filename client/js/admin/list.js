@@ -60,7 +60,7 @@ function fetchUsers(queryString = '', page = 1) {
                                 }
                                 html +=`
                                 <td>${el.birthdate}</td>
-                                <td>${el.phoneNumber}</td>`
+                                <td>${maskPhoneNumber(el.phoneNumber)}</td>`
 
                                 if(el.isUser == 'Y'){
                                     html += `<td class="point-txt">${el.isUser}</td>`
@@ -108,6 +108,17 @@ function fetchUsers(queryString = '', page = 1) {
         console.error('Error in fetchUsers function:', error);
         const errorMessage = '데이터를 불러오는 중 오류가 발생했습니다.';
         
+    }
+}
+
+function maskPhoneNumber(phoneNumber) {
+    // Check if the phone number has at least 4 characters
+    if (phoneNumber.length >= 4) {
+        const maskedDigits = '*'.repeat(4);
+        return phoneNumber.slice(0, -4) + maskedDigits;
+    } else {
+        // Handle cases where the phone number has fewer than 4 characters
+        return phoneNumber;
     }
 }
 

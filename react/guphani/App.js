@@ -8,22 +8,26 @@ import { BackHandler, Alert, Linking} from 'react-native';
 const getLocation = async () => {
   try {
     const { status } = await Location.requestForegroundPermissionsAsync();
+    console.log(status);
 
+    const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync();
+    console.log(latitude, longitude);
+    setIsLoading(false);
+    
     if (status !== 'granted') {
       Alert.alert("위치 권한 동의가 거절되었습니다.", "설정에서 위치정보를 허용해주세요.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
       return;
     }
 
-    const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync();
-    console.log(latitude, longitude);
-    setIsLoading(false);
+
 
     // WebView를 새로고침하는 로직 추가
     if (webViewRef.current) {
       webViewRef.current.reload();
     }
   } catch (error) {
-    Alert.alert("위치 권한 동의가 거절되었습니다.", "설정에서 위치정보를 허용해주세요.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
+    console.log(error);
+    // Alert.alert("위치 권한 동의가 거절되었습니다.", "설정에서 위치정보를 허용해주세요.", [{ text: '확인', onPress: () => BackHandler.exitApp() }]);
   }
 };
 getLocation()
